@@ -1,0 +1,1136 @@
+# backend/api/v1/chat.py
+"""
+ASTRAMIND Chat API - Production-ready streaming chat endpoint.
+Supports both streaming (SSE) and non-streaming (JSON) responses.
+"""
+
+from fastapi import APIRouter, Depends, Request, HTTPException, BackgroundTasks
+from fastapi.responses import JSONResponse, StreamingResponse, Response
+from pydantic import BaseModel, Field, field_validator
+from sqlalchemy.ext.asyncio import AsyncSession
+from typing import Literal, Dict, List, Optional
+
+from core.enhanced_security import (
+    get_current_user_secure,
+    validate_prompt_security,
+    log_security_event,
+)
+from app.db.session import get_db
+from services.ai_router import AIRouter
+from services.stream import stream_response
+from core.agent_skills import build_agent_system_suffix
+from core.system_prompt import system_suffix_stack, local_time_context
+from services.models import resolve_model
+from services.prompts import sanitize_prompt
+from core.config import settings
+from core.content_filter import content_filter
+from core.stability_engine import stability_engine
+from app.db.models import User
+import json
+import logging
+import time
+from core.version import APP_VERSION
+
+logger = logging.getLogger(__name__)
+
+router = APIRouter(tags=["chat"])
+
+# ===== IP / USER DAILY RATE LIMITER =====
+# Lightweight in-memory daily quota (resets at midnight UTC).
+# No Redis required. Covers guests (by IP) and logged-in users (by email).
+# Limits: authenticated users → 50/day · 
+_DAILY_LIMIT_USER = int(__import__("os").getenv("DAILY_LIMIT_USER", "50"))
+_DAILY_LIMIT_IP   = int(__import__("os").getenv("DAILY_LIMIT_IP", "70"))
+
+# { "user:email@x.com" | "ip:1.2.3.4" : (date_str, count) }
+_daily_counts: Dict[str, tuple] = {}
+
+def _today_utc() -> str:
+    return __import__("datetime").date.today().isoformat()
+
+def _check_and_increment(key: str, limit: int) -> tuple:
+    """Returns (allowed: bool, remaining: int)."""
+    today = _today_utc()
+    
+    # Memory leak prevention: periodically clean old entries (e.g., ~1 in 100 requests)
+    if __import__("random").random() < 0.01:
+        keys_to_delete = [k for k, v in _daily_counts.items() if v[0] != today]
+        for k in keys_to_delete:
+            del _daily_counts[k]
+            
+    existing = _daily_counts.get(key)
+    if existing is None or existing[0] != today:
+        _daily_counts[key] = (today, 1)
+        return True, limit - 1
+    date_str, count = existing
+    if count >= limit:
+        return False, 0
+    _daily_counts[key] = (date_str, count + 1)
+    return True, limit - count - 1
+
+def _get_client_ip(request: Request) -> str:
+    xff = request.headers.get("x-forwarded-for")
+    if xff:
+        return xff.split(",")[0].strip()
+    xri = request.headers.get("x-real-ip")
+    if xri:
+        return xri.strip()
+    return request.client.host if request.client else "unknown"
+
+
+def is_continuation_prompt(prompt: str) -> bool:
+    continuation_keywords = {
+        "continue", "then continue", "go on", "resume", "cont", 
+        "continue please", "please continue", "carry on", "keep going", "proceed"
+    }
+    cleaned = "".join(c for c in prompt.lower() if c.isalnum() or c.isspace()).strip()
+    return cleaned in continuation_keywords
+
+
+# ===== BACKGROUND TASKS =====
+
+async def atomic_increment_quota(user_id: int, db: AsyncSession) -> bool:
+    """
+    Atomically increment user quota usage based on their integer primary key.
+    Returns True if quota was incremented, False if limit is already reached.
+    """
+    if not user_id:
+        return False
+        
+    from sqlalchemy import update
+    from app.db.models import User
+    
+    result = await db.execute(
+        update(User)
+        .where(User.id == user_id)
+        .where(User.daily_used < User.daily_quota)
+        .values(daily_used=User.daily_used + 1)
+        .returning(User.daily_used)
+    )
+    await db.commit()
+    row = result.fetchone()
+    return row is not None
+
+# ===== DEPENDENCIES =====
+
+_ai_router_cache: AIRouter | None = None
+
+
+def get_ai_router(request: Request) -> AIRouter:
+    """FastAPI dependency for an AI router instance using shared connection pools.
+
+    The router is a per-process singleton — provider objects are expensive and
+    should not be re-created on every request (H-1 fix).
+    """
+    global _ai_router_cache
+    if _ai_router_cache is None:
+        _ai_router_cache = AIRouter(
+            groq_keys=settings.groq_api_keys,
+            openrouter_keys=settings.openrouter_api_keys,
+            together_keys=settings.together_api_keys,
+            mistral_keys=settings.mistral_api_keys,
+            cerebras_keys=settings.cerebras_api_keys,
+            siliconflow_keys=settings.siliconflow_api_keys,
+            google_keys=settings.google_ai_studio_api_keys,
+            alibaba_bailian_keys=settings.alibaba_bailian_api_keys,
+            deepseek_keys=settings.deepseek_api_keys,
+            xai_keys=settings.xai_api_keys,
+            anthropic_keys=settings.anthropic_api_keys,
+            cohere_keys=settings.cohere_api_keys,
+            ai21_keys=settings.ai21_api_keys,
+            novita_keys=settings.novita_api_keys,
+            sambanova_keys=settings.sambanova_api_keys,
+            hf_key=settings.HUGGINGFACE_API_KEY,
+            openai_key=settings.OPENAI_API_KEY,
+            http_client=getattr(request.app.state, "http_client", None),
+        )
+    else:
+        # Keep http_client in sync with app state (updated after startup)
+        if hasattr(request.app.state, "http_client"):
+            _ai_router_cache.groq_provider.http_client = getattr(request.app.state, "http_client", None)
+    return _ai_router_cache
+
+
+# ===== REQUEST VALIDATION =====
+
+class ChatMessage(BaseModel):
+    """A single message in a conversation."""
+    role: str = Field(..., description="'user' or 'assistant'")
+    content: str = Field(..., min_length=0, max_length=32768)
+
+
+class ChatRequest(BaseModel):
+    """Validated chat request with conversation history support."""
+
+    prompt: str = Field(
+        ...,
+        min_length=1,
+        max_length=32768,
+        description="Current user prompt (max 32k chars)",
+    )
+    model: str = Field(
+        default="fast",
+        description="AI model tier: fast | balanced | smart",
+    )
+    stream: bool = Field(
+        default=False,
+        description="Enable streaming SSE response (false = JSON)",
+    )
+    messages: Optional[List[ChatMessage]] = Field(
+        default=None,
+        description="Conversation history (last N turns, optional)",
+        max_length=120,
+    )
+    agent_mode: bool = Field(
+        default=False,
+        description="Enable sandbox tools (files, md→html, restricted CLI) via orchestrator",
+    )
+    research_mode: bool = Field(
+        default=False,
+        description="Multi-query web research bundle (Perplexity-style grounding)",
+    )
+    custom_skills: Optional[str] = Field(
+        default=None,
+        description="Custom prompt skills / expert personas from frontend settings",
+    )
+    acp_tools: Optional[str] = Field(
+        default=None,
+        description="Outbound MCP/ACP tool webhook URLs from frontend settings",
+    )
+    timezone: Optional[str] = Field(
+        default=None,
+        description="User's local timezone (e.g. Asia/Kolkata)",
+    )
+    local_time: Optional[str] = Field(
+        default=None,
+        description="User's local time string",
+    )
+
+    @field_validator("prompt")
+    @classmethod
+    def validate_prompt(cls, v: str) -> str:
+        """Sanitize prompt to prevent injection attacks."""
+        try:
+            return sanitize_prompt(v)
+        except ValueError as e:
+            raise ValueError(f"Invalid prompt: {str(e)}")
+
+
+# ===== CHAT ENDPOINT =====
+
+@router.post(
+    "/chat",
+    summary="Chat with AI",
+    description="Send a message and get an AI response",
+)
+async def chat(  # CRITICAL SECURITY: Zero Trust Implementation
+    request: Request,
+    payload: ChatRequest,
+    background_tasks: BackgroundTasks,
+    auth_data: dict = Depends(get_current_user_secure),
+    db: AsyncSession = Depends(get_db),
+    ai_router: AIRouter = Depends(get_ai_router),
+):
+    """
+    Main chat endpoint with multi-provider support.
+
+    Args:
+        request: FastAPI request (for validation)
+        payload: Chat request body
+        user: Authenticated user (injected)
+        db: Database session (injected)
+
+    Returns:
+        Streaming response with AI output
+    """
+
+    # Get request ID for tracing
+    request_id = getattr(request.state, "request_id", "unknown")
+
+    # Get authenticated user from enhanced security
+    user = auth_data["user"]
+    user_id = auth_data["user_id"]
+    user_email = auth_data["email"]
+
+    # Validate user exists (should be guaranteed by enhanced security, but double-check)
+    if not user:
+        logger.warning(f"Security breach: authenticated user not found [request_id: {request_id}]")
+        await log_security_event("user_not_found", user_id, {"request_id": request_id}, request)
+        raise HTTPException(status_code=401, detail="User not authenticated")
+
+    # ===== REQUEST SIZE VALIDATION =====
+    content_length = request.headers.get("content-length")
+    if content_length:
+        try:
+            size = int(content_length)
+            if size > settings.MAX_REQUEST_SIZE_BYTES:
+                logger.warning(
+                    f"Request too large from {user_email}: "
+                    f"{size} bytes (limit: {settings.MAX_REQUEST_SIZE_BYTES}) "
+                    f"[request_id: {request_id}]"
+                )
+                raise HTTPException(
+                    status_code=413,
+                    detail=f"Request payload too large (max {settings.MAX_REQUEST_SIZE_BYTES} bytes)",
+                )
+        except ValueError:
+            pass  # Invalid header, ignore
+
+    # ===== ENHANCED SECURITY: Prompt Validation =====
+    try:
+        security_result = validate_prompt_security(payload.prompt)
+        safe_prompt = security_result["sanitized"]
+    except HTTPException:
+        # Re-raise security validation errors
+        raise
+    except Exception as e:
+        logger.error(f"Prompt security validation failed: {e}")
+        await log_security_event("prompt_validation_error", user_id, {"error": str(e)}, request)
+        raise HTTPException(status_code=400, detail="Prompt validation failed")
+
+    # ===== CONTENT FILTERING (Additional Layer) =====
+    filter_result = content_filter.filter_content(safe_prompt)
+    if filter_result.blocked:
+        logger.warning(
+            f"Content blocked for user {user_email}: {filter_result.reasons[:1]} "
+            f"[request_id: {request_id}]"
+        )
+        await log_security_event("content_blocked", user_id, {
+            "reasons": filter_result.reasons[:2],
+            "request_id": request_id
+        }, request)
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "error": "Content policy violation",
+                "message": "Your request contains content that violates our safety guidelines.",
+                "reasons": filter_result.reasons[:2],  # Show first 2 reasons
+            },
+        )
+
+    # Use sanitized content if available
+    safe_prompt = filter_result.sanitized_content or safe_prompt
+
+    # NOTE: Quota is enforced atomically below (after model resolution) via atomic_increment_quota().
+    # A pre-check here would reintroduce the race condition (C-1) and is intentionally omitted.
+
+    # ===== MODEL RESOLUTION =====
+    try:
+        provider, real_model = await resolve_model(payload.model)
+        logger.info(
+            f"Model resolved: {payload.model} -> {provider}/{real_model} "
+            f"for user {user_email} "
+            f"[request_id: {request_id}]"
+        )
+    except KeyError as e:
+        logger.error(f"Invalid model selection: {payload.model}")
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid model: {payload.model}",
+        )
+
+    # ===== QUOTA ENFORCEMENT (DB + IN-MEMORY) =====
+    # auth_data["user"] is a plain dict (from verify_jwt_comprehensive)
+    # orm_user key holds the real SQLAlchemy User object (or None for guests)
+    user_dict = user if isinstance(user, dict) else {}
+    orm_user = user_dict.get("orm_user") if user_dict else None
+
+    if db is not None and orm_user is not None:
+        # DB-based atomic quota for authenticated users
+        quota_granted = await atomic_increment_quota(orm_user.id, db)
+        if not quota_granted:
+            logger.warning(
+                f"Daily quota exceeded for user: {user_email} [request_id: {request_id}]"
+            )
+            raise HTTPException(
+                status_code=429,
+                detail={
+                    "error": "Daily quota exceeded",
+                    "limit": orm_user.daily_quota,
+                    "reset_date": orm_user.last_reset.isoformat() if orm_user.last_reset else None,
+                },
+            )
+    # In-memory per-user or per-IP rate limit (always enforced)
+    if user_email and not user_email.endswith("@astramind.local"):
+        # Logged-in user
+        key = f"user:{user_email}"
+        limit = orm_user.daily_quota if orm_user else _DAILY_LIMIT_USER
+        allowed, rem = _check_and_increment(key, limit)
+        if not allowed:
+            raise HTTPException(status_code=429, detail="Daily rate limit exceeded. Try again tomorrow.")
+    else:
+        # GUEST USER - Use IP address limit
+        ip = _get_client_ip(request)
+        key = f"ip:{ip}"
+        allowed, rem = _check_and_increment(key, _DAILY_LIMIT_IP)
+        if not allowed:
+            logger.warning(f"Daily IP limit exceeded for guest IP {ip} [request_id: {request_id}]")
+            raise HTTPException(status_code=429, detail="Daily limit reached for your IP. Please sign in for more messages.")
+        logger.debug(f"Guest IP {ip} quota remaining: {rem}")
+
+    # ===== ROUTE TO AI PROVIDER =====
+    try:
+        # BUG FIX: user is a dict — use user_email variable (already extracted above)
+        logger.info(
+            f"Chat request from {user_email}: "
+            f"provider={provider}, model={payload.model}, prompt_len={len(payload.prompt)} "
+            f"[request_id: {request_id}]"
+        )
+        
+        if payload.custom_skills:
+            logger.info(f"Applying custom expert skills for user {user_email}")
+            safe_prompt = f"{safe_prompt}\n\n[Custom Expert Persona & Skills]\n{payload.custom_skills}"
+
+        if payload.acp_tools:
+            logger.info(f"Configuring ACP webhooks: {payload.acp_tools} for user {user_email}")
+        
+        # ── HISTORY (shared by agent + providers) ───────────────────────────
+        history_msgs = [
+            {"role": m.role, "content": m.content}
+            for m in (payload.messages or [])[-50:]
+            if m.role in ("user", "assistant") and m.content
+        ]
+
+        # Check for continuation
+        is_cont = is_continuation_prompt(payload.prompt)
+        last_assistant_idx = -1
+        if is_cont:
+            for i in range(len(history_msgs) - 1, -1, -1):
+                if history_msgs[i]["role"] == "assistant":
+                    last_assistant_idx = i
+                    break
+
+        if is_cont and last_assistant_idx != -1:
+            logger.info(f"Continuation detected for user {user_email}. Modifying last assistant message.")
+            from services.conversation_store import clean_assistant_response, clean_last_assistant_message
+            original_content = history_msgs[last_assistant_idx]["content"]
+            cleaned_content = clean_assistant_response(original_content)
+            history_msgs[last_assistant_idx]["content"] = cleaned_content
+            
+            # Clean database history for last assistant message
+            await clean_last_assistant_message(user_email)
+            
+            # Instruct provider to continue
+            safe_prompt = (
+                "Please continue the response to the previous prompt from where it was interrupted. "
+                "Start directly with the continuation, without repeating the initial part."
+            )
+
+        # Load active workspace/session context from SQLite
+        memory_suffix = ""
+        if db is not None and user_email:
+            try:
+                from services.conversation_store import get_agent_memory
+                agent_memory = await get_agent_memory(db, user_email)
+                if agent_memory:
+                    mem_parts = []
+                    summary = agent_memory.get("session_summary")
+                    if summary:
+                        mem_parts.append(f"Session Context Summary:\n{summary}")
+                    cloned = agent_memory.get("cloned_repos")
+                    if cloned:
+                        mem_parts.append(f"Cloned Repositories in workspace: {', '.join(cloned)}")
+                    created = agent_memory.get("created_files")
+                    if created:
+                        mem_parts.append(f"Created Files in workspace: {', '.join(created)}")
+                    
+                    if mem_parts:
+                        memory_suffix = "\n\n### 🧠 Active Workspace Context (SQLite Memory)\n" + "\n".join(mem_parts)
+            except Exception as e:
+                logger.error(f"Failed to load agent memory: {e}")
+
+        # ===== INTENT CLASSIFICATION =====
+        from core.intent_classifier import classify_intent, ChatMode
+        intent = classify_intent(safe_prompt)
+        logger.info(f"Classified prompt intent: {intent} for user {user_email}")
+
+        # ── DEEP RESEARCH (Perplexity-style multi-query) ─────────────────────
+        should_run_research = (payload.research_mode or intent == ChatMode.RESEARCH) and getattr(settings, "ENABLE_DEEP_RESEARCH", True)
+        if should_run_research and getattr(settings, "ENABLE_WEB_SEARCH", False):
+            try:
+                from services.research_service import deep_research
+                logger.info(f"Deep research bundle triggered (intent: {intent}) for user {user_email} [request_id: {request_id}]")
+                dr = await deep_research(safe_prompt)
+                if dr:
+                    safe_prompt = f"{safe_prompt}\n\n{dr}"
+            except Exception as e:
+                logger.error(f"Deep research failed: {e}")
+
+        # ── LIGHT WEB SEARCH (single-pass DDG) ───────────────────────────────
+        elif getattr(settings, "ENABLE_WEB_SEARCH", False):
+            search_keywords = ["who", "what", "where", "when", "why", "how", "latest", "news", "current", "today", "now", "price", "stock", "weather"]
+            if (intent == ChatMode.RESEARCH or any(kw in safe_prompt.lower() for kw in search_keywords)) and len(safe_prompt) > 5:
+                try:
+                    from services.web_search import fetch_web_search
+                    logger.info(f"Triggering DuckDuckGo real-time search for: {safe_prompt}")
+                    search_context = await fetch_web_search(safe_prompt)
+                    if search_context:
+                        safe_prompt = f"{safe_prompt}\n\n{search_context}"
+                except Exception as e:
+                    logger.error(f"Web search integration failed: {e}")
+
+        # ── AGENT TOOLS (sandbox orchestration) ────────────────────────────
+        orm_user = auth_data.get("user", {}).get("orm_user") if isinstance(auth_data.get("user"), dict) else None
+
+        # Auto-detect action requests that need live tool execution.
+        auto_agent = (intent == ChatMode.AGENT)
+        should_run_agent = (payload.agent_mode or auto_agent) and getattr(settings, "ENABLE_AGENT_TOOLS", True)
+
+        if should_run_agent:
+            try:
+                from services.agent_orchestrator import run_agent_phase
+                if auto_agent and not payload.agent_mode:
+                    logger.info(f"Auto-agent triggered for user {user_email} [action intent classified]")
+                agent_block = await run_agent_phase(
+                    router=ai_router,
+                    user_goal=safe_prompt,
+                    history=history_msgs or None,
+                    model_tier=payload.model,
+                    preferred_provider=provider,
+                    user_email=user_email,
+                    request_id=request_id,
+                )
+                if agent_block:
+                    safe_prompt = f"{safe_prompt}\n\n{agent_block}"
+            except Exception as e:
+                logger.error(f"Agent orchestration failed: {e}", exc_info=True)
+
+        agent_system_suffix = build_agent_system_suffix(safe_prompt, payload.model)
+
+        # ── NON-STREAMING PATH (stream=false) ─────────────────────────────────
+        if not payload.stream:
+            # Build conversation history for the provider
+            history = history_msgs
+
+            async def execute_ai_json():
+                chunks: List[str] = []
+                with local_time_context(payload.local_time):
+                    with system_suffix_stack(agent_system_suffix + memory_suffix):
+                        async for chunk in ai_router.stream_with_fallback(
+                            prompt=safe_prompt,
+                            model=payload.model,  # The tier string (e.g. 'balanced')
+                            preferred_provider=provider,
+                            messages=history or None,
+                        ):
+                            try:
+                                parsed = json.loads(chunk)
+                                choices = parsed.get("choices", [])
+                                content = ""
+                                if choices:
+                                    content = choices[0].get("delta", {}).get("content", "") or ""
+                                if content:
+                                    chunks.append(content)
+                            except (json.JSONDecodeError, IndexError, AttributeError, TypeError):
+                                if chunk and chunk.strip():
+                                    chunks.append(chunk)
+                full_text = "".join(chunks)
+                if db is not None and user_email and full_text:
+                    try:
+                        from services.conversation_store import save_message, summarize_if_needed
+                        await save_message(db, user_email, "user", payload.prompt)
+                        await save_message(db, user_email, "assistant", full_text)
+                        await summarize_if_needed(db, user_email, ai_router)
+                    except Exception as e:
+                        logger.error(f"Failed to save non-stream conversation: {e}")
+                return JSONResponse(content={
+                    "response": full_text,
+                    "provider": provider,
+                    "model": real_model,
+                    "tier": payload.model,
+                    "request_id": request_id,
+                })
+
+            async def fallback_json():
+                return JSONResponse(content={
+                    "response": (
+                        f"Sorry, we're experiencing technical difficulties. "
+                        f"Please try again in a moment! ✨"
+                    ),
+                    "provider": "fallback",
+                    "model": "none",
+                    "tier": payload.model,
+                    "request_id": request_id,
+                })
+
+            return await stability_engine.execute_with_stability(
+                operation=execute_ai_json,
+                service_name="ai_router",
+                operation_name="chat_json",
+                fallback=fallback_json,
+            )
+
+        # ── STREAMING PATH (stream=true, SSE) ─────────────────────────────────
+        # Note: Frontend history array logic has not been requested for SSE yet, 
+        # but passing it here for consistency if frontend sends it.
+        history_sse = history_msgs
+        
+        base_stream_generator = ai_router.stream_with_fallback(
+            prompt=safe_prompt,
+            model=payload.model,
+            preferred_provider=provider,
+            messages=history_sse or None,
+        )
+
+        async def execute_ai_stream():
+            return stream_response(
+                base_stream_generator,
+                system_suffix=agent_system_suffix + memory_suffix,
+                local_time=payload.local_time,
+                user_email=user_email,
+                user_prompt=payload.prompt,
+                ai_router=ai_router,
+            )
+
+        async def fallback_sse():
+            async def fallback_generator():
+                yield (
+                    f"I'm having trouble connecting to my AI providers right now. "
+                    f"Trying to reconnect... Please wait a moment! 🔄"
+                )
+            return stream_response(fallback_generator())
+
+        return await stability_engine.execute_with_stability(
+            operation=execute_ai_stream,
+            service_name="ai_router",
+            operation_name="chat_stream",
+            fallback=fallback_sse,
+        )
+
+    except ValueError as e:
+        logger.warning(f"AI provider configuration error: {e}")
+        raise HTTPException(
+            status_code=503,
+            detail="AI provider not configured",
+        )
+    except RuntimeError as e:
+        error_str = str(e).lower()
+
+        if "rate limit" in error_str:
+            logger.warning(f"Provider rate limited: {e}")
+            raise HTTPException(
+                status_code=429,
+                detail="I'm a bit busy — trying a different model for you...",
+            )
+        elif "key" in error_str or "unauthorized" in error_str:
+            logger.error(f"Provider authentication failed: {e}")
+            raise HTTPException(
+                status_code=503,
+                detail="I'm having trouble authenticating with the AI provider. Trying to reconnect...",
+            )
+        elif "unavailable" in error_str:
+            logger.warning(f"Provider unavailable: {e}")
+            raise HTTPException(
+                status_code=503,
+                detail="The AI provider is temporarily unavailable. Trying another provider...",
+            )
+        else:
+            logger.error(f"Provider error: {e}")
+            raise HTTPException(
+                status_code=503,
+                detail="I'm having trouble connecting right now. Retrying...",
+            )
+    except Exception as e:
+        logger.error(f"Unexpected error in chat endpoint: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail="Internal server error",
+        )
+
+
+# ===== QUOTA ENDPOINT =====
+
+@router.get("/quota", summary="Get user quota")
+async def get_quota(
+    auth_data: dict = Depends(get_current_user_secure),
+):
+    """
+    Get current user's quota information.
+    auth_data["user"] is a plain dict from verify_jwt_comprehensive.
+    """
+    user = auth_data.get("user", {})
+    if isinstance(user, dict):
+        daily_used  = user.get("daily_used", 0)
+        daily_quota = user.get("daily_quota", 100)
+        last_reset  = user.get("last_reset", None)
+    else:
+        # Fallback: ORM user object
+        daily_used  = getattr(user, "daily_used", 0)
+        daily_quota = getattr(user, "daily_quota", 100)
+        last_reset  = getattr(user, "last_reset", None)
+
+    reset_at = None
+    if last_reset is not None:
+        try:
+            reset_at = last_reset.isoformat()
+        except Exception:
+            reset_at = str(last_reset)
+
+    return {
+        "used":          daily_used,
+        "limit":         daily_quota,
+        "remaining":     max(0, daily_quota - daily_used),
+        "resets_at":     reset_at,
+        "reset_time_utc": "00:00 UTC",
+    }
+
+
+# ===== MODELS ENDPOINT =====
+
+@router.get("/models", summary="List available models")
+async def list_models(
+    auth_data: dict = Depends(get_current_user_secure),
+):
+    """
+    List available AI models for this user with real-time availability.
+    """
+    from core.model_provider import model_router
+
+    # Check provider health for each model type
+    fast_provider = await model_router.get_best_provider("fast")
+    balanced_provider = await model_router.get_best_provider("balanced")
+    smart_provider = await model_router.get_best_provider("smart")
+
+    fast_available = await model_router._check_provider_health(fast_provider)
+    balanced_available = await model_router._check_provider_health(balanced_provider)
+    smart_available = await model_router._check_provider_health(smart_provider)
+
+    return {
+        "models": [
+            {
+                "id": "fast",
+                "name": "Fast ⚡",
+                "description": "Quick responses, good for simple queries",
+                "available": fast_available,
+                "auto_provider": True,  # Indicates intelligent provider selection
+            },
+            {
+                "id": "balanced",
+                "name": "Balanced ⚖️",
+                "description": "Balance of speed and quality",
+                "available": balanced_available,
+                "auto_provider": True,
+            },
+            {
+                "id": "smart",
+                "name": "Smart 🧠",
+                "description": "Best quality, slower responses",
+                "available": smart_available,
+                "auto_provider": True,
+            },
+        ],
+        "features": {
+            "local_detection": True,
+            "auto_fallback": True,
+            "health_monitoring": True,
+            "agent_tools": getattr(settings, "ENABLE_AGENT_TOOLS", True),
+            "deep_research": getattr(settings, "ENABLE_DEEP_RESEARCH", True),
+        }
+    }
+
+
+@router.get("/stability", summary="Get system stability status")
+async def get_stability_status(
+    auth_data: dict = Depends(get_current_user_secure),
+):
+    """
+    Get system stability and health metrics.
+    """
+    health_status = stability_engine.get_health_status()
+    error_summary = stability_engine.get_error_summary()
+
+    return {
+        "version": APP_VERSION,
+        "health": health_status,
+        "errors": error_summary,
+        "stability_score": min(100, max(0, 100 - (health_status["error_rate"] * 10))),  # 0-100 score
+        "recommendations": _generate_stability_recommendations(health_status, error_summary)
+    }
+
+
+def _generate_stability_recommendations(health_status: Dict, error_summary: Dict) -> List[str]:
+    """Generate stability recommendations based on current status."""
+    recommendations = []
+
+    if health_status["error_rate"] > 2.0:
+        recommendations.append("High error rate detected - consider scaling resources")
+    elif health_status["error_rate"] > 1.0:
+        recommendations.append("Moderate error rate - monitor closely")
+
+    if health_status["recovery_success_rate"] < 0.7:
+        recommendations.append("Low recovery success rate - review error handling strategies")
+
+    open_breakers = [name for name, cb in health_status["circuit_breakers"].items() if cb["state"] == "open"]
+    if open_breakers:
+        recommendations.append(f"Services with open circuit breakers: {', '.join(open_breakers)}")
+
+    if error_summary["unresolved_errors"] > 50:
+        recommendations.append("High number of unresolved errors - investigate root causes")
+
+    if not recommendations:
+        recommendations.append("System is operating normally with good stability")
+
+    return recommendations
+
+
+# ===== AGENT STREAMING ENDPOINT =====
+
+@router.post(
+    "/agent/stream",
+    summary="Agentic streaming chat — tool events + AI response in one SSE stream",
+    description=(
+        "Premium endpoint. Runs the ReAct agent loop and streams structured events:\n"
+        "- thinking: agent reasoning step\n"
+        "- tool_start: tool about to execute\n"
+        "- tool_result: tool execution output\n"
+        "- text: AI response chunk\n"
+        "- done: stream complete\n"
+        "- error: something failed\n"
+    ),
+)
+async def agent_stream(
+    request: Request,
+    payload: ChatRequest,
+    background_tasks: BackgroundTasks,
+    auth_data: dict = Depends(get_current_user_secure),
+    db: AsyncSession = Depends(get_db),
+    ai_router: AIRouter = Depends(get_ai_router),
+):
+    """
+    Unified streaming endpoint for agentic mode.
+    Sends a single SSE stream with interleaved tool events and AI text.
+    """
+    request_id = getattr(request.state, "request_id", "unknown")
+    user = auth_data["user"]
+    user_id = auth_data["user_id"]
+    user_email = auth_data["email"]
+
+    if not user:
+        raise HTTPException(status_code=401, detail="User not authenticated")
+
+    # Security pipeline (same as /chat)
+    try:
+        security_result = validate_prompt_security(payload.prompt)
+        safe_prompt = security_result["sanitized"]
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=400, detail="Prompt validation failed")
+
+    filter_result = content_filter.filter_content(safe_prompt)
+    if filter_result.blocked:
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "Content policy violation", "reasons": filter_result.reasons[:2]},
+        )
+    safe_prompt = filter_result.sanitized_content or safe_prompt
+
+    # Model resolution
+    try:
+        provider, real_model = await resolve_model(payload.model)
+    except KeyError:
+        raise HTTPException(status_code=400, detail=f"Invalid model: {payload.model}")
+
+    # Quota check
+    user_dict = user if isinstance(user, dict) else {}
+    orm_user = user_dict.get("orm_user") if user_dict else None
+
+    if db is not None and orm_user is not None:
+        quota_granted = await atomic_increment_quota(orm_user.id, db)
+        if not quota_granted:
+            raise HTTPException(
+                status_code=429,
+                detail={"error": "Daily quota exceeded", "limit": orm_user.daily_quota},
+            )
+
+    # In-memory rate limit
+    if user_email and not user_email.endswith("@astramind.local"):
+        key = f"user:{user_email}"
+        limit = orm_user.daily_quota if orm_user else _DAILY_LIMIT_USER
+        allowed, _ = _check_and_increment(key, limit)
+        if not allowed:
+            raise HTTPException(status_code=429, detail="Daily rate limit exceeded.")
+    else:
+        ip = _get_client_ip(request)
+        allowed, _ = _check_and_increment(f"ip:{ip}", _DAILY_LIMIT_IP)
+        if not allowed:
+            raise HTTPException(status_code=429, detail="Daily limit reached. Sign in for more.")
+
+    # History
+    history_msgs = [
+        {"role": m.role, "content": m.content}
+        for m in (payload.messages or [])[-50:]
+        if m.role in ("user", "assistant") and m.content
+    ]
+
+    # Check for continuation
+    is_cont = is_continuation_prompt(payload.prompt)
+    last_assistant_idx = -1
+    if is_cont:
+        for i in range(len(history_msgs) - 1, -1, -1):
+            if history_msgs[i]["role"] == "assistant":
+                last_assistant_idx = i
+                break
+
+    if is_cont and last_assistant_idx != -1:
+        logger.info(f"Continuation detected in agent stream for user {user_email}. Modifying last assistant message.")
+        from services.conversation_store import clean_assistant_response, clean_last_assistant_message
+        original_content = history_msgs[last_assistant_idx]["content"]
+        cleaned_content = clean_assistant_response(original_content)
+        history_msgs[last_assistant_idx]["content"] = cleaned_content
+        
+        await clean_last_assistant_message(user_email)
+        
+        safe_prompt = (
+            "Please continue the response to the previous prompt from where it was interrupted. "
+            "Start directly with the continuation, without repeating the initial part."
+        )
+
+    # Load active workspace/session context from SQLite
+    memory_suffix = ""
+    if db is not None and user_email:
+        try:
+            from services.conversation_store import get_agent_memory
+            agent_memory = await get_agent_memory(db, user_email)
+            if agent_memory:
+                mem_parts = []
+                summary = agent_memory.get("session_summary")
+                if summary:
+                    mem_parts.append(f"Session Context Summary:\n{summary}")
+                cloned = agent_memory.get("cloned_repos")
+                if cloned:
+                    mem_parts.append(f"Cloned Repositories in workspace: {', '.join(cloned)}")
+                created = agent_memory.get("created_files")
+                if created:
+                    mem_parts.append(f"Created Files in workspace: {', '.join(created)}")
+                
+                if mem_parts:
+                    memory_suffix = "\n\n### 🧠 Active Workspace Context (SQLite Memory)\n" + "\n".join(mem_parts)
+        except Exception as e:
+            logger.error(f"Failed to load agent memory: {e}")
+
+    agent_system_suffix = build_agent_system_suffix(safe_prompt, payload.model) + memory_suffix
+
+    async def unified_agent_stream():
+        """
+        Yields SSE-formatted JSON events:
+        - Agent tool events (thinking / tool_start / tool_result)
+        - Final AI text chunks
+        - Done event
+        """
+        import json as _json
+
+        context_for_ai = ""
+        # Phase 1: Agent tool execution events
+        try:
+            from services.agent_orchestrator import run_agent_stream
+            async for event_str in run_agent_stream(
+                router=ai_router,
+                user_goal=safe_prompt,
+                history=history_msgs or None,
+                model_tier=payload.model,
+                preferred_provider=provider,
+                user_email=user_email,
+                request_id=request_id,
+            ):
+                try:
+                    event = _json.loads(event_str)
+                    if event.get("type") == "agent_done":
+                        context_for_ai = event.get("context", "")
+                    yield f"data: {event_str}\n\n"
+                except Exception:
+                    pass
+        except Exception as e:
+            logger.error(f"Agent stream failed: {e}", exc_info=True)
+            yield f"data: {_json.dumps({'type': 'error', 'message': f'Agent failed: {e}'})}\n\n"
+
+        # Phase 2: Final AI response
+        final_prompt = safe_prompt
+        if context_for_ai:
+            final_prompt = (
+                f"{safe_prompt}\n\n"
+                "### 🤖 AstraMind Agent Workspace\n"
+                "_Tool execution results (treat as ground truth):_\n\n"
+                f"{context_for_ai}\n\n"
+                "---\n"
+                "_Use the above context to give a comprehensive, accurate answer._"
+            )
+
+        final_response_text = ""
+        try:
+            with local_time_context(payload.local_time):
+                with system_suffix_stack(agent_system_suffix):
+                    async for chunk in ai_router.stream_with_fallback(
+                        prompt=final_prompt,
+                        model=payload.model,
+                        preferred_provider=provider,
+                        messages=history_msgs,
+                    ):
+                        if not chunk or not chunk.strip():
+                            continue
+                        # Parse and re-emit as text event
+                        try:
+                            parsed = _json.loads(chunk)
+                            content = None
+                            if isinstance(parsed, dict):
+                                if "choices" in parsed and parsed["choices"]:
+                                    content = parsed["choices"][0].get("delta", {}).get("content")
+                                elif "content" in parsed:
+                                    content = parsed["content"]
+                            if content:
+                                final_response_text += content
+                                yield f"data: {_json.dumps({'type': 'text', 'content': content})}\n\n"
+                        except (ValueError, KeyError):
+                            if chunk.strip():
+                                final_response_text += chunk
+                                yield f"data: {_json.dumps({'type': 'text', 'content': chunk})}\n\n"
+
+            # Update workspace state in SQLite
+            if db is not None and user_email:
+                try:
+                    from services.sandbox_workspace import get_workspace_root, workspace_key_from_principal
+                    from services.conversation_store import update_workspace_state
+                    ws_key = workspace_key_from_principal(user_email, request_id)
+                    ws_root = get_workspace_root(ws_key)
+                    await update_workspace_state(db, user_email, ws_root)
+                except Exception as state_err:
+                    logger.error(f"Failed to update workspace state in SQLite: {state_err}")
+
+            # Save turns to SQLite and summarize if needed
+            if db is not None and user_email and final_response_text:
+                try:
+                    from services.conversation_store import save_message, summarize_if_needed
+                    await save_message(db, user_email, "user", payload.prompt)
+                    await save_message(db, user_email, "assistant", final_response_text)
+                    await summarize_if_needed(db, user_email, ai_router)
+                except Exception as save_err:
+                    logger.error(f"Failed to save agent conversation to SQLite: {save_err}")
+
+        except Exception as e:
+            logger.error(f"AI response stream failed in agent endpoint: {e}", exc_info=True)
+            yield f"data: {_json.dumps({'type': 'error', 'message': 'AI response failed'})}\n\n"
+
+        # Done signal
+        yield f"data: {_json.dumps({'type': 'done'})}\n\n"
+
+    return StreamingResponse(
+        unified_agent_stream(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+            "Content-Type": "text/event-stream; charset=utf-8",
+        },
+    )
+
+
+# ===== TTS (TEXT-TO-SPEECH) ENDPOINT =====
+
+class TTSRequest(BaseModel):
+    text: str = Field(..., min_length=1, max_length=4000)
+    voice: str = Field(default="nova")  # nova=female, onyx=male, alloy, echo, fable, shimmer
+    speed: float = Field(default=1.0, ge=0.25, le=4.0)
+
+
+@router.post(
+    "/tts",
+    summary="Natural text-to-speech using premium AI voices",
+    description="Converts text to natural-sounding audio. Uses OpenAI TTS API (gpt-4o-mini-tts) via available provider keys.",
+)
+async def text_to_speech(
+    payload: TTSRequest,
+    request: Request,
+    auth_data: dict = Depends(get_current_user_secure),
+):
+    """
+    Stream MP3 audio from text using OpenAI-compatible TTS.
+    Supports voices: alloy, echo, fable, onyx, nova, shimmer.
+    nova = natural female, onyx = natural male.
+    """
+    import os
+    import httpx
+
+    # Sanitize text — strip markdown
+    import re
+    clean = re.sub(r"```[\s\S]*?```", "", payload.text)
+    clean = re.sub(r"`[^`]*`", "", clean)
+    clean = re.sub(r"\*{1,2}([^*]+)\*{1,2}", r"\1", clean)
+    clean = re.sub(r"#{1,6}\s?", "", clean)
+    clean = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", clean)
+    clean = re.sub(r"[_~>|]", "", clean)
+    clean = re.sub(r"\s+", " ", clean).strip()
+
+    if not clean:
+        raise HTTPException(status_code=400, detail="No speakable text after cleaning.")
+
+    # Limit to 4000 chars (TTS APIs have limits)
+    clean = clean[:4000]
+
+    valid_voices = {"alloy", "echo", "fable", "onyx", "nova", "shimmer"}
+    voice = payload.voice if payload.voice in valid_voices else "nova"
+
+    # ── Provider 1: OpenAI TTS (direct key) ─────────────────────────────────
+    openai_key = getattr(settings, "OPENAI_API_KEY", None) or os.environ.get("OPENAI_API_KEY", "")
+
+    if openai_key:
+        try:
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                resp = await client.post(
+                    "https://api.openai.com/v1/audio/speech",
+                    headers={"Authorization": f"Bearer {openai_key}", "Content-Type": "application/json"},
+                    json={"model": "tts-1", "input": clean, "voice": voice, "speed": payload.speed, "response_format": "mp3"},
+                )
+                if resp.status_code == 200:
+                    return Response(
+                        content=resp.content, media_type="audio/mpeg",
+                        headers={"Cache-Control": "no-cache", "X-TTS-Provider": "openai", "X-TTS-Voice": voice},
+                    )
+                logger.warning(f"OpenAI TTS {resp.status_code}: {resp.text[:150]}")
+        except Exception as e:
+            logger.warning(f"OpenAI TTS failed: {e}")
+
+    # ── Provider 2: ElevenLabs (free tier, no credit card needed) ───────────
+    el_key = getattr(settings, "ELEVENLABS_API_KEY", None) or os.environ.get("ELEVENLABS_API_KEY", "")
+
+    # Map OpenAI voice names → ElevenLabs voice IDs (free tier voices)
+    EL_VOICE_MAP = {
+        "nova":    "21m00Tcm4TlvDq8ikWAM",  # Rachel — natural female
+        "shimmer": "AZnzlk1XvdvUeBnXmlld",  # Domi — energetic female
+        "alloy":   "MF3mGyEYCl7XYWbV9V6O",  # Elli — young female
+        "onyx":    "TxGEqnHWrfWFTfGW9XjX",  # Josh — natural male
+        "echo":    "VR6AewLTigWG4xSOukaG",   # Arnold — deep male
+        "fable":   "pNInz6obpgDQGcFmaJgB",  # Adam — calm male
+    }
+    el_voice_id = EL_VOICE_MAP.get(voice, EL_VOICE_MAP["nova"])
+
+    if el_key:
+        try:
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                resp = await client.post(
+                    f"https://api.elevenlabs.io/v1/text-to-speech/{el_voice_id}",
+                    headers={"xi-api-key": el_key, "Content-Type": "application/json", "Accept": "audio/mpeg"},
+                    json={
+                        "text": clean,
+                        "model_id": "eleven_turbo_v2_5",
+                        "voice_settings": {"stability": 0.5, "similarity_boost": 0.8, "speed": payload.speed},
+                    },
+                )
+                if resp.status_code == 200:
+                    return Response(
+                        content=resp.content, media_type="audio/mpeg",
+                        headers={"Cache-Control": "no-cache", "X-TTS-Provider": "elevenlabs", "X-TTS-Voice": voice},
+                    )
+                logger.warning(f"ElevenLabs TTS {resp.status_code}: {resp.text[:150]}")
+        except Exception as e:
+            logger.warning(f"ElevenLabs TTS failed: {e}")
+
+    # ── Fallback: tell frontend to use Web Speech API ────────────────────────
+    return JSONResponse(
+        status_code=503,
+        content={
+            "error": "tts_unavailable",
+            "message": "Premium TTS not configured. Add OPENAI_API_KEY or ELEVENLABS_API_KEY env var.",
+            "fallback": "web_speech",
+            "voice_hint": voice,
+        },
+    )
