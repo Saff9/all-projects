@@ -1,0 +1,3 @@
+Place versioned revision scripts here. Generate with:
+
+alembic revision --autogenerate -m "initial schema"
