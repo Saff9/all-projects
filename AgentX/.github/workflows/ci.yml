@@ -1,0 +1,442 @@
+name: CI Pipeline
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: agentx_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          cd backend
+          pip install -r requirements.txt
+          pip install pytest pytest-asyncio httpx
+          pytest tests/ -v
+  test-mobile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+
+        with:
+          node-version: '20'
+      - run: |
+          cd mobile
+          npm install
+          npm run lint
+          npm test
+  build-docker:
+    needs: [test-backend]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: false
+          tags: agentx-backend:latest
+
+11.5 Security Best Practices Checklist
+Category
+Practice
+Status
+API Keys
+Stored in OS keystore, never in plaintext
+Required
+Communication
+All API calls over HTTPS/TLS 1.3
+Required
+Authentication
+JWT with short-lived access tokens + refresh
+tokens
+Required
+Code Execution
+Sandboxed with blocked dangerous patterns
+Required
+Permissions
+Explicit user consent for each capability
+Required
+Data at Rest
+AES-256 encryption for sensitive local data
+Required
+Audit Trail
+All skill executions and permission changes logged
+Required
+Rate Limiting
+Per-provider and per-user rate limits enforced
+Required
+Input Validation
+All user inputs and API responses validated with
+schemas
+Required
+Dependency
+Scanning
+Automated vulnerability scanning in CI/CD
+Recommended
+Secret Rotation
+Support for periodic API key rotation
+Recommended
+Network Isolation
+Backend services in private network, only API
+exposed
+Recommended
+12. Future Scalability Plan
+Phase 1 (Current): Foundation
+The current architecture establishes a solid, modular foundation with local-first agent
+execution, multi-provider LLM support, and a plugin-based skill system. The optional
+cloud backend provides server-side task execution and multi-user support.
+
+Phase 2: Horizontal Scaling
+Introduce Kubernetes-based orchestration for the backend, with auto-scaling worker
+pods for Celery task execution. Add a CDN layer for static assets and implement
+database read replicas for analytics queries. Target: support 10,000+ concurrent users.
+Phase 3: Edge Intelligence
+Deploy lightweight model inference on-device using ONNX Runtime or TensorFlow Lite
+for common tasks (intent classification, entity extraction). This reduces latency and API
+costs for simple interactions while reserving cloud LLMs for complex reasoning.
+Phase 4: Marketplace & Ecosystem
+Launch a public plugin marketplace where developers can publish and monetize
+custom skills. Implement a review and security audit pipeline for third-party plugins.
+Add skill composition — allowing skills to be chained into reusable templates.
+Phase 5: Enterprise Features
+Add SSO/SAML authentication, organization-level access controls, compliance logging
+(SOC 2, GDPR), custom model deployment (private LLM endpoints), and white-label
+support for enterprise customers.
+Performance Optimization Targets
+Metric
+Current Target
+Future Target
+Agent response time (simple)
+< 2s
+< 500ms (edge)
+Agent response time (complex)
+< 30s
+< 15s
+Concurrent tasks per user
+5
+20
+Plugin load time
+< 1s
+< 200ms
+Memory footprint (mobile)
+< 150MB
+< 80MB
+Offline capability
+Limited
+Full (with local models)
+
+# ==== Appended code from PDF reconstruction ====
+name: CI Pipeline
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: agentx_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          cd backend
+          pip install -r requirements.txt
+          pip install pytest pytest-asyncio httpx
+          pytest tests/ -v
+  test-mobile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+
+        with:
+          node-version: '20'
+      - run: |
+          cd mobile
+          npm install
+          npm run lint
+          npm test
+  build-docker:
+    needs: [test-backend]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: false
+          tags: agentx-backend:latest
+
+11.5 Security Best Practices Checklist
+Category
+Practice
+Status
+API Keys
+Stored in OS keystore, never in plaintext
+Required
+Communication
+All API calls over HTTPS/TLS 1.3
+Required
+Authentication
+JWT with short-lived access tokens + refresh
+tokens
+Required
+Code Execution
+Sandboxed with blocked dangerous patterns
+Required
+Permissions
+Explicit user consent for each capability
+Required
+Data at Rest
+AES-256 encryption for sensitive local data
+Required
+Audit Trail
+All skill executions and permission changes logged
+Required
+Rate Limiting
+Per-provider and per-user rate limits enforced
+Required
+Input Validation
+All user inputs and API responses validated with
+schemas
+Required
+Dependency
+Scanning
+Automated vulnerability scanning in CI/CD
+Recommended
+Secret Rotation
+Support for periodic API key rotation
+Recommended
+Network Isolation
+Backend services in private network, only API
+exposed
+Recommended
+12. Future Scalability Plan
+Phase 1 (Current): Foundation
+The current architecture establishes a solid, modular foundation with local-first agent
+execution, multi-provider LLM support, and a plugin-based skill system. The optional
+cloud backend provides server-side task execution and multi-user support.
+
+Phase 2: Horizontal Scaling
+Introduce Kubernetes-based orchestration for the backend, with auto-scaling worker
+pods for Celery task execution. Add a CDN layer for static assets and implement
+database read replicas for analytics queries. Target: support 10,000+ concurrent users.
+Phase 3: Edge Intelligence
+Deploy lightweight model inference on-device using ONNX Runtime or TensorFlow Lite
+for common tasks (intent classification, entity extraction). This reduces latency and API
+costs for simple interactions while reserving cloud LLMs for complex reasoning.
+Phase 4: Marketplace & Ecosystem
+Launch a public plugin marketplace where developers can publish and monetize
+custom skills. Implement a review and security audit pipeline for third-party plugins.
+Add skill composition — allowing skills to be chained into reusable templates.
+Phase 5: Enterprise Features
+Add SSO/SAML authentication, organization-level access controls, compliance logging
+(SOC 2, GDPR), custom model deployment (private LLM endpoints), and white-label
+support for enterprise customers.
+Performance Optimization Targets
+Metric
+Current Target
+Future Target
+Agent response time (simple)
+< 2s
+< 500ms (edge)
+Agent response time (complex)
+< 30s
+< 15s
+Concurrent tasks per user
+5
+20
+Plugin load time
+< 1s
+< 200ms
+Memory footprint (mobile)
+< 150MB
+< 80MB
+Offline capability
+Limited
+Full (with local models)
+
+# ==== Additional Section ====
+name: CI Pipeline
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: agentx_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          cd backend
+          pip install -r requirements.txt
+          pip install pytest pytest-asyncio httpx
+          pytest tests/ -v
+  test-mobile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+
+        with:
+          node-version: '20'
+      - run: |
+          cd mobile
+          npm install
+          npm run lint
+          npm test
+  build-docker:
+    needs: [test-backend]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: false
+          tags: agentx-backend:latest
+
+11.5 Security Best Practices Checklist
+Category
+Practice
+Status
+API Keys
+Stored in OS keystore, never in plaintext
+Required
+Communication
+All API calls over HTTPS/TLS 1.3
+Required
+Authentication
+JWT with short-lived access tokens + refresh
+tokens
+Required
+Code Execution
+Sandboxed with blocked dangerous patterns
+Required
+Permissions
+Explicit user consent for each capability
+Required
+Data at Rest
+AES-256 encryption for sensitive local data
+Required
+Audit Trail
+All skill executions and permission changes logged
+Required
+Rate Limiting
+Per-provider and per-user rate limits enforced
+Required
+Input Validation
+All user inputs and API responses validated with
+schemas
+Required
+Dependency
+Scanning
+Automated vulnerability scanning in CI/CD
+Recommended
+Secret Rotation
+Support for periodic API key rotation
+Recommended
+Network Isolation
+Backend services in private network, only API
+exposed
+Recommended
+12. Future Scalability Plan
+Phase 1 (Current): Foundation
+The current architecture establishes a solid, modular foundation with local-first agent
+execution, multi-provider LLM support, and a plugin-based skill system. The optional
+cloud backend provides server-side task execution and multi-user support.
+
+Phase 2: Horizontal Scaling
+Introduce Kubernetes-based orchestration for the backend, with auto-scaling worker
+pods for Celery task execution. Add a CDN layer for static assets and implement
+database read replicas for analytics queries. Target: support 10,000+ concurrent users.
+Phase 3: Edge Intelligence
+Deploy lightweight model inference on-device using ONNX Runtime or TensorFlow Lite
+for common tasks (intent classification, entity extraction). This reduces latency and API
+costs for simple interactions while reserving cloud LLMs for complex reasoning.
+Phase 4: Marketplace & Ecosystem
+Launch a public plugin marketplace where developers can publish and monetize
+custom skills. Implement a review and security audit pipeline for third-party plugins.
+Add skill composition — allowing skills to be chained into reusable templates.
+Phase 5: Enterprise Features
+Add SSO/SAML authentication, organization-level access controls, compliance logging
+(SOC 2, GDPR), custom model deployment (private LLM endpoints), and white-label
+support for enterprise customers.
+Performance Optimization Targets
+Metric
+Current Target
+Future Target
+Agent response time (simple)
+< 2s
+< 500ms (edge)
+Agent response time (complex)
+< 30s
+< 15s
+Concurrent tasks per user
+5
+20
+Plugin load time
+< 1s
+< 200ms
+Memory footprint (mobile)
+< 150MB
+< 80MB
+Offline capability
+Limited
+Full (with local models)
