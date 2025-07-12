@@ -1,0 +1,7 @@
+﻿-- Production seed file - No test data
+-- This file is kept empty for production environments
+-- Database schema is managed by migrations in supabase/migrations/
+--
+-- NOTE: Test/demo users should NOT be created in seed data
+-- Users are created through the proper authentication flow (email signup, OAuth, etc.)
+-- Database initialization should happen through migrations, not seed data
