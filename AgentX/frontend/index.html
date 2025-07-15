@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentX – Autonomous AI Agent</title>
+  <meta name="description" content="AgentX: OpenClaw-style autonomous AI agent with real tool use, streaming responses, and multi-session chat." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ── Auth Overlay ─────────────────────────────────────────────────── -->
+  <div id="auth-overlay" class="overlay active">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 8L20 20L8 32" stroke="url(#grad1)" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M32 8L20 20L32 32" stroke="url(#grad1)" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="20" cy="20" r="3" fill="url(#grad1)"/>
+            <defs>
+              <linearGradient id="grad1" x1="8" y1="8" x2="32" y2="32">
+                <stop offset="0%" stop-color="#7c3aed"/>
+                <stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="logo-text">AgentX</span>
+      </div>
+      <h1 class="auth-title">Welcome back</h1>
+      <p class="auth-sub">The most powerful autonomous agent, at your fingertips</p>
+
+      <div class="auth-tabs">
+        <button class="tab-btn active" data-tab="login">Sign In</button>
+        <button class="tab-btn" data-tab="register">Register</button>
+      </div>
+
+      <form id="auth-form">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="username" placeholder="your_username" autocomplete="username" required />
+        </div>
+        <div class="form-group" id="email-group" style="display:none">
+          <label>Email (optional)</label>
+          <input type="email" id="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required />
+        </div>
+        <div id="auth-error" class="error-msg" style="display:none"></div>
+        <button type="submit" class="btn-primary" id="auth-submit">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Main App ──────────────────────────────────────────────────────── -->
+  <div id="app" class="app hidden">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <svg viewBox="0 0 40 40" width="28" height="28" fill="none">
+            <path d="M8 8L20 20L8 32" stroke="url(#g2)" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M32 8L20 20L32 32" stroke="url(#g2)" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="20" cy="20" r="3" fill="url(#g2)"/>
+            <defs>
+              <linearGradient id="g2" x1="8" y1="8" x2="32" y2="32">
+                <stop offset="0%" stop-color="#7c3aed"/>
+                <stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span>AgentX</span>
+        </div>
+        <button class="icon-btn" id="new-chat-btn" title="New Chat">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="sidebar-tools">
+        <div class="tools-label">Active Tools</div>
+        <div class="tool-chips" id="tool-chips">
+          <span class="chip">🔍 web_search</span>
+          <span class="chip">💻 code_exec</span>
+          <span class="chip">🌐 http_request</span>
+          <span class="chip">📁 file_ops</span>
+          <span class="chip">🧮 calculator</span>
+          <span class="chip">🕐 datetime</span>
+          <span class="chip">🧠 memory</span>
+        </div>
+      </div>
+
+      <div class="sessions-label">Recent Chats</div>
+      <div class="sessions-list" id="sessions-list">
+        <div class="sessions-empty">No chats yet.<br/>Start a conversation!</div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="avatar" id="user-avatar">U</div>
+          <span id="username-display">User</span>
+        </div>
+        <button class="icon-btn" id="logout-btn" title="Logout">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Chat Area -->
+    <main class="chat-area">
+      <div class="chat-header">
+        <div id="chat-title" class="chat-title">New Chat</div>
+        <div class="provider-badge" id="provider-badge">
+          <span class="dot"></span>
+          <span id="provider-name">Connecting…</span>
+        </div>
+      </div>
+
+      <div class="messages" id="messages">
+        <div class="welcome-screen" id="welcome-screen">
+          <div class="welcome-logo">
+            <svg viewBox="0 0 80 80" width="64" height="64" fill="none">
+              <path d="M16 16L40 40L16 64" stroke="url(#gw)" stroke-width="7" stroke-linecap="round"/>
+              <path d="M64 16L40 40L64 64" stroke="url(#gw)" stroke-width="7" stroke-linecap="round"/>
+              <circle cx="40" cy="40" r="6" fill="url(#gw)"/>
+              <defs>
+                <linearGradient id="gw" x1="16" y1="16" x2="64" y2="64">
+                  <stop offset="0%" stop-color="#7c3aed"/>
+                  <stop offset="100%" stop-color="#06b6d4"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <h2>How can AgentX help you?</h2>
+          <p>I can search the web, execute code, read/write files, do math, and more.</p>
+          <div class="suggestions">
+            <button class="suggestion" data-msg="Search for the latest AI news and summarize it">🔍 Search AI news</button>
+            <button class="suggestion" data-msg="Write and run Python code to calculate the first 20 Fibonacci numbers">💻 Run Python code</button>
+            <button class="suggestion" data-msg="What is 15% of 3847 + sqrt(144)?">🧮 Math calculation</button>
+            <button class="suggestion" data-msg="What is the current time in Tokyo, New York, and London?">🕐 World clock</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="input-area">
+        <div class="input-wrapper">
+          <textarea
+            id="user-input"
+            placeholder="Message AgentX… (Shift+Enter for new line)"
+            rows="1"
+            maxlength="4000"
+          ></textarea>
+          <button class="send-btn" id="send-btn" disabled title="Send">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 19V5M5 12l7-7 7 7"/>
+            </svg>
+          </button>
+        </div>
+        <p class="input-hint">AgentX can make mistakes. Verify important info.</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
