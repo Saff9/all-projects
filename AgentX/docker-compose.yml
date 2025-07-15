@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  # ── AgentX API (all-in-one: SQLite, no external DBs needed) ─────────────
+  agentx:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: agentx_api
+    env_file:
+      - ./backend/.env
+    environment:
+      DB_PATH: /data/agentx.db
+      PORT: "8000"
+      WORKERS: "1"
+    ports:
+      - "8000:8000"
+    volumes:
+      - agentx_data:/data
+    restart: unless-stopped
+
+  # ── Frontend (static files served by nginx) ───────────────────────────────
+  frontend:
+    image: nginx:alpine
+    container_name: agentx_frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+volumes:
+  agentx_data:
