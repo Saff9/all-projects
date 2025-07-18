@@ -1,0 +1,13 @@
+﻿{
+  "name": "genzchat",
+  "version": "1.0.0",
+  "description": "ApexChat - A modern chat application",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install --prefix client && npm install --prefix api",
+    "build": "npm run build --prefix client"
+  },
+  "workspaces": {
+    "nohoist": ["**/react-scripts"]
+  }
+}
