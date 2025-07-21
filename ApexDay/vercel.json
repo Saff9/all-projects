@@ -1,0 +1,1 @@
+﻿{  "version": 2,  "buildCommand": "npm run build",  "devCommand": "npm run dev",  "installCommand": "npm install",  "framework": "nextjs",  "functions": {    "app/api/**/*.ts": {      "maxDuration": 30    }  },  "env": {    "NEXTAUTH_URL": "https://apex-day.vercel.app"  },  "crons": [    {      "path": "/api/cron/cleanup",      "schedule": "0 3 * * *"    }  ]}
