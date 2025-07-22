@@ -1,0 +1,151 @@
+/* --- Global Reset & Root Styles --- */
+:root {
+  --bg-color: #1e1e1e; /* Dark background */
+  --sidebar-bg: #252526;
+  --chat-bg: #1e1e1e;
+  --input-bg: #3c3c3c;
+  --user-msg-bg: #3a3f47;
+  --model-msg-bg: #2d2d2d;
+  --text-color: #e0e0e0;
+  --text-color-light: #b0b0b0;
+  --accent-color: #8a63d2; /* A nice purple accent */
+  --border-color: #444;
+  --font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root, .App {
+  height: 100%;
+  width: 100%;
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow: hidden;
+}
+
+/* --- Main Layout: ChatPage.jsx --- */
+.chat-page {
+  display: flex;
+  height: 100vh;
+}
+
+/* --- Sidebar: Sidebar.jsx --- */
+.sidebar {
+  width: 260px;
+  background-color: var(--sidebar-bg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border-color);
+}
+.sidebar-header {
+  font-size: 24px;
+  font-weight: 600;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 16px;
+}
+.new-chat-btn {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.new-chat-btn:hover {
+  background-color: #9a73e2;
+}
+
+/* --- Chat Area: ChatPage.jsx --- */
+.chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  padding-bottom: 100px; /* Space for the input */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* --- Messages: ChatMessage.jsx --- */
+.chat-message {
+  padding: 16px;
+  border-radius: 12px;
+  max-width: 80%;
+  line-height: 1.6;
+}
+.chat-message.user {
+  background-color: var(--user-msg-bg);
+  align-self: flex-end;
+}
+.chat-message.model {
+  background-color: var(--model-msg-bg);
+  align-self: flex-start;
+}
+.message-sender {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: var(--accent-color);
+}
+.message-sender.user {
+  color: #7faded;
+}
+
+/* --- Input Bar: ChatInput.jsx --- */
+.chat-input-container {
+  padding: 24px;
+  background-color: var(--chat-bg);
+  border-top: 1px solid var(--border-color);
+}
+.chat-input-form {
+  display: flex;
+  gap: 12px;
+}
+.chat-input {
+  flex: 1;
+  padding: 16px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  outline: none;
+}
+.chat-input:focus {
+  border-color: var(--accent-color);
+}
+.send-button {
+  padding: 0 20px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.send-button:hover {
+  background-color: #9a73e2;
+}
+.send-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
