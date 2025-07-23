@@ -1,0 +1,884 @@
+/* Mobile first base styles */
+/* Base font sizes and spacings for mobile */
+html {
+    font-size: 16px;
+}
+
+body {
+    padding-top: 4rem;
+}
+
+header {
+    padding: 1rem;
+}
+
+.container {
+    padding: 0 1rem;
+}
+
+/* Typography adjustments for mobile */
+.text-4xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+}
+
+.text-5xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+}
+
+.text-6xl {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+/* Grid adjustments for mobile */
+.grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* Flex direction adjustments for mobile */
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+/* Visibility adjustments for mobile */
+.md\:hidden {
+    display: none;
+}
+
+/* Spacing adjustments for mobile */
+.space-y-2 > * + * {
+    margin-top: 0.5rem;
+}
+
+.space-y-4 > * + * {
+    margin-top: 1rem;
+}
+
+.space-y-6 > * + * {
+    margin-top: 1.5rem;
+}
+
+.space-y-8 > * + * {
+    margin-top: 2rem;
+}
+
+.space-x-2 > * + * {
+    margin-left: 0.5rem;
+}
+
+.space-x-4 > * + * {
+    margin-left: 1rem;
+}
+
+.space-x-6 > * + * {
+    margin-left: 1.5rem;
+}
+
+.space-x-8 > * + * {
+    margin-left: 2rem;
+}
+
+/* Padding adjustments for mobile */
+.p-2 {
+    padding: 0.5rem;
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+.p-6 {
+    padding: 1.5rem;
+}
+
+.p-8 {
+    padding: 2rem;
+}
+
+/* Card and component adjustments for mobile */
+.card {
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+/* Form adjustments for mobile */
+input, textarea, select {
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+/* Button adjustments for mobile */
+button, .button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* Header adjustments for mobile */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 0.75rem 1rem;
+}
+
+.nav-toggle {
+    display: block;
+    font-size: 1.5rem;
+}
+
+.nav-menu {
+    display: none;
+    position: fixed;
+    top: 3.5rem;
+    left: 0;
+    right: 0;
+    background-color: white;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 40;
+}
+
+.nav-menu.active {
+    display: block;
+}
+
+.nav-menu a {
+    display: block;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Hero section adjustments for mobile */
+.hero {
+    padding: 4rem 1rem;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+.hero p {
+    font-size: 1rem;
+    margin: 1rem 0;
+}
+
+/* Post cards adjustments for mobile */
+.post-card {
+    margin-bottom: 1.5rem;
+}
+
+.post-image {
+    height: 12rem;
+}
+
+/* Sidebar adjustments for mobile */
+.sidebar {
+    display: none;
+}
+
+.sidebar.active {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80%;
+    height: 100%;
+    background-color: white;
+    padding: 1rem;
+    z-index: 60;
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 59;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* Footer adjustments for mobile */
+footer {
+    padding: 2rem 1rem;
+}
+
+.footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+/* Modal adjustments for mobile */
+.modal {
+    padding: 1rem;
+}
+
+.modal-content {
+    padding: 1.5rem;
+}
+
+/* Search and filter adjustments for mobile */
+.search-container {
+    padding: 0.5rem;
+}
+
+.filter-button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+/* Author bio adjustments for mobile */
+.author-bio {
+    text-align: center;
+}
+
+.author-image {
+    margin: 0 auto 1rem;
+}
+
+/* Comment section adjustments for mobile */
+.comment-form {
+    padding: 1rem;
+}
+
+.comment-input {
+    padding: 0.75rem;
+}
+
+/* Admin dashboard adjustments for mobile */
+.admin-sidebar {
+    display: none;
+    width: 80%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 60;
+}
+
+.admin-main {
+    margin-left: 0;
+    padding: 1rem;
+}
+
+.admin-sidebar.active {
+    display: block;
+}
+
+.admin-menu-toggle {
+    display: block;
+    margin-right: 1rem;
+}
+
+/* Media queries for tablets (768px and up) */
+@media (min-width: 768px) {
+    /* Reset mobile styles */
+    html {
+        font-size: 16px;
+    }
+    
+    body {
+        padding-top: 0;
+    }
+    
+    .container {
+        padding: 0 2rem;
+    }
+    
+    /* Typography adjustments for tablets */
+    .text-4xl {
+        font-size: 2.25rem;
+        line-height: 2.5rem;
+    }
+    
+    .text-5xl {
+        font-size: 3rem;
+        line-height: 1;
+    }
+    
+    .text-6xl {
+        font-size: 3.75rem;
+        line-height: 1;
+    }
+    
+    /* Layout adjustments for tablets */
+    .flex-md-row {
+        flex-direction: row;
+    }
+    
+    .grid-cols-md-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    
+    .grid-cols-md-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    
+    .grid-cols-md-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    
+    /* Visibility adjustments for tablets */
+    .md\:hidden {
+        display: none;
+    }
+    
+    .md\:block {
+        display: block;
+    }
+    
+    .md\:flex {
+        display: flex;
+    }
+    
+    .md\:inline-block {
+        display: inline-block;
+    }
+    
+    /* Navigation adjustments for tablets */
+    .nav-toggle {
+        display: none;
+    }
+    
+    .nav-menu {
+        display: flex;
+        position: static;
+        background-color: transparent;
+        padding: 0;
+        box-shadow: none;
+    }
+    
+    .nav-menu a {
+        display: inline-block;
+        padding: 0 1rem;
+        border-bottom: none;
+    }
+    
+    /* Header adjustments for tablets */
+    header {
+        position: static;
+        padding: 1rem 2rem;
+    }
+    
+    /* Hero section adjustments for tablets */
+    .hero {
+        padding: 6rem 2rem;
+        text-align: left;
+    }
+    
+    /* Post cards adjustments for tablets */
+    .post-card {
+        display: flex;
+        margin-bottom: 2rem;
+    }
+    
+    .post-image {
+        height: 16rem;
+        width: 40%;
+    }
+    
+    .post-content {
+        width: 60%;
+        padding: 1.5rem;
+    }
+    
+    /* Sidebar adjustments for tablets */
+    .sidebar {
+        display: block;
+        position: static;
+        width: 100%;
+        height: auto;
+        background-color: transparent;
+        padding: 0;
+        box-shadow: none;
+    }
+    
+    .sidebar-overlay {
+        display: none;
+    }
+    
+    /* Main content and sidebar layout */
+    .main-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+    }
+    
+    /* Footer adjustments for tablets */
+    footer {
+        padding: 3rem 2rem;
+    }
+    
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem;
+    }
+    
+    /* Admin dashboard adjustments for tablets */
+    .admin-sidebar {
+        display: block;
+        width: 220px;
+        position: fixed;
+    }
+    
+    .admin-main {
+        margin-left: 220px;
+        padding: 1rem 2rem;
+    }
+    
+    .admin-menu-toggle {
+        display: none;
+    }
+    
+    /* Form and button adjustments for tablets */
+    input, textarea, select {
+        padding: 0.75rem 1rem;
+    }
+    
+    button, .button {
+        padding: 0.75rem 1.75rem;
+    }
+    
+    /* Card adjustments for tablets */
+    .card {
+        border-radius: 1rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Media queries for desktops (1024px and up) */
+@media (min-width: 1024px) {
+    /* Container adjustments for desktops */
+    .container {
+        max-width: 1024px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+    
+    /* Typography adjustments for desktops */
+    .text-4xl {
+        font-size: 2.5rem;
+        line-height: 3rem;
+    }
+    
+    .text-5xl {
+        font-size: 3.5rem;
+        line-height: 1;
+    }
+    
+    .text-6xl {
+        font-size: 4.5rem;
+        line-height: 1;
+    }
+    
+    .text-7xl {
+        font-size: 6rem;
+        line-height: 1;
+    }
+    
+    /* Layout adjustments for desktops */
+    .flex-lg-row {
+        flex-direction: row;
+    }
+    
+    .grid-cols-lg-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    
+    .grid-cols-lg-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    
+    .grid-cols-lg-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    
+    .grid-cols-lg-5 {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    
+    /* Navigation adjustments for desktops */
+    .nav-menu a {
+        padding: 0 1.5rem;
+    }
+    
+    /* Header adjustments for desktops */
+    header {
+        padding: 1.25rem 2rem;
+    }
+    
+    /* Hero section adjustments for desktops */
+    .hero {
+        padding: 8rem 2rem;
+    }
+    
+    .hero-content {
+        max-width: 600px;
+        padding: 0;
+    }
+    
+    /* Post cards adjustments for desktops */
+    .post-card {
+        margin-bottom: 2.5rem;
+    }
+    
+    .post-image {
+        height: 18rem;
+        width: 45%;
+    }
+    
+    .post-content {
+        width: 55%;
+        padding: 2rem;
+    }
+    
+    /* Main content and sidebar layout */
+    .main-content {
+        grid-template-columns: 3fr 1fr;
+        gap: 3rem;
+    }
+    
+    /* Author bio adjustments for desktops */
+    .author-bio {
+        display: flex;
+        align-items: center;
+        text-align: left;
+    }
+    
+    .author-image {
+        margin: 0 2rem 0 0;
+    }
+    
+    /* Comment section adjustments for desktops */
+    .comment-thread {
+        display: grid;
+        grid-template-columns: 64px 1fr;
+        gap: 1rem;
+    }
+    
+    /* Admin dashboard adjustments for desktops */
+    .admin-sidebar {
+        width: 260px;
+    }
+    
+    .admin-main {
+        margin-left: 260px;
+        padding: 1.5rem 3rem;
+    }
+    
+    /* Form and button adjustments for desktops */
+    input, textarea, select {
+        padding: 1rem 1.25rem;
+    }
+    
+    button, .button {
+        padding: 1rem 2.5rem;
+        font-size: 1.125rem;
+    }
+    
+    /* Card adjustments for desktops */
+    .card {
+        border-radius: 1.25rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Footer adjustments for desktops */
+    footer {
+        padding: 4rem 2rem;
+    }
+    
+    .footer-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4rem;
+    }
+}
+
+/* Media queries for large desktops (1280px and up) */
+@media (min-width: 1280px) {
+    /* Container adjustments for large desktops */
+    .container {
+        max-width: 1280px;
+    }
+    
+    /* Hero section adjustments for large desktops */
+    .hero {
+        padding: 10rem 2rem;
+    }
+    
+    .hero-content {
+        max-width: 700px;
+    }
+    
+    /* Main content and sidebar layout */
+    .main-content {
+        grid-template-columns: 4fr 1fr;
+        gap: 4rem;
+    }
+    
+    /* Admin dashboard adjustments for large desktops */
+    .admin-sidebar {
+        width: 280px;
+    }
+    
+    .admin-main {
+        margin-left: 280px;
+        padding: 2rem 4rem;
+    }
+    
+    /* Card adjustments for large desktops */
+    .featured-card {
+        grid-column: span 2;
+    }
+    
+    /* Footer adjustments for large desktops */
+    footer {
+        padding: 5rem 2rem;
+    }
+}
+
+/* Media queries for extra large desktops (1536px and up) */
+@media (min-width: 1536px) {
+    /* Container adjustments for extra large desktops */
+    .container {
+        max-width: 1536px;
+    }
+    
+    /* Hero section adjustments for extra large desktops */
+    .hero {
+        padding: 12rem 2rem;
+    }
+    
+    .hero-content {
+        max-width: 800px;
+    }
+    
+    /* Admin dashboard adjustments for extra large desktops */
+    .admin-sidebar {
+        width: 300px;
+    }
+    
+    .admin-main {
+        margin-left: 300px;
+        padding: 2.5rem 5rem;
+    }
+    
+    /* Footer adjustments for extra large desktops */
+    footer {
+        padding: 6rem 2rem;
+    }
+    
+    .footer-grid {
+        gap: 6rem;
+    }
+}
+
+/* Print media queries */
+@media print {
+    /* Hide non-essential elements for printing */
+    header, footer, .sidebar, .nav-menu, .theme-toggle, .social-links, .ads {
+        display: none;
+    }
+    
+    /* Adjust layout for printing */
+    body {
+        padding: 0;
+        margin: 0;
+        background-color: white;
+        color: black;
+    }
+    
+    .container {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    /* Adjust typography for printing */
+    h1, h2, h3, h4, h5, h6 {
+        color: black;
+        page-break-after: avoid;
+    }
+    
+    p, li, blockquote {
+        color: #333;
+    }
+    
+    /* Adjust images for printing */
+    img {
+        max-width: 100%;
+        height: auto;
+        page-break-inside: avoid;
+    }
+    
+    /* Add page breaks */
+    .page-break {
+        page-break-before: always;
+    }
+    
+    /* Hide interactive elements */
+    .button, button, a {
+        color: #333;
+        text-decoration: none;
+    }
+    
+    /* Add print-friendly styles */
+    .print-only {
+        display: block;
+    }
+    
+    .screen-only {
+        display: none;
+    }
+    
+    /* Add page numbers */
+    @page {
+        margin: 1in;
+    }
+    
+    .page-number:after {
+        content: counter(page);
+    }
+}
+
+/* Retina display optimizations */
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (min--moz-device-pixel-ratio: 2),
+only screen and (-o-min-device-pixel-ratio: 2/1),
+only screen and (min-device-pixel-ratio: 2),
+only screen and (min-resolution: 192dpi),
+only screen and (min-resolution: 2dppx) {
+    /* Optimize images for retina displays */
+    img {
+        image-rendering: -webkit-optimize-contrast;
+    }
+    
+    /* Optimize icons for retina displays */
+    .icon {
+        background-size: contain;
+    }
+    
+    /* Optimize text rendering for retina displays */
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* Orientation-specific styles */
+@media (orientation: portrait) {
+    /* Adjustments for portrait orientation */
+    .hero {
+        padding: 6rem 1rem;
+    }
+    
+    .post-card {
+        flex-direction: column;
+    }
+    
+    .post-image {
+        width: 100%;
+        height: 16rem;
+    }
+    
+    .post-content {
+        width: 100%;
+        padding: 1.5rem;
+    }
+}
+
+@media (orientation: landscape) {
+    /* Adjustments for landscape orientation */
+    .hero {
+        padding: 8rem 2rem;
+    }
+    
+    .post-card {
+        flex-direction: row;
+    }
+    
+    .post-image {
+        width: 40%;
+        height: 18rem;
+    }
+    
+    .post-content {
+        width: 60%;
+        padding: 2rem;
+    }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    /* Disable animations and transitions */
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    /* Keep essential transitions */
+    .button, a, input, textarea {
+        transition: background-color 0.3s ease, color 0.3s ease !important;
+    }
+}
+
+/* High contrast mode for accessibility */
+@media (prefers-contrast: high) {
+    /* Enhance contrast for better readability */
+    body {
+        background-color: white;
+        color: black;
+    }
+    
+    a {
+        color: #0000ee;
+    }
+    
+    .button {
+        background-color: black;
+        color: white;
+        border: 2px solid black;
+    }
+    
+    .card {
+        border: 2px solid black;
+        box-shadow: none;
+    }
+    
+    .category-tag {
+        border: 2px solid black;
+    }
+}
