@@ -1,0 +1,435 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+dist/
+build/
+.bundle/
+.pnp
+.pnp.js
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+*.komodoworkspace
+*.code-workspace
+*.project
+*.tmproj
+*.tags
+*.tags_sorted_by_file
+*.vs/
+*.xcodeproj/
+*.xcworkspace/
+*.idea/
+*.sass-cache/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output/
+
+# Dependency directories
+bower_components/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next/
+
+# Nuxt.js build / generate output
+.nuxt/
+dist/
+
+# Gatsby files
+.cache/
+public/
+
+# Comment out the following line if you want to check in your
+# Firebase config files
+firebase-config.js
+firebase.*.json
+
+# Cypress files
+cypress/screenshots/
+cypress/videos/
+
+# API keys and credentials
+secrets.json
+*.pem
+*.key
+*.p12
+*.pfx
+*.cert
+*.crt
+*.cer
+*.der
+*.csr
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+*.mdb
+*.accdb
+*.sdf
+*.myd
+*.myi
+*.frm
+*.ibd
+*.ndb
+*.opt
+*.par
+*.ini
+*.cfg
+*.conf
+*.toml
+*.yaml
+*.yml
+
+# Docker
+docker-compose.override.yml
+.dockerenv
+.dockerignore
+
+# Backup files
+*~
+*.bak
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Cache files
+.cache/
+.cache-loader/
+.cache/
+.npm/
+.yarn/
+.bower/
+.gradle/
+.mvn/
+.sbt/
+.cargo/
+.composer/
+.pip/
+.go/
+.rust/
+.dart/
+flutter/.packages
+flutter/.pub-cache/
+flutter/.dart_tool/
+flutter/build/
+flutter/.metadata
+
+# Environment specific files
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+.env.test
+.env.testing
+.env.development.local
+.env.production.local
+.env.staging.local
+.env.test.local
+.env.testing.local
+
+# Firebase specific files
+.firebase/
+firestore-debug.log
+database-debug.log
+ui-debug.log
+.emulators/
+
+# Firebase emulator data
+firebase-export/
+firebase-export-metadata.json
+
+# Local Firebase emulators port data
+.emulators/**/*
+
+# Firebase functions
+functions/node_modules/
+functions/.firebase/
+functions/lib/
+functions/npm-debug.log*
+functions/yarn-debug.log*
+functions/yarn-error.log*
+functions/.git
+functions/.env
+functions/.env.local
+functions/.env.development.local
+functions/.env.production.local
+functions/.env.test.local
+functions/.env.staging.local
+functions/.env.testing.local
+
+# Vercel
+.vercel/
+
+# Netlify
+.netlify/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Coverage reports
+coverage/
+.nyc_output/
+
+# Dependency vulnerability reports
+.vulnerability/
+.vulnerability.json
+
+# Security reports
+security-report.json
+security-audit.json
+
+# Profiling files
+.cpuprofile
+.heapdump
+
+# Visual Studio Code
+.vscode/
+.history/
+.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+*.xcuserdata/
+*.xcassets/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Android
+android/app/build/
+android/app/src/main/assets/
+android/app/src/main/jniLibs/
+android/app/src/main/res/raw/
+android/app/src/main/res/mipmap-*/
+android/app/src/main/res/drawable-*/
+android/app/src/main/res/values/google-services.json
+android/app/google-services.json
+android/gradle.properties
+android/gradlew
+android/gradlew.bat
+android/local.properties
+android/.gradle/
+
+# iOS
+ios/Pods/
+ios/Podfile.lock
+ios/build/
+ios/Pods.xcodeproj/project.xcworkspace/xcuserdata/
+ios/Pods.xcodeproj/xcuserdata/
+ios/.xcode.env.local
+ios/.xcode.env
+ios/Pods-acknowledgements.markdown
+ios/Pods-acknowledgements.plist
+ios/Pods-resources.sh
+ios/Pods-*.xcconfig
+ios/Pods/Pods.xcodeproj/project.xcworkspace/xcuserdata/
+ios/Pods/Pods.xcodeproj/xcuserdata/
+ios/Pods/Target Support Files/
+ios/Flutter/App.framework/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Runner.xcworkspace/
+ios/Runner.xcodeproj/project.xcworkspace/xcuserdata/
+ios/Runner.xcodeproj/xcuserdata/
+ios/Runner/GeneratedPluginRegistrant.*
+ios/Runner/Info.plist
+ios/Podfile
+
+# Flutter
+flutter/.packages
+flutter/.pub-cache/
+flutter/.dart_tool/
+flutter/build/
+flutter/.metadata
+flutter/.flutter-plugins
+flutter/.flutter-plugins-dependencies
+flutter/pubspec.lock
+flutter/packages/flutter_tools/.packages
+flutter/packages/flutter_tools/test/data/dart_dependencies/
+flutter/packages/flutter_tools/test/data/asset_test/
+flutter/packages/flutter_tools/test/data/basic/
+flutter/packages/flutter_tools/test/data/build_test/
+flutter/packages/flutter_tools/test/data/complex/
+flutter/packages/flutter_tools/test/data/create_test/
+flutter/packages/flutter_tools/test/data/devfs_sync/
+flutter/packages/flutter_tools/test/data/drive_test/
+flutter/packages/flutter_tools/test/data/flutter_create/
+flutter/packages/flutter_tools/test/data/flutter_test/
+flutter/packages/flutter_tools/test/data/gradle/
+flutter/packages/flutter_tools/test/data/integration/
+flutter/packages/flutter_tools/test/data/integration_test/
+flutter/packages/flutter_tools/test/data/international/
+flutter/packages/flutter_tools/test/data/l10n/
+flutter/packages/flutter_tools/test/data/linux/
+flutter/packages/flutter_tools/test/data/module/
+flutter/packages/flutter_tools/test/data/multiple/
+flutter/packages/flutter_tools/test/data/profile/
+flutter/packages/flutter_tools/test/data/roll/
+flutter/packages/flutter_tools/test/data/test/
+flutter/packages/flutter_tools/test/data/upgrade/
+flutter/packages/flutter_tools/test/data/version/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+$RECYCLE.BIN/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/*
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+
+# Custom ignores for this project
+config.js
+secret.js
+secrets.json
+firebase.js
+firebase-config.js
+settings.json
+config.json
+credentials.json
+*.pem
+*.key
+*.cer
+*.crt
+*.p12
+*.pfx
+*.der
+*.csr
+*.pub
+*.private
+*.jks
+*.keystore
+*.p8
+*.p12
+*.p7b
+*.p7s
+*.crl
+*.srl
+*.cert
+*.certificate
+*.pem
+*.key
+*.pub
+*.private
+*.jwk
+*.pem
+*.crt
+*.cer
+*.der
+*.p12
+*.pfx
+*.p7b
+*.p7s
+*.crl
+*.srl
+*.cert
+*.certificate
+*.pem
+*.key
+*.pub
+*.private
+*.jwk
