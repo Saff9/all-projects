@@ -1,0 +1,822 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin dashboard for ApexSmart community platform. Manage posts, users, analytics, and site settings.">
+    <title>Admin Dashboard | ApexSmart</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/images/logo.svg" type="image/x-icon">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MVRF3WRHPM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MVRF3WRHPM');
+    </script>
+    
+    <style>
+        .admin-sidebar {
+            transition: all 0.3s ease;
+        }
+        .admin-main {
+            transition: all 0.3s ease;
+        }
+        .sidebar-expanded {
+            width: 280px;
+        }
+        .sidebar-collapsed {
+            width: 80px;
+        }
+        .main-expanded {
+            margin-left: 280px;
+        }
+        .main-collapsed {
+            margin-left: 80px;
+        }
+        .submenu {
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .submenu.show {
+            max-height: 500px;
+        }
+        .submenu.hide {
+            max-height: 0;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle" class="fixed bottom-4 right-4 z-50 p-3 rounded-full bg-indigo-600 text-white shadow-lg hover:bg-indigo-700 transition-colors">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Admin Sidebar -->
+    <div class="admin-sidebar fixed left-0 top-0 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-40 sidebar-expanded" id="admin-sidebar">
+        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-2 shadow-md">
+                        <i class="fas fa-brain text-xl"></i>
+                    </div>
+                    <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent transition-opacity duration-300">ApexSmart</span>
+                </a>
+                <button id="sidebar-toggle" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <div class="flex items-center space-x-3 mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold">
+                    OA
+                </div>
+                <div class="transition-opacity duration-300">
+                    <div class="font-bold text-gray-900 dark:text-white">Saffan</div>
+                    <div class="text-sm text-indigo-600 dark:text-indigo-400">Administrator</div>
+                </div>
+            </div>
+            
+            <ul class="space-y-1">
+                <!-- Dashboard -->
+                <li>
+                    <a href="#" class="flex items-center w-full p-3 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 font-medium transition-colors">
+                        <i class="fas fa-home text-xl"></i>
+                        <span class="ml-3 transition-opacity duration-300">Dashboard</span>
+                    </a>
+                </li>
+                
+                <!-- Content Management -->
+                <li class="relative">
+                    <button class="flex items-center justify-between w-full p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" id="content-btn">
+                        <div class="flex items-center">
+                            <i class="fas fa-pen-nib text-xl"></i>
+                            <span class="ml-3 transition-opacity duration-300">Content</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                    </button>
+                    <ul class="submenu hide pl-7 mt-1 space-y-1">
+                        <li>
+                            <a href="#" class="block p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <span class="transition-opacity duration-300">All Posts</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <span class="transition-opacity duration-300">Create Post</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <span class="transition-opacity duration-300">Categories</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <span class="transition-opacity duration-300">Comments</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                
+                <!-- User Management -->
+                <li class="relative">
+                    <button class="flex items-center justify-between w-full p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" id="users-btn">
+                        <div class="flex items-center">
+                            <i class="fas fa-users text-xl"></i>
+                            <span class="ml-3 transition-opacity duration-300">Users</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                    </button>
+                    <ul class="submenu hide pl-7 mt-1 space-y-1">
+                        <li>
+                            <a href="#" class="block p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <span class="transition-opacity duration-300">All Users</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <span class="transition-opacity duration-300">Roles & Permissions</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <span class="transition-opacity duration-300">Activity Logs</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                
+                <!-- Analytics -->
+                <li>
+                    <a href="#" class="flex items-center w-full p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-chart-line text-xl"></i>
+                        <span class="ml-3 transition-opacity duration-300">Analytics</span>
+                    </a>
+                </li>
+                
+                <!-- Moderation -->
+                <li>
+                    <a href="#" class="flex items-center w-full p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-gavel text-xl"></i>
+                        <span class="ml-3 transition-opacity duration-300">Moderation</span>
+                        <span class="ml-auto px-2 py-0.5 bg-red-500 text-white text-xs rounded-full transition-opacity duration-300">8</span>
+                    </a>
+                </li>
+                
+                <!-- Media Library -->
+                <li>
+                    <a href="#" class="flex items-center w-full p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-images text-xl"></i>
+                        <span class="ml-3 transition-opacity duration-300">Media</span>
+                    </a>
+                </li>
+                
+                <!-- Settings -->
+                <li class="relative">
+                    <button class="flex items-center justify-between w-full p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" id="settings-btn">
+                        <div class="flex items-center">
+                            <i class="fas fa-cog text-xl"></i>
+                            <span class="ml-3 transition-opacity duration-300">Settings</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                    </button>
+                    <ul class="submenu hide pl-7 mt-1 space-y-1">
+                        <li>
+                            <a href="#" class="block p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <span class="transition-opacity duration-300">General</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <span class="transition-opacity duration-300">SEO</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <span class="transition-opacity duration-300">Notifications</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <span class="transition-opacity duration-300">Security</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 w-full p-4 border-t border-gray-200 dark:border-gray-700">
+            <a href="#" class="flex items-center p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors w-full">
+                <i class="fas fa-question-circle text-xl"></i>
+                <span class="ml-3 transition-opacity duration-300">Help & Support</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Admin Main Content -->
+    <div class="admin-main ml-64 min-h-screen" id="admin-main">
+        <!-- Admin Header -->
+        <header class="sticky top-0 z-30 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex-1">
+                    <div class="relative max-w-md">
+                        <input type="text" placeholder="Search dashboard..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="relative p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute top-1 right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </button>
+                    
+                    <button class="relative p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                        <i class="fas fa-envelope text-xl"></i>
+                        <span class="absolute top-1 right-1 bg-blue-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">5</span>
+                    </button>
+                    
+                    <div class="hidden md:block">
+                        <button class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-medium hover:opacity-90 transition-opacity">
+                            <i class="fas fa-plus mr-2"></i> New Post
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="p-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+                    <p class="text-gray-600 dark:text-gray-300 mt-1">Welcome back, Saffan! Here's what's happening in your community.</p>
+                </div>
+                <div class="flex space-x-2 mt-4 md:mt-0">
+                    <button class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                        <i class="fas fa-sync-alt mr-2"></i> Refresh
+                    </button>
+                    <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                        <i class="fas fa-cog mr-2"></i> Settings
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Total Posts -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Total Posts</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">427</p>
+                            <p class="text-green-500 text-sm mt-1 flex items-center">
+                                <i class="fas fa-arrow-up mr-1"></i> 12% from last month
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+                            <i class="fas fa-pen text-indigo-600 dark:text-indigo-400 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Active Users -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Active Users</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">1,842</p>
+                            <p class="text-green-500 text-sm mt-1 flex items-center">
+                                <i class="fas fa-arrow-up mr-1"></i> 8.5% from last month
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
+                            <i class="fas fa-users text-blue-600 dark:text-blue-400 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Engagement Rate -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Engagement Rate</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">76%</p>
+                            <p class="text-green-500 text-sm mt-1 flex items-center">
+                                <i class="fas fa-arrow-up mr-1"></i> 5.2% from last month
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
+                            <i class="fas fa-heart text-green-600 dark:text-green-400 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- New Comments -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">New Comments</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white mt-1">158</p>
+                            <p class="text-red-500 text-sm mt-1 flex items-center">
+                                <i class="fas fa-arrow-down mr-1"></i> 3% from last month
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center">
+                            <i class="fas fa-comment text-purple-600 dark:text-purple-400 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Traffic Analytics -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Traffic Analytics</h2>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md text-sm">Week</button>
+                            <button class="px-3 py-1 bg-indigo-600 text-white rounded-md text-sm">Month</button>
+                            <button class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md text-sm">Year</button>
+                        </div>
+                    </div>
+                    
+                    <div class="h-80">
+                        <canvas id="trafficChart"></canvas>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4 mt-6">
+                        <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Avg. Session</p>
+                            <p class="text-lg font-bold text-gray-900 dark:text-white mt-1">3m 42s</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Bounce Rate</p>
+                            <p class="text-lg font-bold text-gray-900 dark:text-white mt-1">32%</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Pages/Session</p>
+                            <p class="text-lg font-bold text-gray-900 dark:text-white mt-1">2.8</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Content Performance -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Content Performance</h2>
+                        <select class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                            <option>Last 90 days</option>
+                        </select>
+                    </div>
+                    
+                    <div class="h-80">
+                        <canvas id="contentChart"></canvas>
+                    </div>
+                    
+                    <div class="mt-6 space-y-4">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-indigo-500 mr-3"></div>
+                            <div class="flex-1">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-700 dark:text-gray-300">Digital Minimalism</span>
+                                    <span class="font-medium text-gray-900 dark:text-white">2.4K views</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 mt-1">
+                                    <div class="bg-indigo-500 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-blue-500 mr-3"></div>
+                            <div class="flex-1">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-700 dark:text-gray-300">Redefining Success</span>
+                                    <span class="font-medium text-gray-900 dark:text-white">1.8K views</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 mt-1">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 72%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-green-500 mr-3"></div>
+                            <div class="flex-1">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-700 dark:text-gray-300">Mental Wellness</span>
+                                    <span class="font-medium text-gray-900 dark:text-white">1.5K views</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 mt-1">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity & Moderation -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Recent Activity -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Recent Activity</h2>
+                        <a href="#" class="text-indigo-600 dark:text-indigo-400 text-sm font-medium hover:text-indigo-800 dark:hover:text-indigo-300">View All</a>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- Activity 1 -->
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-plus text-indigo-600 dark:text-indigo-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-gray-900 dark:text-white"><span class="font-medium">Taylor Rodriguez</span> published a new post: <span class="font-medium text-indigo-600 dark:text-indigo-400">"Digital Minimalism: Finding Balance in a Connected World"</span></p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Today at 2:34 PM</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Activity 2 -->
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-heart text-green-600 dark:text-green-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-gray-900 dark:text-white"><span class="font-medium">Alex Chen</span> liked 8 posts and commented on 3 posts</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Today at 1:15 PM</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Activity 3 -->
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-user-plus text-purple-600 dark:text-purple-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-gray-900 dark:text-white"><span class="font-medium">New user</span> <span class="font-medium text-indigo-600 dark:text-indigo-400">samantha_creative</span> joined the community</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Today at 11:42 AM</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Activity 4 -->
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/50 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-flag text-yellow-600 dark:text-yellow-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-gray-900 dark:text-white"><span class="font-medium">3 comments</span> were flagged for moderation</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Today at 10:08 AM</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Activity 5 -->
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-image text-blue-600 dark:text-blue-400"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-gray-900 dark:text-white"><span class="font-medium">Jordan Smith</span> updated their profile picture and cover photo</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Yesterday at 4:27 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Moderation Queue -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Moderation Queue</h2>
+                        <span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-full text-sm font-medium">8 pending</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- Flagged Post 1 -->
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-exclamation-triangle text-red-600 dark:text-red-400 text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-900 dark:text-white font-medium">"Why Society is Broken"</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-1">
+                                            We live in a world where values don't matter anymore. Everyone is just looking out for themselves and...
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-800/50 transition-colors">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/50 transition-colors">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-3 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                                <div class="flex items-center space-x-3">
+                                    <span>Flagged by 3 users</span>
+                                    <span>•</span>
+                                    <span>2 hours ago</span>
+                                </div>
+                                <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300">View Details</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Flagged Comment 1 -->
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-comment text-red-600 dark:text-red-400 text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-900 dark:text-white font-medium">Comment on "Redefining Success"</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-1">
+                                            You're all just privileged millennials who don't understand real struggle. This post is complete nonsense and...
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-800/50 transition-colors">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/50 transition-colors">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-3 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                                <div class="flex items-center space-x-3">
+                                    <span>Flagged by 5 users</span>
+                                    <span>•</span>
+                                    <span>4 hours ago</span>
+                                </div>
+                                <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300">View Details</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Flagged Post 2 -->
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-image text-red-600 dark:text-red-400 text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-900 dark:text-white font-medium">"Controversial Art Project"</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-1">
+                                            This artwork challenges traditional norms around gender and sexuality through provocative imagery that some might find...
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-800/50 transition-colors">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/50 transition-colors">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-3 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                                <div class="flex items-center space-x-3">
+                                    <span>Flagged by 2 users</span>
+                                    <span>•</span>
+                                    <span>6 hours ago</span>
+                                </div>
+                                <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-center">
+                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+                            <i class="fas fa-eye mr-2"></i> View All Items
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    
+    <script src="assets/js/firebase.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/admin.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        // Sidebar toggle
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            const sidebar = document.getElementById('admin-sidebar');
+            const main = document.getElementById('admin-main');
+            const logoText = document.querySelector('.admin-sidebar .text-xl.font-bold');
+            const navItems = document.querySelectorAll('.admin-sidebar .transition-opacity');
+            const submenuItems = document.querySelectorAll('.admin-sidebar .submenu li span');
+            const sidebarToggleIcon = this.querySelector('i');
+            
+            sidebar.classList.toggle('sidebar-expanded');
+            sidebar.classList.toggle('sidebar-collapsed');
+            main.classList.toggle('main-expanded');
+            main.classList.toggle('main-collapsed');
+            
+            if (sidebar.classList.contains('sidebar-collapsed')) {
+                logoText.style.opacity = '0';
+                navItems.forEach(item => {
+                    item.style.opacity = '0';
+                });
+                submenuItems.forEach(item => {
+                    item.style.opacity = '0';
+                });
+                sidebarToggleIcon.classList.remove('fa-chevron-left');
+                sidebarToggleIcon.classList.add('fa-chevron-right');
+            } else {
+                logoText.style.opacity = '1';
+                navItems.forEach(item => {
+                    item.style.opacity = '1';
+                });
+                submenuItems.forEach(item => {
+                    item.style.opacity = '1';
+                });
+                sidebarToggleIcon.classList.remove('fa-chevron-right');
+                sidebarToggleIcon.classList.add('fa-chevron-left');
+            }
+        });
+        
+        // Submenu toggle
+        document.getElementById('content-btn').addEventListener('click', function() {
+            const submenu = this.nextElementSibling;
+            const icon = this.querySelector('i:last-child');
+            
+            submenu.classList.toggle('show');
+            submenu.classList.toggle('hide');
+            
+            if (submenu.classList.contains('show')) {
+                icon.classList.add('rotate-180');
+            } else {
+                icon.classList.remove('rotate-180');
+            }
+        });
+        
+        document.getElementById('users-btn').addEventListener('click', function() {
+            const submenu = this.nextElementSibling;
+            const icon = this.querySelector('i:last-child');
+            
+            submenu.classList.toggle('show');
+            submenu.classList.toggle('hide');
+            
+            if (submenu.classList.contains('show')) {
+                icon.classList.add('rotate-180');
+            } else {
+                icon.classList.remove('rotate-180');
+            }
+        });
+        
+        document.getElementById('settings-btn').addEventListener('click', function() {
+            const submenu = this.nextElementSibling;
+            const icon = this.querySelector('i:last-child');
+            
+            submenu.classList.toggle('show');
+            submenu.classList.toggle('hide');
+            
+            if (submenu.classList.contains('show')) {
+                icon.classList.add('rotate-180');
+            } else {
+                icon.classList.remove('rotate-180');
+            }
+        });
+        
+        // Charts
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx1 = document.getElementById('trafficChart').getContext('2d');
+            const trafficChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Page Views',
+                        data: [1500, 2400, 2800, 3200, 4500, 5200, 5800, 6500, 7100, 7800, 8500, 9200],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3
+                    }, {
+                        label: 'Unique Visitors',
+                        data: [800, 1200, 1500, 1800, 2200, 2500, 2800, 3200, 3500, 3800, 4100, 4400],
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const ctx2 = document.getElementById('contentChart').getContext('2d');
+            const contentChart = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['Digital Minimalism', 'Redefining Success', 'Mental Wellness', 'Creative Collaboration', 'Career Paths'],
+                    datasets: [{
+                        label: 'Views',
+                        data: [2400, 1800, 1500, 1200, 900],
+                        backgroundColor: [
+                            'rgba(99, 102, 241, 0.7)',
+                            'rgba(139, 92, 246, 0.7)',
+                            'rgba(74, 222, 128, 0.7)',
+                            'rgba(236, 72, 153, 0.7)',
+                            'rgba(59, 130, 246, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(99, 102, 241, 1)',
+                            'rgba(139, 92, 246, 1)',
+                            'rgba(74, 222, 128, 1)',
+                            'rgba(236, 72, 153, 1)',
+                            'rgba(59, 130, 246, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
