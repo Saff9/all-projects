@@ -1,0 +1,523 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore all posts from our vibrant Apex community - thoughts, tech, motivation, ideas, and life experiences">
+    <title>Blog | ApexSmart Community</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/images/logo.svg" type="image/x-icon">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MVRF3WRHPM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MVRF3WRHPM');
+    </script>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle" class="fixed bottom-4 right-4 z-50 p-3 rounded-full bg-indigo-600 text-white shadow-lg hover:bg-indigo-700 transition-colors">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-2">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-2 shadow-md">
+                    <i class="fas fa-brain text-xl"></i>
+                </div>
+                <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">ApexSmart</span>
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <nav class="flex space-x-6">
+                    <a href="index.html" class="font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</a>
+                    <a href="blog.html" class="font-medium text-indigo-600 dark:text-indigo-400">Blog</a>
+                    <a href="#" class="font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Categories</a>
+                </nav>
+                
+                <div class="relative">
+                    <input type="text" placeholder="Search posts..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button id="search-toggle" class="md:hidden text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-300">
+                    <i class="fas fa-search text-xl"></i>
+                </button>
+                <a href="create.html" class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-medium hover:opacity-90 transition-opacity shadow-md hidden md:block">Create Post</a>
+                <a href="login.html" class="px-4 py-2 bg-white/80 dark:bg-gray-800/80 text-indigo-700 dark:text-indigo-300 rounded-lg font-medium border border-indigo-300 hover:bg-white transition-colors">Login</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative py-20 md:py-28 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-200/30 to-purple-300/30 dark:from-indigo-900/30 dark:to-purple-900/30 blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <div class="inline-block px-4 py-1.5 bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900/50 dark:to-purple-900/50 rounded-full mb-4">
+                <span class="text-indigo-800 dark:text-indigo-200 font-medium">Explore Our Community</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-700 to-purple-700 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">Discover Amazing Stories</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">Dive into authentic conversations, fresh perspectives, and inspiring content created by Apex voices from around the world.</p>
+            
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="#" class="px-4 py-2 bg-white dark:bg-gray-800 text-indigo-700 dark:text-indigo-300 rounded-full font-medium border border-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors">
+                    <i class="fas fa-fire mr-2"></i> Trending
+                </a>
+                <a href="#" class="px-4 py-2 bg-white dark:bg-gray-800 text-indigo-700 dark:text-indigo-300 rounded-full font-medium border border-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors">
+                    <i class="fas fa-clock mr-2"></i> Latest
+                </a>
+                <a href="#" class="px-4 py-2 bg-white dark:bg-gray-800 text-indigo-700 dark:text-indigo-300 rounded-full font-medium border border-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors">
+                    <i class="fas fa-heart mr-2"></i> Most Loved
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Content -->
+    <section class="py-12 bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Main Content -->
+                <div class="lg:w-2/3">
+                    <!-- Filter and Sort -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                        <div class="flex flex-wrap gap-2">
+                            <button class="px-4 py-2 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200 rounded-lg font-medium flex items-center">
+                                <i class="fas fa-filter mr-2"></i> All Categories
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <select class="appearance-none bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-700 dark:text-gray-300">
+                                <option>Sort by: Recent</option>
+                                <option>Sort by: Popular</option>
+                                <option>Sort by: Oldest</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Blog Posts -->
+                    <div class="space-y-8" id="blog-posts">
+                        <!-- Post 1 -->
+                        <article class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg">
+                            <div class="md:flex">
+                                <div class="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Digital Minimalism" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                                    <div class="absolute top-3 left-3 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-full">Featured</div>
+                                </div>
+                                <div class="md:w-2/3 p-5">
+                                    <div class="flex items-center mb-3">
+                                        <div class="flex -space-x-2">
+                                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Author" class="w-8 h-8 rounded-full border-2 border-white">
+                                        </div>
+                                        <span class="ml-3 text-sm text-gray-600 dark:text-gray-300">by Taylor • 1 day ago</span>
+                                    </div>
+                                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Digital Minimalism: Finding Balance in a Connected World</h2>
+                                    <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">Exploring how intentional technology use can lead to greater focus, deeper relationships, and more meaningful creative work. Digital minimalism isn't about rejecting technology but about being intentional with our usage.</p>
+                                    <div class="flex flex-wrap justify-between items-center">
+                                        <div class="flex space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                                            <span class="flex items-center"><i class="far fa-heart mr-1"></i> 231</span>
+                                            <span class="flex items-center"><i class="far fa-comment mr-1"></i> 47</span>
+                                            <span class="flex items-center"><i class="fas fa-share-alt mr-1"></i> 62</span>
+                                        </div>
+                                        <span class="mt-3 sm:mt-0 px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-200 rounded-full text-xs">Tech</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        
+                        <!-- Post 2 -->
+                        <article class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg">
+                            <div class="md:flex">
+                                <div class="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Redefining Success" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                                </div>
+                                <div class="md:w-2/3 p-5">
+                                    <div class="flex items-center mb-3">
+                                        <div class="flex -space-x-2">
+                                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Author" class="w-8 h-8 rounded-full border-2 border-white">
+                                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Author" class="w-8 h-8 rounded-full border-2 border-white">
+                                        </div>
+                                        <span class="ml-3 text-sm text-gray-600 dark:text-gray-300">by Alex & Morgan • 2 days ago</span>
+                                    </div>
+                                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Redefining Success: Beyond Traditional Metrics</h2>
+                                    <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">In a world obsessed with external validation, how do we create our own definitions of success that truly resonate with our values and aspirations? This post explores alternative frameworks for measuring personal and professional fulfillment.</p>
+                                    <div class="flex flex-wrap justify-between items-center">
+                                        <div class="flex space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                                            <span class="flex items-center"><i class="far fa-heart mr-1"></i> 142</span>
+                                            <span class="flex items-center"><i class="far fa-comment mr-1"></i> 28</span>
+                                            <span class="flex items-center"><i class="fas fa-share-alt mr-1"></i> 35</span>
+                                        </div>
+                                        <span class="mt-3 sm:mt-0 px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200 rounded-full text-xs">Thoughts</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        
+                        <!-- Post 3 -->
+                        <article class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg">
+                            <div class="md:flex">
+                                <div class="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1523745673561-4ce71af3b785?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Creative Collaboration" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                                    <div class="absolute top-3 left-3 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-1 rounded-full">New</div>
+                                </div>
+                                <div class="md:w-2/3 p-5">
+                                    <div class="flex items-center mb-3">
+                                        <div class="flex -space-x-2">
+                                            <img src="https://randomuser.me/api/portraits/men/54.jpg" alt="Author" class="w-8 h-8 rounded-full border-2 border-white">
+                                            <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="Author" class="w-8 h-8 rounded-full border-2 border-white">
+                                        </div>
+                                        <span class="ml-3 text-sm text-gray-600 dark:text-gray-300">by Jordan & Riley • 3 days ago</span>
+                                    </div>
+                                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Creative Collaboration in the Digital Age</h2>
+                                    <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">How remote creative teams are building meaningful connections and producing exceptional work despite physical distance. The post covers tools, rituals, and mindsets that foster genuine collaboration in virtual spaces.</p>
+                                    <div class="flex flex-wrap justify-between items-center">
+                                        <div class="flex space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                                            <span class="flex items-center"><i class="far fa-heart mr-1"></i> 87</span>
+                                            <span class="flex items-center"><i class="far fa-comment mr-1"></i> 19</span>
+                                            <span class="flex items-center"><i class="fas fa-share-alt mr-1"></i> 24</span>
+                                        </div>
+                                        <span class="mt-3 sm:mt-0 px-3 py-1 bg-pink-100 dark:bg-pink-900/50 text-pink-800 dark:text-pink-200 rounded-full text-xs">Creativity</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        
+                        <!-- Post 4 -->
+                        <article class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg">
+                            <div class="md:flex">
+                                <div class="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Mental Wellness" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                                </div>
+                                <div class="md:w-2/3 p-5">
+                                    <div class="flex items-center mb-3">
+                                        <div class="flex -space-x-2">
+                                            <img src="https://randomuser.me/api/portraits/women/79.jpg" alt="Author" class="w-8 h-8 rounded-full border-2 border-white">
+                                        </div>
+                                        <span class="ml-3 text-sm text-gray-600 dark:text-gray-300">by Samantha • 4 days ago</span>
+                                    </div>
+                                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Mental Wellness Strategies for Digital Natives</h2>
+                                    <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">Practical approaches to maintaining mental health in an always-on digital world. From digital boundaries to mindfulness practices specifically designed for Apex's unique challenges and pressures.</p>
+                                    <div class="flex flex-wrap justify-between items-center">
+                                        <div class="flex space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                                            <span class="flex items-center"><i class="far fa-heart mr-1"></i> 178</span>
+                                            <span class="flex items-center"><i class="far fa-comment mr-1"></i> 36</span>
+                                            <span class="flex items-center"><i class="fas fa-share-alt mr-1"></i> 43</span>
+                                        </div>
+                                        <span class="mt-3 sm:mt-0 px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 rounded-full text-xs">Life</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        
+                        <!-- Post 5 -->
+                        <article class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg">
+                            <div class="md:flex">
+                                <div class="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Career Insights" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                                </div>
+                                <div class="md:w-2/3 p-5">
+                                    <div class="flex items-center mb-3">
+                                        <div class="flex -space-x-2">
+                                            <img src="https://randomuser.me/api/portraits/men/82.jpg" alt="Author" class="w-8 h-8 rounded-full border-2 border-white">
+                                        </div>
+                                        <span class="ml-3 text-sm text-gray-600 dark:text-gray-300">by Marcus • 5 days ago</span>
+                                    </div>
+                                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Non-Traditional Career Paths: Building Your Unique Journey</h2>
+                                    <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">Exploring alternative career trajectories that don't follow the traditional corporate ladder. This post shares stories of successful Apex professionals who've forged their own paths through entrepreneurship, portfolio careers, and digital nomadism.</p>
+                                    <div class="flex flex-wrap justify-between items-center">
+                                        <div class="flex space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                                            <span class="flex items-center"><i class="far fa-heart mr-1"></i> 112</span>
+                                            <span class="flex items-center"><i class="far fa-comment mr-1"></i> 23</span>
+                                            <span class="flex items-center"><i class="fas fa-share-alt mr-1"></i> 37</span>
+                                        </div>
+                                        <span class="mt-3 sm:mt-0 px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 rounded-full text-xs">Career</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="mt-12 flex justify-center">
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors">
+                                Previous
+                            </button>
+                            <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium">1</button>
+                            <button class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors">2</button>
+                            <button class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors">3</button>
+                            <button class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="lg:w-1/3">
+                    <div class="sticky top-24 space-y-8">
+                        <!-- About Community -->
+                        <div class="bg-gradient-to-br from-indigo-50 to-white dark:from-gray-800 dark:to-gray-700 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">About Our Community</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">A vibrant space where Apex creators share authentic stories, exchange ideas, and inspire each other to grow.</p>
+                            <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">15K+</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-300">Members</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">42K+</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-300">Posts</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">250+</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-300">Daily</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Category Filter -->
+                        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Categories</h3>
+                            <ul class="space-y-3">
+                                <li>
+                                    <a href="#" class="flex justify-between items-center p-2 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors group">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-lightbulb text-indigo-500 mr-3"></i>
+                                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">Ideas</span>
+                                        </div>
+                                        <span class="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 rounded-full text-xs">24</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="flex justify-between items-center p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors group">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-laptop-code text-blue-500 mr-3"></i>
+                                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Tech</span>
+                                        </div>
+                                        <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full text-xs">36</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="flex justify-between items-center p-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors group">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-rocket text-green-500 mr-3"></i>
+                                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">Motivation</span>
+                                        </div>
+                                        <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded-full text-xs">29</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="flex justify-between items-center p-2 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-colors group">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-heart text-purple-500 mr-3"></i>
+                                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">Life</span>
+                                        </div>
+                                        <span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-full text-xs">42</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="flex justify-between items-center p-2 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/30 transition-colors group">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-comments text-orange-500 mr-3"></i>
+                                            <span class="text-gray-700 dark:text-gray-300 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Thoughts</span>
+                                        </div>
+                                        <span class="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 rounded-full text-xs">31</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Trending Posts -->
+                        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Trending Now</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold">1</div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors">Digital Minimalism</h4>
+                                        <div class="flex items-center mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                            <span class="flex items-center"><i class="far fa-heart mr-1"></i> 231</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold">2</div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors">Redefining Success</h4>
+                                        <div class="flex items-center mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                            <span class="flex items-center"><i class="far fa-heart mr-1"></i> 142</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-white font-bold">3</div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-colors">Mental Wellness</h4>
+                                        <div class="flex items-center mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                            <span class="flex items-center"><i class="far fa-heart mr-1"></i> 178</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Newsletter -->
+                        <div class="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl p-6 text-white">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-white/20 backdrop-blur-sm p-3 rounded-xl mr-4">
+                                    <i class="fas fa-envelope text-2xl"></i>
+                                </div>
+                                <h3 class="text-lg font-bold">Join Our Newsletter</h3>
+                            </div>
+                            <p class="text-purple-100 mb-4">Get the latest posts, community updates, and exclusive content delivered to your inbox.</p>
+                            <form class="space-y-3">
+                                <input type="email" placeholder="Your email address" class="w-full px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 text-white placeholder-purple-200">
+                                <button type="submit" class="w-full px-4 py-2 bg-white text-purple-600 font-medium rounded-lg hover:bg-purple-50 transition-colors">Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-br from-indigo-600 to-purple-700 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Start Sharing Your Story</h2>
+            <p class="text-indigo-100 max-w-2xl mx-auto mb-8">Join thousands of Apex creators who are shaping conversations and inspiring change through authentic expression.</p>
+            <a href="create.html" class="inline-block px-8 py-4 bg-white text-indigo-700 font-bold rounded-xl shadow-lg hover:bg-indigo-50 transition-colors text-lg">
+                Create Your First Post
+            </a>
+            <p class="mt-4 text-indigo-200">No experience needed • Free forever • Your voice matters</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-1">
+                    <a href="index.html" class="flex items-center space-x-2 mb-4">
+                        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-2 shadow-md">
+                            <i class="fas fa-brain text-xl"></i>
+                        </div>
+                        <span class="text-xl font-bold">ApexSmart</span>
+                    </a>
+                    <p class="text-gray-400 mb-4">A vibrant community platform where Apex minds connect, create, and inspire.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition-colors">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition-colors">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-semibold mb-4">Community</h3>
+                    <ul class="space-y-3">
+                        <li><a href="blog.html" class="text-gray-400 hover:text-white transition-colors">Latest Posts</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Categories</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Trending Topics</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Community Guidelines</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Writing Tips</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Creator Toolkit</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Collaboration Guide</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Mental Wellness</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Career Resources</a></li>
+                    </ul>
+                </div>
+                
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-semibold mb-4">Company</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Our Mission</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Team</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2025 ApexSmart. All rights reserved. Built with ❤️ from the beautiful valleys of Kashmir</p>
+                <p class="mt-2">Designed and developed by Saffan</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Search Modal -->
+    <div id="search-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-xl w-full max-w-md p-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-search text-gray-400 mr-3"></i>
+                <input type="text" id="mobile-search" placeholder="Search posts..." class="flex-1 bg-transparent focus:outline-none text-gray-900 dark:text-white">
+                <button id="close-search" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="search-results" class="mt-4 max-h-96 overflow-y-auto">
+                <!-- Search results will be populated here by JavaScript -->
+                <p class="text-center text-gray-500 py-8">Start typing to search posts, users, and categories</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    
+    <script src="assets/js/firebase.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

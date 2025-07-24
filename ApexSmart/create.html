@@ -1,0 +1,522 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create a new post for the ApexSmart community. Share your thoughts, ideas, and experiences with our vibrant community.">
+    <title>Create Post | ApexSmart Community</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/images/logo.svg" type="image/x-icon">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MVRF3WRHPM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MVRF3WRHPM');
+    </script>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle" class="fixed bottom-4 right-4 z-50 p-3 rounded-full bg-indigo-600 text-white shadow-lg hover:bg-indigo-700 transition-colors">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-2">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-2 shadow-md">
+                    <i class="fas fa-brain text-xl"></i>
+                </div>
+                <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">ApexSmart</span>
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <nav class="flex space-x-6">
+                    <a href="index.html" class="font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</a>
+                    <a href="blog.html" class="font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Blog</a>
+                    <a href="#" class="font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Categories</a>
+                </nav>
+                
+                <div class="relative">
+                    <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button id="search-toggle" class="md:hidden text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-300">
+                    <i class="fas fa-search text-xl"></i>
+                </button>
+                <a href="login.html" class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-medium hover:opacity-90 transition-opacity shadow-md">Login</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative py-20 md:py-28 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-200/30 to-purple-300/30 dark:from-indigo-900/30 dark:to-purple-900/30 blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <div class="inline-block px-4 py-1.5 bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900/50 dark:to-purple-900/50 rounded-full mb-6">
+                <span class="text-indigo-800 dark:text-indigo-200 font-medium">Share Your Voice</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-indigo-700 to-purple-700 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">Create a New Post</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">Share your thoughts, ideas, and experiences with our vibrant community of creators and thinkers.</p>
+            <div class="flex justify-center space-x-4">
+                <button class="px-4 py-2 bg-white/80 dark:bg-gray-800/80 text-indigo-700 dark:text-indigo-300 rounded-lg font-medium border border-indigo-300 hover:bg-white transition-colors flex items-center">
+                    <i class="fas fa-info-circle mr-2"></i> Writing Tips
+                </button>
+                <button class="px-4 py-2 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200 rounded-lg font-medium hover:bg-indigo-200 dark:hover:bg-indigo-800 transition-colors flex items-center">
+                    <i class="fas fa-save mr-2"></i> Drafts
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Create Post Form -->
+    <section class="py-12 bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <form id="create-post-form" class="space-y-8">
+                    <!-- Post Title -->
+                    <div>
+                        <label for="post-title" class="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Post Title</label>
+                        <input type="text" id="post-title" name="title" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                            placeholder="What's on your mind?">
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">A compelling title that captures attention (max 100 characters)</p>
+                    </div>
+                    
+                    <!-- Featured Image Upload -->
+                    <div>
+                        <label class="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Featured Image</label>
+                        <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center hover:border-indigo-500 transition-colors cursor-pointer">
+                            <div class="mx-auto w-16 h-16 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center mb-4">
+                                <i class="fas fa-image text-2xl text-indigo-600 dark:text-indigo-400"></i>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-2">Drag & drop your image here or click to browse</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Recommended: 1200x630 pixels (16:9 ratio), max 5MB</p>
+                            <input type="file" id="featured-image" accept="image/*" class="hidden">
+                        </div>
+                        <div id="image-preview" class="mt-4 hidden">
+                            <img id="preview-image" src="" alt="Preview" class="w-full h-64 object-cover rounded-xl shadow-md">
+                            <button type="button" id="remove-image" class="mt-2 text-sm text-red-500 hover:text-red-700 flex items-center">
+                                <i class="fas fa-trash mr-2"></i> Remove image
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Post Content Editor -->
+                    <div>
+                        <label class="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Content</label>
+                        <div id="editor" class="bg-white dark:bg-gray-700 rounded-xl border border-gray-300 dark:border-gray-600">
+                            <!-- Quill editor will be initialized here -->
+                        </div>
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Express your thoughts freely. Use the toolbar above to format your content.</p>
+                    </div>
+                    
+                    <!-- Post Settings -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-indigo-500 transition-colors">
+                                    <input type="radio" name="category" value="thoughts" class="form-radio text-indigo-600 dark:text-indigo-500">
+                                    <span class="ml-2 font-medium text-gray-700 dark:text-gray-300">Thoughts</span>
+                                </label>
+                                
+                                <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+                                    <input type="radio" name="category" value="tech" class="form-radio text-blue-600 dark:text-blue-500">
+                                    <span class="ml-2 font-medium text-gray-700 dark:text-gray-300">Tech</span>
+                                </label>
+                                
+                                <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-green-500 transition-colors">
+                                    <input type="radio" name="category" value="motivation" class="form-radio text-green-600 dark:text-green-500">
+                                    <span class="ml-2 font-medium text-gray-700 dark:text-gray-300">Motivation</span>
+                                </label>
+                                
+                                <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-purple-500 transition-colors">
+                                    <input type="radio" name="category" value="ideas" class="form-radio text-purple-600 dark:text-purple-500">
+                                    <span class="ml-2 font-medium text-gray-700 dark:text-gray-300">Ideas</span>
+                                </label>
+                                
+                                <label class="flex items-center p-3 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-pink-500 transition-colors">
+                                    <input type="radio" name="category" value="life" class="form-radio text-pink-600 dark:text-pink-500">
+                                    <span class="ml-2 font-medium text-gray-700 dark:text-gray-300">Life</span>
+                                </label>
+                            </div>
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Select the category that best fits your content</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Post Status</label>
+                            <div class="space-y-3">
+                                <label class="flex items-start p-4 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-indigo-500 transition-colors">
+                                    <input type="radio" name="status" value="publish" class="form-radio text-indigo-600 dark:text-indigo-500 mt-1" checked>
+                                    <div class="ml-3">
+                                        <div class="font-medium text-gray-700 dark:text-gray-300">Publish Now</div>
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">Post will be visible to everyone immediately</div>
+                                    </div>
+                                </label>
+                                
+                                <label class="flex items-start p-4 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+                                    <input type="radio" name="status" value="schedule" class="form-radio text-blue-600 dark:text-blue-500 mt-1">
+                                    <div class="ml-3">
+                                        <div class="font-medium text-gray-700 dark:text-gray-300">Schedule for Later</div>
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">Choose a specific date and time to publish</div>
+                                    </div>
+                                </label>
+                                
+                                <label class="flex items-start p-4 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-green-500 transition-colors">
+                                    <input type="radio" name="status" value="draft" class="form-radio text-green-600 dark:text-green-500 mt-1">
+                                    <div class="ml-3">
+                                        <div class="font-medium text-gray-700 dark:text-gray-300">Save as Draft</div>
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">Save for later editing and publishing</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SEO Settings -->
+                    <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center">
+                                <h3 class="text-lg font-medium text-gray-900 dark:text-white">SEO Settings</h3>
+                                <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200">
+                                    Optional
+                                </span>
+                            </div>
+                            <button type="button" id="seo-toggle" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm font-medium flex items-center">
+                                <i class="fas fa-chevron-down mr-1"></i> Show Settings
+                            </button>
+                        </div>
+                        
+                        <div id="seo-settings" class="hidden space-y-4">
+                            <div>
+                                <label for="seo-title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SEO Title (max 60 chars)</label>
+                                <input type="text" id="seo-title" name="seo-title"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-transparent">
+                            </div>
+                            
+                            <div>
+                                <label for="seo-description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Meta Description (max 160 chars)</label>
+                                <textarea id="seo-description" name="seo-description" rows="3"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-transparent"></textarea>
+                            </div>
+                            
+                            <div>
+                                <label for="seo-keywords" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Keywords (comma separated)</label>
+                                <input type="text" id="seo-keywords" name="seo-keywords"
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-transparent"
+                                    placeholder="digital minimalism, tech balance, mindfulness...">
+                            </div>
+                            
+                            <div class="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg mt-2">
+                                <div class="flex items-start">
+                                    <i class="fas fa-lightbulb text-indigo-500 mt-1 mr-2"></i>
+                                    <p class="text-sm text-indigo-700 dark:text-indigo-300">
+                                        <strong>Tips:</strong> Use relevant keywords naturally in your content. The first paragraph should contain your main keyword. Add descriptive alt text to images.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Post Actions -->
+                    <div class="flex flex-col sm:flex-row justify-end space-y-4 sm:space-y-0 sm:space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+                        <button type="button" class="px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center justify-center">
+                            <i class="fas fa-times mr-2"></i> Cancel
+                        </button>
+                        <button type="button" class="px-6 py-3 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200 rounded-xl font-medium hover:bg-indigo-200 dark:hover:bg-indigo-800 transition-colors flex items-center justify-center">
+                            <i class="fas fa-save mr-2"></i> Save Draft
+                        </button>
+                        <button type="submit" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-700 text-white rounded-xl font-medium hover:opacity-90 transition-opacity flex items-center justify-center shadow-md">
+                            <i class="fas fa-paper-plane mr-2"></i> Publish Post
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Writing Tips Modal -->
+    <div id="writing-tips-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl">
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Writing Tips for Engaging Posts</h3>
+                <button id="close-writing-tips" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto max-h-[70vh] space-y-6">
+                <div class="space-y-4">
+                    <h4 class="text-lg font-bold text-gray-900 dark:text-white flex items-center">
+                        <i class="fas fa-star text-yellow-400 mr-2"></i> Craft a Compelling Opening
+                    </h4>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Start with a hook that grabs attention - a surprising fact, a relatable question, or a vivid story. Your first paragraph is crucial for keeping readers engaged.
+                    </p>
+                </div>
+                
+                <div class="space-y-4">
+                    <h4 class="text-lg font-bold text-gray-900 dark:text-white flex items-center">
+                        <i class="fas fa-lightbulb text-blue-500 mr-2"></i> Add Value
+                    </h4>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Ensure your post offers something valuable to readers - new insights, practical advice, emotional resonance, or fresh perspectives. Ask yourself: "What will my readers gain from this?"
+                    </p>
+                </div>
+                
+                <div class="space-y-4">
+                    <h4 class="text-lg font-bold text-gray-900 dark:text-white flex items-center">
+                        <i class="fas fa-comments text-green-500 mr-2"></i> Encourage Interaction
+                    </h4>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        End with a thoughtful question that invites comments and discussion. This transforms passive reading into active community engagement.
+                    </p>
+                </div>
+                
+                <div class="space-y-4">
+                    <h4 class="text-lg font-bold text-gray-900 dark:text-white flex items-center">
+                        <i class="fas fa-heart text-pink-500 mr-2"></i> Be Authentic
+                    </h4>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Share your genuine thoughts, experiences, and vulnerabilities. Authenticity builds trust and connection with your audience.
+                    </p>
+                </div>
+                
+                <div class="space-y-4">
+                    <h4 class="text-lg font-bold text-gray-900 dark:text-white flex items-center">
+                        <i class="fas fa-shapes text-purple-500 mr-2"></i> Structure for Readability
+                    </h4>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Use short paragraphs, subheadings, bullet points, and images to break up text. Most readers scan before they read deeply.
+                    </p>
+                </div>
+                
+                <div class="mt-6 p-4 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl border border-indigo-200 dark:border-indigo-800">
+                    <p class="text-gray-700 dark:text-gray-300 italic">
+                        "The best posts come from the heart. Don't worry about perfection - focus on connection and authenticity. Your unique perspective is exactly what our community needs."
+                    </p>
+                    <div class="mt-3 flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center mr-3">
+                            <i class="fas fa-quote-right text-indigo-600 dark:text-indigo-400"></i>
+                        </div>
+                        <span class="font-medium text-indigo-700 dark:text-indigo-300">ApexSmart Community Team</span>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+                <button id="close-writing-tips-bottom" class="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+                    Got it!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-1">
+                    <a href="index.html" class="flex items-center space-x-2 mb-4">
+                        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-2 shadow-md">
+                            <i class="fas fa-brain text-xl"></i>
+                        </div>
+                        <span class="text-xl font-bold">ApexSmart</span>
+                    </a>
+                    <p class="text-gray-400 mb-4">A vibrant community platform where Apex minds connect, create, and inspire.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition-colors">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition-colors">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-semibold mb-4">Community</h3>
+                    <ul class="space-y-3">
+                        <li><a href="blog.html" class="text-gray-400 hover:text-white transition-colors">Latest Posts</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Categories</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Trending Topics</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Community Guidelines</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Writing Tips</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Creator Toolkit</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Collaboration Guide</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Mental Wellness</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Career Resources</a></li>
+                    </ul>
+                </div>
+                
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-semibold mb-4">Company</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Our Mission</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Team</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2025 ApexSmart. All rights reserved. Built with ❤️ from the beautiful valleys of Kashmir</p>
+                <p class="mt-2">Designed and developed by Saffan</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Search Modal -->
+    <div id="search-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-xl w-full max-w-md p-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-search text-gray-400 mr-3"></i>
+                <input type="text" id="mobile-search" placeholder="Search..." class="flex-1 bg-transparent focus:outline-none text-gray-900 dark:text-white">
+                <button id="close-search" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="search-results" class="mt-4 max-h-96 overflow-y-auto">
+                <p class="text-center text-gray-500 py-8">Start typing to search posts, users, and categories</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    
+    <script src="assets/js/firebase.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/editor.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        // Image upload handling
+        document.getElementById('featured-image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('preview-image').src = event.target.result;
+                    document.getElementById('image-preview').classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        document.getElementById('remove-image').addEventListener('click', function() {
+            document.getElementById('image-preview').classList.add('hidden');
+            document.getElementById('featured-image').value = '';
+        });
+        
+        document.querySelector('.border-dashed').addEventListener('click', function() {
+            document.getElementById('featured-image').click();
+        });
+        
+        // SEO settings toggle
+        document.getElementById('seo-toggle').addEventListener('click', function() {
+            const seoSettings = document.getElementById('seo-settings');
+            const isHidden = seoSettings.classList.contains('hidden');
+            
+            seoSettings.classList.toggle('hidden');
+            this.innerHTML = isHidden ? 
+                '<i class="fas fa-chevron-up mr-1"></i> Hide Settings' : 
+                '<i class="fas fa-chevron-down mr-1"></i> Show Settings';
+        });
+        
+        // Writing tips modal
+        document.querySelector('button[aria-label="Writing Tips"]').addEventListener('click', function() {
+            document.getElementById('writing-tips-modal').classList.remove('hidden');
+        });
+        
+        document.getElementById('close-writing-tips').addEventListener('click', function() {
+            document.getElementById('writing-tips-modal').classList.add('hidden');
+        });
+        
+        document.getElementById('close-writing-tips-bottom').addEventListener('click', function() {
+            document.getElementById('writing-tips-modal').classList.add('hidden');
+        });
+        
+        // Form submission
+        document.getElementById('create-post-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const title = document.getElementById('post-title').value;
+            const content = document.querySelector('#editor .ql-editor').innerHTML;
+            const category = document.querySelector('input[name="category"]:checked').value;
+            const status = document.querySelector('input[name="status"]:checked').value;
+            
+            // Basic validation
+            if (!title.trim()) {
+                alert('Please enter a post title');
+                return;
+            }
+            
+            if (!content || content.trim() === '<p><br></p>') {
+                alert('Please enter some content for your post');
+                return;
+            }
+            
+            // Show success message
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            
+            submitButton.innerHTML = '<i class="fas fa-spinner animate-spin mr-2"></i> Publishing...';
+            submitButton.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                alert('Post published successfully!');
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+                
+                // In a real app, this would redirect to the post page
+                window.location.href = 'post.html';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
