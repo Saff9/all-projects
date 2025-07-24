@@ -1,0 +1,615 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Read the full article on Digital Minimalism and finding balance in our connected world">
+    <title>Digital Minimalism | ApexSmart Community</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/images/logo.svg" type="image/x-icon">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MVRF3WRHPM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MVRF3WRHPM');
+    </script>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle" class="fixed bottom-4 right-4 z-50 p-3 rounded-full bg-indigo-600 text-white shadow-lg hover:bg-indigo-700 transition-colors">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-2">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-2 shadow-md">
+                    <i class="fas fa-brain text-xl"></i>
+                </div>
+                <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">ApexSmart</span>
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <nav class="flex space-x-6">
+                    <a href="index.html" class="font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</a>
+                    <a href="blog.html" class="font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Blog</a>
+                    <a href="#" class="font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Categories</a>
+                </nav>
+                
+                <div class="relative">
+                    <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button id="search-toggle" class="md:hidden text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-300">
+                    <i class="fas fa-search text-xl"></i>
+                </button>
+                <a href="login.html" class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-medium hover:opacity-90 transition-opacity shadow-md">Login</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Header -->
+    <section class="relative pt-24 pb-12 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-200/30 to-purple-300/30 dark:from-indigo-900/30 dark:to-purple-900/30 blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-flex items-center space-x-2 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200 px-4 py-2 rounded-full mb-4">
+                    <i class="fas fa-tag"></i>
+                    <span>Tech</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-700 to-purple-700 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">Digital Minimalism: Finding Balance in a Connected World</h1>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 text-gray-600 dark:text-gray-300">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Author" class="w-10 h-10 rounded-full">
+                        <div>
+                            <div class="font-medium text-gray-900 dark:text-white">Taylor Rodriguez</div>
+                            <div class="text-sm">Community Lead</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="far fa-calendar text-lg"></i>
+                        <span>June 15, 2025 • 8 min read</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="far fa-eye text-lg"></i>
+                        <span>2.4K views</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Image -->
+    <div class="container mx-auto px-4 mb-12">
+        <div class="max-w-4xl mx-auto">
+            <div class="relative rounded-2xl overflow-hidden shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="Digital Minimalism" class="w-full h-auto">
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                    <p class="text-white text-lg font-medium">Finding balance between technology use and intentional living</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <section class="py-12 bg-white dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <!-- Post Actions -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 pb-6 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex space-x-4 mb-4 sm:mb-0">
+                        <button class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors group">
+                            <div class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/30 transition-colors mb-1">
+                                <i class="far fa-heart text-lg"></i>
+                            </div>
+                            <span class="text-sm font-medium">231</span>
+                        </button>
+                        <button class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors group">
+                            <div class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/30 transition-colors mb-1">
+                                <i class="far fa-comment text-lg"></i>
+                            </div>
+                            <span class="text-sm font-medium">47</span>
+                        </button>
+                        <button class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors group">
+                            <div class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/30 transition-colors mb-1">
+                                <i class="fas fa-share-alt text-lg"></i>
+                            </div>
+                            <span class="text-sm font-medium">62</span>
+                        </button>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors">
+                            <i class="fas fa-bookmark mr-2"></i> Save
+                        </button>
+                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                            <i class="fas fa-share mr-2"></i> Share
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Article Content -->
+                <article class="prose dark:prose-dark max-w-none prose-indigo">
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">In our hyper-connected world, the constant influx of notifications, messages, and digital distractions has become the norm. But what if we could reclaim our attention and use technology on our own terms? This is the essence of digital minimalism—a philosophy that encourages intentional technology use to support our values and goals.</p>
+                    
+                    <h2 class="text-2xl font-bold mt-12 mb-4 text-gray-900 dark:text-white">The Problem with Digital Clutter</h2>
+                    <p>Our digital lives have become increasingly cluttered, mirroring the chaos that can exist in our physical spaces. The average smartphone user checks their device <strong>over 150 times per day</strong>, and we spend nearly <strong>4 hours daily</strong> on our phones alone. This constant connectivity comes at a cost:</p>
+                    
+                    <ul class="list-disc pl-6 space-y-2 mb-8">
+                        <li>Decreased attention spans and productivity</li>
+                        <li>Increased anxiety and FOMO (fear of missing out)</li>
+                        <li>Shallow relationships and reduced face-to-face interaction</li>
+                        <li>Difficulty being present in the moment</li>
+                        <li>Mental fatigue from constant context-switching</li>
+                    </ul>
+                    
+                    <div class="my-12 p-8 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-2xl border border-indigo-200 dark:border-indigo-800">
+                        <blockquote class="text-xl italic font-medium text-gray-900 dark:text-white border-l-4 border-indigo-500 pl-6 py-2">
+                            "Technology is a useful servant but a dangerous master." - Christian Lous Lange
+                        </blockquote>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold mt-12 mb-4 text-gray-900 dark:text-white">Principles of Digital Minimalism</h2>
+                    <p>Digital minimalism isn't about rejecting technology altogether—it's about being intentional with our digital tools. Here are key principles to guide your journey:</p>
+                    
+                    <h3 class="text-xl font-semibold mt-8 mb-3 text-gray-900 dark:text-white">1. Values-Based Technology Use</h3>
+                    <p>Before adopting any new app or platform, ask yourself: <em>"Does this align with my core values and support my long-term goals?"</em> If a technology doesn't serve a clear purpose in your life, it's probably not worth the attention cost.</p>
+                    
+                    <div class="my-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
+                            <div class="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center mb-4">
+                                <i class="fas fa-seedling text-indigo-600 dark:text-indigo-400 text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Digital Declutter</h4>
+                            <p class="text-gray-600 dark:text-gray-300">A 30-day reset where you remove non-essential apps and services, then reintroduce only those that serve your values.</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
+                            <div class="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center mb-4">
+                                <i class="fas fa-stopwatch text-indigo-600 dark:text-indigo-400 text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">High-Quality Leisure</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Replace passive screen time with activities that provide deeper satisfaction and personal growth.</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold mt-8 mb-3 text-gray-900 dark:text-white">2. Intentional Design</h3>
+                    <p>Create friction for apps and services you want to use less frequently. This might include:</p>
+                    
+                    <ul class="list-disc pl-6 space-y-2 mb-8">
+                        <li>Deleting social media apps from your phone (access via browser instead)</li>
+                        <li>Turning off non-essential notifications</li>
+                        <li>Creating separate user profiles for work and personal use</li>
+                        <li>Setting up physical boundaries (no devices in bedroom, dedicated work spaces)</li>
+                        <li>Using website blockers during focused work sessions</li>
+                    </ul>
+                    
+                    <div class="my-12 relative">
+                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Mindful technology use" class="w-full h-auto rounded-2xl shadow-xl">
+                        <div class="absolute bottom-4 right-4 bg-black/70 text-white px-4 py-2 rounded-lg text-sm">
+                            Creating intentional spaces for technology use
+                        </div>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold mt-12 mb-4 text-gray-900 dark:text-white">Practical Strategies for Implementation</h2>
+                    <p>Transitioning to digital minimalism doesn't happen overnight. Here are practical steps you can take today:</p>
+                    
+                    <h3 class="text-xl font-semibold mt-8 mb-3 text-gray-900 dark:text-white">1. Conduct a Digital Audit</h3>
+                    <p>Take inventory of all your digital accounts, apps, and subscriptions. For each one, ask:</p>
+                    <ul class="list-disc pl-6 space-y-2 mb-6">
+                        <li>When was the last time I used this?</li>
+                        <li>Does this align with my values and goals?</li>
+                        <li>What would happen if I deleted this account or app?</li>
+                        <li>Is this adding more value than stress to my life?</li>
+                    </ul>
+                    
+                    <h3 class="text-xl font-semibold mt-8 mb-3 text-gray-900 dark:text-white">2. Create Technology-Free Zones and Times</h3>
+                    <p>Designate specific spaces and periods where technology is off-limits:</p>
+                    <ul class="list-disc pl-6 space-y-2 mb-6">
+                        <li>Meal times (no phones at the dinner table)</li>
+                        <li>Bedroom (charge devices outside your sleeping space)</li>
+                        <li>First hour after waking up (delay checking notifications)</li>
+                        <li>Social gatherings (be present with the people around you)</li>
+                    </ul>
+                    
+                    <h3 class="text-xl font-semibold mt-8 mb-3 text-gray-900 dark:text-white">3. Practice Single-Tasking</h3>
+                    <p>Our brains aren't designed for constant multitasking. Instead, practice focusing on one activity at a time:</p>
+                    <ul class="list-disc pl-6 space-y-2 mb-8">
+                        <li>Close email and messaging apps during deep work sessions</li>
+                        <li>Listen to music without scrolling through your phone</li>
+                        <li>Have conversations without checking notifications</li>
+                        <li>Set specific times for checking social media (not constantly throughout the day)</li>
+                    </ul>
+                    
+                    <div class="my-12 p-6 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl text-white">
+                        <h3 class="text-xl font-bold mb-2">Challenge: The 1-Hour Morning Ritual</h3>
+                        <p class="text-indigo-100">For the next week, commit to spending your first hour after waking up completely offline. Use this time for activities that set a positive tone for your day: meditation, journaling, exercise, reading a physical book, or enjoying breakfast without screens.</p>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold mt-12 mb-4 text-gray-900 dark:text-white">The Benefits of Digital Minimalism</h2>
+                    <p>When we intentionally design our relationship with technology, we unlock numerous benefits:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-10">
+                        <div class="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600 text-center">
+                            <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-brain text-green-600 dark:text-green-400 text-2xl"></i>
+                            </div>
+                            <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Mental Clarity</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Reduced cognitive load and improved focus</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600 text-center">
+                            <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-heart text-blue-600 dark:text-blue-400 text-2xl"></i>
+                            </div>
+                            <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Deeper Relationships</h4>
+                            <p class="text-gray-600 dark:text-gray-300">More meaningful connections with others</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600 text-center">
+                            <div class="w-16 h-16 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-bolt text-purple-600 dark:text-purple-400 text-2xl"></i>
+                            </div>
+                            <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Increased Energy</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Reduced digital fatigue and information overload</p>
+                        </div>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold mt-12 mb-4 text-gray-900 dark:text-white">Conclusion: Finding Your Balance</h2>
+                    <p>Digital minimalism isn't a one-size-fits-all approach. What works for one person might not work for another. The key is to become conscious of your technology use and make deliberate choices that support your well-being and values.</p>
+                    
+                    <p class="mb-8">Start small—pick one area of your digital life to declutter this week. Notice how it feels to have less digital noise and more space for what truly matters to you.</p>
+                    
+                    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-6 border border-indigo-200 dark:border-indigo-800 mb-12">
+                        <p class="text-lg italic text-gray-700 dark:text-gray-300">"The ability to perform deep work is becoming increasingly rare at exactly the same time it is becoming increasingly valuable in our economy. As a consequence, the few who cultivate this skill, and then make it the core of their working life, will thrive." — Cal Newport</p>
+                    </div>
+                    
+                    <p class="font-medium text-gray-700 dark:text-gray-300 mb-12">What's one digital habit you plan to change this week? Share your thoughts in the comments below!</p>
+                </article>
+                
+                <!-- Author Bio -->
+                <div class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
+                    <div class="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-6">
+                        <div class="relative">
+                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Taylor Rodriguez" class="w-24 h-24 rounded-full border-4 border-indigo-100 dark:border-indigo-900/50">
+                            <div class="absolute -bottom-2 -right-2 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full w-6 h-6 flex items-center justify-center">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Taylor Rodriguez</h3>
+                            <p class="text-indigo-600 dark:text-indigo-400 mb-3">Community Lead & Digital Wellness Advocate</p>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Taylor is passionate about helping Gen Z navigate the digital landscape with intention and purpose. With a background in psychology and digital media, she combines research-backed strategies with practical advice to help young adults build healthier relationships with technology.</p>
+                            <div class="flex space-x-4">
+                                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors">
+                                    <i class="fab fa-twitter text-gray-700 dark:text-gray-300"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors">
+                                    <i class="fab fa-linkedin text-gray-700 dark:text-gray-300"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors">
+                                    <i class="fab fa-instagram text-gray-700 dark:text-gray-300"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Comments Section -->
+                <div class="mt-16">
+                    <div class="flex justify-between items-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Comments (47)</h3>
+                        <div class="relative">
+                            <select class="appearance-none bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-700 dark:text-gray-300">
+                                <option>Sort by: Recent</option>
+                                <option>Sort by: Oldest</option>
+                                <option>Sort by: Top</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-8 mb-12">
+                        <!-- Comment 1 -->
+                        <div class="flex space-x-4">
+                            <div class="flex-shrink-0">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Alex Chen" class="w-12 h-12 rounded-full">
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div>
+                                            <div class="font-medium text-gray-900 dark:text-white">Alex Chen</div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400">2 days ago</div>
+                                        </div>
+                                        <button class="text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                    <p class="text-gray-700 dark:text-gray-300">This article really resonates with me. I've been trying to implement digital minimalism practices for the past year, and the difference in my mental clarity is remarkable. The tip about creating friction for apps I want to use less has been especially helpful - I deleted Instagram from my phone and now only access it through my laptop browser, which has reduced my usage by about 70%!</p>
+                                </div>
+                                <div class="mt-3 flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                                    <button class="hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center">
+                                        <i class="far fa-heart mr-1"></i> 24
+                                    </button>
+                                    <button class="hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center">
+                                        <i class="far fa-comment mr-1"></i> Reply
+                                    </button>
+                                </div>
+                                
+                                <!-- Reply -->
+                                <div class="ml-16 mt-4">
+                                    <div class="flex space-x-4">
+                                        <div class="flex-shrink-0">
+                                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Taylor Rodriguez" class="w-10 h-10 rounded-full">
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="bg-indigo-50 dark:bg-indigo-900/30 rounded-xl p-4 border border-indigo-200 dark:border-indigo-800">
+                                                <div class="flex justify-between items-start mb-2">
+                                                    <div>
+                                                        <div class="font-medium text-indigo-700 dark:text-indigo-300">Taylor Rodriguez</div>
+                                                        <div class="text-sm text-indigo-500 dark:text-indigo-400">2 days ago</div>
+                                                    </div>
+                                                    <button class="text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+                                                        <i class="fas fa-ellipsis-h"></i>
+                                                    </button>
+                                                </div>
+                                                <p class="text-gray-700 dark:text-gray-300">That's amazing progress, Alex! Reducing Instagram usage while still maintaining connections is exactly the kind of intentional approach I was hoping to encourage. Would love to hear how this change has impacted other areas of your life too.</p>
+                                            </div>
+                                            <div class="mt-3 flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                                                <button class="hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center">
+                                                    <i class="far fa-heart mr-1 text-indigo-500"></i> 8
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Comment 2 -->
+                        <div class="flex space-x-4">
+                            <div class="flex-shrink-0">
+                                <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="Maya Johnson" class="w-12 h-12 rounded-full">
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div>
+                                            <div class="font-medium text-gray-900 dark:text-white">Maya Johnson</div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400">3 days ago</div>
+                                        </div>
+                                        <button class="text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                        </button>
+                                    </div>
+                                    <p class="text-gray-700 dark:text-gray-300">I struggle with the morning ritual suggestion because I use my phone as my alarm clock. Any suggestions for how to handle this while still maintaining a technology-free morning start?</p>
+                                </div>
+                                <div class="mt-3 flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                                    <button class="hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center">
+                                        <i class="far fa-heart mr-1"></i> 15
+                                    </button>
+                                    <button class="hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center">
+                                        <i class="far fa-comment mr-1"></i> Reply
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Comment Form -->
+                    <div class="border-t border-gray-200 dark:border-gray-700 pt-8">
+                        <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Add a Comment</h4>
+                        <div class="flex space-x-4">
+                            <div class="flex-shrink-0">
+                                <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Your Profile" class="w-12 h-12 rounded-full">
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-700">
+                                    <textarea placeholder="Share your thoughts..." class="w-full px-4 py-3 bg-transparent focus:outline-none text-gray-700 dark:text-gray-300 min-h-[100px]"></textarea>
+                                    <div class="border-t border-gray-200 dark:border-gray-700 px-4 py-3 flex justify-between items-center">
+                                        <div class="flex space-x-2">
+                                            <button class="text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400">
+                                                <i class="fas fa-paperclip"></i>
+                                            </button>
+                                            <button class="text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400">
+                                                <i class="fas fa-image"></i>
+                                            </button>
+                                            <button class="text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400">
+                                                <i class="far fa-smile"></i>
+                                            </button>
+                                        </div>
+                                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+                                            Comment
+                                        </button>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Comments are moderated. Please be respectful and constructive.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Related Posts -->
+                <div class="mt-16 pt-12 border-t border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Related Articles</h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Related Post 1 -->
+                        <article class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg">
+                            <div class="md:flex">
+                                <div class="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Redefining Success" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                                </div>
+                                <div class="md:w-2/3 p-5">
+                                    <div class="flex items-center mb-2">
+                                        <span class="text-xs text-indigo-600 dark:text-indigo-400 font-medium">Thoughts</span>
+                                    </div>
+                                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Redefining Success: Beyond Traditional Metrics</h2>
+                                    <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">In a world obsessed with external validation, how do we create our own definitions of success that truly resonate with our values and aspirations?</p>
+                                    <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Author" class="w-6 h-6 rounded-full mr-2">
+                                        <span>Alex & Morgan • 4 min read</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        
+                        <!-- Related Post 2 -->
+                        <article class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-lg">
+                            <div class="md:flex">
+                                <div class="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Mental Wellness" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                                </div>
+                                <div class="md:w-2/3 p-5">
+                                    <div class="flex items-center mb-2">
+                                        <span class="text-xs text-green-600 dark:text-green-400 font-medium">Life</span>
+                                    </div>
+                                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer">Mental Wellness Strategies for Digital Natives</h2>
+                                    <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">Practical approaches to maintaining mental health in an always-on digital world. From digital boundaries to mindfulness practices.</p>
+                                    <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                                        <img src="https://randomuser.me/api/portraits/women/79.jpg" alt="Author" class="w-6 h-6 rounded-full mr-2">
+                                        <span>Samantha • 6 min read</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter CTA -->
+    <section class="py-16 bg-gradient-to-br from-indigo-600 to-purple-700 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-2xl mx-auto text-center">
+                <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-envelope text-2xl"></i>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Stay Updated With Our Community</h2>
+                <p class="text-indigo-100 mb-8">Subscribe to receive the latest posts, exclusive insights, and community updates directly in your inbox.</p>
+                <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                    <input type="email" placeholder="Your email address" class="flex-1 px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 text-white placeholder-purple-200">
+                    <button type="submit" class="px-6 py-3 bg-white text-indigo-700 font-bold rounded-lg hover:bg-indigo-50 transition-colors">Subscribe</button>
+                </form>
+                <p class="mt-4 text-indigo-200 text-sm">We respect your privacy. Unsubscribe anytime.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-1">
+                    <a href="index.html" class="flex items-center space-x-2 mb-4">
+                        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl p-2 shadow-md">
+                            <i class="fas fa-brain text-xl"></i>
+                        </div>
+                        <span class="text-xl font-bold">ApexSmart</span>
+                    </a>
+                    <p class="text-gray-400 mb-4">A vibrant community platform where Apex minds connect, create, and inspire.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition-colors">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-indigo-600 transition-colors">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-semibold mb-4">Community</h3>
+                    <ul class="space-y-3">
+                        <li><a href="blog.html" class="text-gray-400 hover:text-white transition-colors">Latest Posts</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Categories</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Trending Topics</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Community Guidelines</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Writing Tips</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Creator Toolkit</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Collaboration Guide</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Mental Wellness</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Career Resources</a></li>
+                    </ul>
+                </div>
+                
+                <div class="md:col-span-1">
+                    <h3 class="text-lg font-semibold mb-4">Company</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Our Mission</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Team</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2025 ApexSmart. All rights reserved. Built with ❤️ from the beautiful valleys of Kashmir</p>
+                <p class="mt-2">Designed and developed by Saffan</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Search Modal -->
+    <div id="search-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-xl w-full max-w-md p-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-search text-gray-400 mr-3"></i>
+                <input type="text" id="mobile-search" placeholder="Search..." class="flex-1 bg-transparent focus:outline-none text-gray-900 dark:text-white">
+                <button id="close-search" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="search-results" class="mt-4 max-h-96 overflow-y-auto">
+                <p class="text-center text-gray-500 py-8">Start typing to search posts, users, and categories</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    
+    <script src="assets/js/firebase.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
