@@ -1,0 +1,19 @@
+# Icon Directory
+# Place generated icons here:
+# - favicon.ico (multi-resolution ICO file)
+# - favicon-16x16.png
+# - favicon-32x32.png
+# - apple-touch-icon.png (180x180)
+# - icon-72x72.png
+# - icon-96x96.png
+# - icon-128x128.png
+# - icon-144x144.png
+# - icon-152x152.png
+# - icon-192x192.png
+# - icon-384x384.png
+# - icon-512x512.png
+# - icon.svg
+# 
+# Generate these from the favicon.svg using tools like:
+# - https://realfavicongenerator.net/
+# - https://favicon.io/
