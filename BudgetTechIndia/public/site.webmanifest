@@ -1,0 +1,110 @@
+{
+  "name": "BudgetTechIndia - Best Budget Tech Products in India",
+  "short_name": "BudgetTechIndia",
+  "description": "Your trusted source for budget-friendly tech product reviews, comparisons, and buying guides in India. Find the best gadgets under ₹500, ₹1000, ₹2000, and more.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06080F",
+  "theme_color": "#06080F",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-IN",
+  "categories": ["technology", "shopping", "reviews"],
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Latest Reviews",
+      "short_name": "Reviews",
+      "description": "View the latest tech product reviews",
+      "url": "/reviews/",
+      "icons": [{ "src": "/icons/reviews-icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Categories",
+      "short_name": "Categories",
+      "description": "Browse product categories",
+      "url": "/categories/",
+      "icons": [{ "src": "/icons/categories-icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Read our tech blog articles",
+      "url": "/blog/",
+      "icons": [{ "src": "/icons/blog-icon.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshots/homepage-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "BudgetTechIndia Homepage"
+    },
+    {
+      "src": "/images/screenshots/homepage-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "BudgetTechIndia Mobile View"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
