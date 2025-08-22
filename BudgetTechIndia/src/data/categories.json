@@ -1,0 +1,102 @@
+{
+  "categories": [
+    {
+      "id": "bluetooth-earbuds",
+      "name": "Bluetooth Earbuds",
+      "slug": "bluetooth-earbuds",
+      "description": "Discover the best wireless earbuds under ₹2,000. Find top brands like boAt, Realme, and OnePlus with amazing sound quality and battery life at budget-friendly prices.",
+      "imageUrl": "https://placehold.co/600x400/3B82F6/FFFFFF?text=Bluetooth+Earbuds",
+      "icon": "headphones",
+      "priceRange": {
+        "min": 299,
+        "max": 1999
+      },
+      "productCount": 45,
+      "featured": true
+    },
+    {
+      "id": "power-banks",
+      "name": "Power Banks",
+      "slug": "power-banks",
+      "description": "Never run out of battery with our curated selection of power banks under ₹2,000. From 10000mAh to 20000mAh, find the perfect portable charger for your needs.",
+      "imageUrl": "https://placehold.co/600x400/10B981/FFFFFF?text=Power+Banks",
+      "icon": "battery-charging",
+      "priceRange": {
+        "min": 399,
+        "max": 1999
+      },
+      "productCount": 32,
+      "featured": true
+    },
+    {
+      "id": "fast-chargers-cables",
+      "name": "Fast Chargers & Cables",
+      "slug": "fast-chargers-cables",
+      "description": "Speed up your charging with the best fast chargers and cables under ₹2,000. Compatible with all major smartphones and devices with quick charge technology.",
+      "imageUrl": "https://placehold.co/600x400/F59E0B/FFFFFF?text=Fast+Chargers",
+      "icon": "zap",
+      "priceRange": {
+        "min": 199,
+        "max": 1499
+      },
+      "productCount": 58,
+      "featured": true
+    },
+    {
+      "id": "smartwatches",
+      "name": "Smartwatches",
+      "slug": "smartwatches",
+      "description": "Stay connected and track your fitness with budget smartwatches under ₹2,000. Features include heart rate monitoring, SpO2 tracking, and multiple sports modes.",
+      "imageUrl": "https://placehold.co/600x400/8B5CF6/FFFFFF?text=Smartwatches",
+      "icon": "watch",
+      "priceRange": {
+        "min": 799,
+        "max": 1999
+      },
+      "productCount": 28,
+      "featured": true
+    },
+    {
+      "id": "laptop-accessories",
+      "name": "Laptop Accessories",
+      "slug": "laptop-accessories",
+      "description": "Enhance your productivity with laptop accessories under ₹2,000. From wireless mice to laptop stands, find everything you need for your workspace.",
+      "imageUrl": "https://placehold.co/600x400/EC4899/FFFFFF?text=Laptop+Accessories",
+      "icon": "laptop",
+      "priceRange": {
+        "min": 299,
+        "max": 1999
+      },
+      "productCount": 41,
+      "featured": true
+    },
+    {
+      "id": "budget-gadgets-under-999",
+      "name": "Budget Gadgets Under ₹999",
+      "slug": "budget-gadgets-under-999",
+      "description": "Amazing tech gadgets under ₹999! Perfect for students and budget-conscious buyers. Quality products at unbeatable prices.",
+      "imageUrl": "https://placehold.co/600x400/EF4444/FFFFFF?text=Budget+Gadgets",
+      "icon": "tag",
+      "priceRange": {
+        "min": 199,
+        "max": 999
+      },
+      "productCount": 67,
+      "featured": true
+    },
+    {
+      "id": "work-from-home-essentials",
+      "name": "Work From Home Essentials",
+      "slug": "work-from-home-essentials",
+      "description": "Create the perfect home office setup with our WFH essentials under ₹2,000. Webcams, microphones, desk accessories, and more for productive remote work.",
+      "imageUrl": "https://placehold.co/600x400/06B6D4/FFFFFF?text=WFH+Essentials",
+      "icon": "home-office",
+      "priceRange": {
+        "min": 299,
+        "max": 1999
+      },
+      "productCount": 35,
+      "featured": true
+    }
+  ]
+}
