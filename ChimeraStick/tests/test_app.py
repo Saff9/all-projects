@@ -1,0 +1,421 @@
+import os
+import unittest
+import json
+import tempfile
+import shutil
+import importlib
+
+# Dynamically import the module to bypass python's hyphenated folder import restriction
+app_module = importlib.import_module("src.chimera-server.app")
+app = app_module.app
+
+
+class ChimeraServerTestCase(unittest.TestCase):
+    def setUp(self):
+        # Setup application in testing mode
+        app.config["TESTING"] = True
+        app.config["WTF_CSRF_ENABLED"] = False
+        self.app = app.test_client()
+
+        # Create a temporary sandbox directory for test data/config
+        self.test_dir = tempfile.mkdtemp()
+
+        # Override data directories in app module
+        self.old_data_dir = app_module.DATA_DIR
+        self.old_config_file = app_module.CONFIG_FILE
+        self.old_shared_dir = app_module.SHARED_DIR
+
+        app_module.DATA_DIR = self.test_dir
+        app_module.CONFIG_DIR = os.path.join(self.test_dir, "config")
+        app_module.SHARED_DIR = os.path.join(self.test_dir, "shared")
+        app_module.CONFIG_FILE = os.path.join(app_module.CONFIG_DIR, "config.json")
+
+        os.makedirs(app_module.CONFIG_DIR, exist_ok=True)
+        os.makedirs(app_module.SHARED_DIR, exist_ok=True)
+
+        # Re-initialize path boundaries in local tests
+        self.config_file = app_module.CONFIG_FILE
+        self.shared_dir = app_module.SHARED_DIR
+
+        # Force re-initialization of secret key inside the temporary config directory
+        app_module.init_secret_key()
+
+    def tearDown(self):
+        # Restore old directories
+        app_module.DATA_DIR = self.old_data_dir
+        app_module.CONFIG_FILE = self.old_config_file
+        app_module.SHARED_DIR = self.old_shared_dir
+
+        # Clean up temporary test sandbox directory
+        shutil.rmtree(self.test_dir)
+
+    def test_first_run_redirects_to_setup(self):
+        # When no config exists, accessing index should redirect to setup
+        response = self.app.get("/")
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.headers["Location"].endswith("/setup"))
+
+    def test_setup_and_authorization_flow(self):
+        # 1. Fetch setup page
+        response = self.app.get("/setup")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Initialize Server", response.data)
+
+        # Get CSRF token from the session created during the request
+        with self.app.session_transaction() as sess:
+            csrf_token = sess.get("csrf_token")
+            self.assertIsNotNone(csrf_token)
+
+        # 2. Submit Setup Form with matching passwords
+        response = self.app.post(
+            "/setup",
+            data={
+                "password": "supersecureadmin",
+                "confirm_password": "supersecureadmin",
+                "csrf_token": csrf_token,
+            },
+            follow_redirects=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Internet Gateway", response.data)
+
+        # Verify config saved password hash
+        with open(self.config_file) as f:
+            cfg = json.load(f)
+        self.assertIsNotNone(cfg.get("password_hash"))
+        self.assertIsNotNone(cfg.get("secret_key"))
+
+        # Log out
+        self.app.get("/logout")
+
+        # 3. Accessing index now redirects to login
+        response = self.app.get("/")
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.headers["Location"].endswith("/login"))
+
+        # 4. Attempt login with wrong password
+        with self.app.session_transaction() as sess:
+            csrf_token = sess.get("csrf_token")
+
+        response = self.app.post(
+            "/login", data={"password": "wrongpassword", "csrf_token": csrf_token}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Invalid administrator password", response.data)
+
+        # 5. Attempt login with correct password
+        response = self.app.post(
+            "/login",
+            data={"password": "supersecureadmin", "csrf_token": csrf_token},
+            follow_redirects=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Internet Gateway", response.data)
+
+    def test_csrf_middleware_blocks_unauthorized_post(self):
+        # Setup password first
+        with self.app.session_transaction() as sess:
+            sess["csrf_token"] = "token123"
+
+        # Submitting without csrf_token must fail
+        response = self.app.post(
+            "/setup",
+            data={"password": "password123", "confirm_password": "password123"},
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b"Security Check Failed", response.data)
+
+        # Submitting with invalid csrf_token must fail
+        response = self.app.post(
+            "/setup",
+            data={
+                "password": "password123",
+                "confirm_password": "password123",
+                "csrf_token": "wrongtoken",
+            },
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_file_management_security_limits(self):
+        # Initialize credentials and authenticate session
+        with self.app.session_transaction() as sess:
+            sess["authenticated"] = True
+            sess["csrf_token"] = "token123"
+
+        # Create a dummy file in data directory
+        test_file = os.path.join(self.shared_dir, "notes.txt")
+        with open(test_file, "w") as f:
+            f.write("This is secret server documentation.")
+
+        # 1. Browse files
+        response = self.app.get("/files")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"notes.txt", response.data)
+
+        # 2. Download file
+        response = self.app.get("/download/notes.txt")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, b"This is secret server documentation.")
+
+        # 3. Path Traversal blocker check
+        response = self.app.get("/download/../config/config.json")
+        self.assertEqual(response.status_code, 404)
+
+        # 4. Delete file
+        response = self.app.post(
+            "/delete/notes.txt", data={"csrf_token": "token123"}, follow_redirects=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(b"notes.txt", response.data)
+        self.assertFalse(os.path.exists(test_file))
+
+    def test_api_status_payload_structure(self):
+        with self.app.session_transaction() as sess:
+            sess["authenticated"] = True
+
+        response = self.app.get("/api/status")
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+
+        # Verify JSON properties exist
+        self.assertIn("tunnel_status", data)
+        self.assertIn("system_info", data)
+        self.assertIn("local_ip", data)
+        self.assertIn("uptime", data)
+        self.assertIn("services", data)
+
+        # Verify CPU, RAM, Disk structure
+        self.assertIn("cpu", data["system_info"])
+        self.assertIn("ram", data["system_info"])
+        self.assertIn("disk", data["system_info"])
+        self.assertIn("network", data["system_info"])
+
+    def test_settings_route(self):
+        # 1. Unauthenticated request without CSRF should fail with 400 (CSRF Blocked)
+        response = self.app.post(
+            "/settings",
+            data={"discord_webhook": "https://discord.com/api/webhooks/123/456"},
+        )
+        self.assertEqual(response.status_code, 400)
+
+        # 2. Unauthenticated request with valid CSRF should fail with 401 (Unauthorized)
+        with self.app.session_transaction() as sess:
+            sess["csrf_token"] = "token123"
+        response = self.app.post(
+            "/settings",
+            data={
+                "discord_webhook": "https://discord.com/api/webhooks/123/456",
+                "csrf_token": "token123",
+            },
+        )
+        self.assertEqual(response.status_code, 401)
+
+        # Authenticate session
+        with self.app.session_transaction() as sess:
+            sess["authenticated"] = True
+            sess["csrf_token"] = "token123"
+
+        # 3. Authenticated but missing CSRF token should fail with 400
+        response = self.app.post(
+            "/settings",
+            data={"discord_webhook": "https://discord.com/api/webhooks/123/456"},
+        )
+        self.assertEqual(response.status_code, 400)
+
+        # 3. Invalid webhook domain URL should fail
+        response = self.app.post(
+            "/settings",
+            data={
+                "discord_webhook": "https://evil.com/webhooks/123",
+                "csrf_token": "token123",
+            },
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b"Validation Error", response.data)
+
+        # 4. Valid Discord Webhook URL should pass and save to config
+        response = self.app.post(
+            "/settings",
+            data={
+                "discord_webhook": "https://discord.com/api/webhooks/999/888",
+                "csrf_token": "token123",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+
+        # Verify saved in config
+        with open(self.config_file) as f:
+            cfg = json.load(f)
+        self.assertEqual(
+            cfg.get("discord_webhook"), "https://discord.com/api/webhooks/999/888"
+        )
+
+        # 5. Empty settings should clear the webhook
+        response = self.app.post(
+            "/settings", data={"discord_webhook": "", "csrf_token": "token123"}
+        )
+        self.assertEqual(response.status_code, 302)
+        with open(self.config_file) as f:
+            cfg = json.load(f)
+        self.assertIsNone(cfg.get("discord_webhook"))
+
+    def test_deploy_routes(self):
+        # 1. Unauthenticated deploy requests without CSRF should fail with 400
+        response = self.app.post("/deploy/sqlite")
+        self.assertEqual(response.status_code, 400)
+
+        # Authenticate session
+        with self.app.session_transaction() as sess:
+            sess["authenticated"] = True
+            sess["csrf_token"] = "token123"
+
+        # 2. Deploy SQLite
+        response = self.app.post("/deploy/sqlite", data={"csrf_token": "token123"})
+        self.assertEqual(response.status_code, 302)
+
+        # Verify a .sqlite file was created in shared directory
+        files = os.listdir(self.shared_dir)
+        sqlite_files = [f for f in files if f.endswith(".sqlite")]
+        self.assertEqual(len(sqlite_files), 1)
+
+        # 3. Deploy Website
+        response = self.app.post("/deploy/website", data={"csrf_token": "token123"})
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            os.path.exists(os.path.join(self.shared_dir, "website", "index.html"))
+        )
+
+        # 4. Deploy PostgreSQL (Start)
+        response = self.app.post(
+            "/deploy/postgres", data={"action": "start", "csrf_token": "token123"}
+        )
+        self.assertEqual(response.status_code, 302)
+
+        # Check pg status via API
+        response = self.app.get("/api/status")
+        data = json.loads(response.data)
+        self.assertEqual(data["services"]["postgres"], "active")
+        self.assertEqual(data["services"]["website"], "active")
+        self.assertEqual(len(data.get("sqlite_dbs", [])), 1)
+
+        # 5. Deploy PostgreSQL (Stop)
+        response = self.app.post(
+            "/deploy/postgres", data={"action": "stop", "csrf_token": "token123"}
+        )
+        self.assertEqual(response.status_code, 302)
+
+        # Check pg status via API
+        response = self.app.get("/api/status")
+        data = json.loads(response.data)
+        self.assertEqual(data["services"]["postgres"], "inactive")
+
+    def test_api_env_management(self):
+        # Setup CSRF token first
+        with self.app.session_transaction() as sess:
+            sess["csrf_token"] = "token123"
+
+        # 1. Unauthenticated request should fail (returns 400 because CSRF check happens first in before_request, but if we pass CSRF it returns 401)
+        response = self.app.post(
+            "/api/env",
+            data={"key": "TEST_KEY", "value": "val123", "csrf_token": "token123"},
+        )
+        self.assertEqual(response.status_code, 401)
+
+        # Authenticate
+        with self.app.session_transaction() as sess:
+            sess["authenticated"] = True
+            sess["csrf_token"] = "token123"
+
+        # 2. Add environment variable
+        response = self.app.post(
+            "/api/env",
+            json={"key": "DB_PASSWORD", "value": "secret"},
+            headers={"X-CSRF-Token": "token123"},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertTrue(data["success"])
+        self.assertEqual(data["env_vars"]["DB_PASSWORD"], "secret")
+
+        # 3. Retrieve via status API
+        response = self.app.get("/api/status")
+        status_data = json.loads(response.data)
+        self.assertEqual(status_data["env_vars"]["DB_PASSWORD"], "secret")
+
+        # 4. Attempt invalid key name
+        response = self.app.post(
+            "/api/env",
+            json={"key": "123INVALID", "value": "val"},
+            headers={"X-CSRF-Token": "token123"},
+        )
+        self.assertEqual(response.status_code, 400)
+
+        # 5. Delete environment variable
+        response = self.app.delete(
+            "/api/env",
+            json={"key": "DB_PASSWORD"},
+            headers={"X-CSRF-Token": "token123"},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertTrue(data["success"])
+        self.assertNotIn("DB_PASSWORD", data["env_vars"])
+
+    def test_api_sql_query_execution(self):
+        # Authenticate
+        with self.app.session_transaction() as sess:
+            sess["authenticated"] = True
+            sess["csrf_token"] = "token123"
+
+        # 1. Deploy SQLite database
+        self.app.post("/deploy/sqlite", data={"csrf_token": "token123"})
+        files = os.listdir(self.shared_dir)
+        sqlite_files = [f for f in files if f.endswith(".sqlite")]
+        self.assertEqual(len(sqlite_files), 1)
+        db_name = sqlite_files[0]
+
+        # 2. Run query on SQLite database
+        response = self.app.post(
+            "/api/query",
+            json={
+                "db_type": "sqlite",
+                "db_name": db_name,
+                "query": "SELECT name, email FROM users;",
+            },
+            headers={"X-CSRF-Token": "token123"},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertTrue(data["success"])
+        self.assertEqual(data["columns"], ["name", "email"])
+        self.assertEqual(data["rows"], [["Administrator", "admin@chimerastick.local"]])
+
+        # 3. Run query on Postgres (Mock simulation)
+        response = self.app.post(
+            "/api/query",
+            json={
+                "db_type": "postgres",
+                "query": "CREATE TABLE server_status (id INTEGER, online BOOLEAN);",
+            },
+            headers={"X-CSRF-Token": "token123"},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertTrue(data["success"])
+
+        # Run select on Postgres mock
+        response = self.app.post(
+            "/api/query",
+            json={
+                "db_type": "postgres",
+                "query": "SELECT * FROM sqlite_master WHERE type='table';",
+            },
+            headers={"X-CSRF-Token": "token123"},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertTrue(data["success"])
+
+
+if __name__ == "__main__":
+    unittest.main()
