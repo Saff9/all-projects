@@ -1,0 +1,585 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../core/chat_service.dart';
+import '../../core/models.dart';
+import '../../core/ui/avatar.dart';
+
+// three-tab connections screen: Find (search+add), Requests (incoming),
+// Mine (accepted). each tab owns its own data so they refresh independently —
+// parent is just a tab shell. Requests tab pushes its count into the shared
+// ValueNotifier so the appbar badge reflects it without rebuilding the tree.
+class ConnectionsScreen extends StatefulWidget {
+  final bool isInline;
+  final VoidCallback? onClose;
+
+  const ConnectionsScreen({
+    super.key,
+    this.isInline = false,
+    this.onClose,
+  });
+
+  @override
+  State<ConnectionsScreen> createState() => _ConnectionsScreenState();
+}
+
+class _ConnectionsScreenState extends State<ConnectionsScreen> {
+  final ValueNotifier<int> _requestCount = ValueNotifier<int>(0);
+
+  @override
+  void dispose() {
+    _requestCount.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Connections'),
+          automaticallyImplyLeading: !widget.isInline,
+          actions: widget.isInline
+              ? [
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: widget.onClose,
+                  )
+                ]
+              : null,
+          bottom: TabBar(
+            tabs: [
+              const Tab(icon: Icon(Icons.search), text: 'Find'),
+              ValueListenableBuilder<int>(
+                valueListenable: _requestCount,
+                builder: (context, count, _) => Tab(
+                  icon: Badge(
+                    isLabelVisible: count > 0,
+                    label: Text('$count'),
+                    child: const Icon(Icons.notifications_none),
+                  ),
+                  text: 'Requests',
+                ),
+              ),
+              const Tab(icon: Icon(Icons.people_outline), text: 'Mine'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            const _FindTab(),
+            _RequestsTab(countNotifier: _requestCount),
+            const _ConnectionsTab(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// find tab — search by username + connect
+class _FindTab extends StatefulWidget {
+  const _FindTab();
+
+  @override
+  State<_FindTab> createState() => _FindTabState();
+}
+
+class _FindTabState extends State<_FindTab> {
+  final _searchController = TextEditingController();
+  List<AppUser> _results = [];
+  bool _loading = false;
+  Timer? _debounce;
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _debounce?.cancel();
+    super.dispose();
+  }
+
+  // debounced so fast mobile typing doesn't fire a request per keystroke
+  void _onSearchChanged(String q) {
+    _debounce?.cancel();
+    if (q.trim().isEmpty) {
+      _search('');
+      return;
+    }
+    _debounce = Timer(const Duration(milliseconds: 350), () => _search(q));
+  }
+
+  Future<void> _search(String q) async {
+    final query = q.trim();
+    if (query.isEmpty) {
+      if (mounted) setState(() => _results = []);
+      return;
+    }
+    if (mounted) setState(() => _loading = true);
+    try {
+      final results = await context.read<ChatService>().searchUsers(query);
+      if (mounted) setState(() => _results = results);
+    } catch (_) {
+      if (mounted) setState(() => _results = []);
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  Future<void> _connect(String username) async {
+    if (username.isEmpty) return;
+    final api = context.read<ChatService>().api;
+    try {
+      await api.post('/api/social/connect', body: {'to_username': username});
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Request sent to @$username'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+                'Failed: ${e.toString().replaceFirst('Exception: ', '')}'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(12),
+          child: TextField(
+            controller: _searchController,
+            onChanged: _onSearchChanged,
+            onSubmitted: _search,
+            textInputAction: TextInputAction.search,
+            decoration: InputDecoration(
+              hintText: 'Search by username...',
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: _searchController.text.isEmpty
+                  ? null
+                  : IconButton(
+                      tooltip: 'Clear',
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        _searchController.clear();
+                        _search('');
+                      },
+                    ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              filled: true,
+            ),
+          ),
+        ),
+        if (_loading)
+          const Expanded(child: Center(child: CircularProgressIndicator()))
+        else if (_results.isEmpty)
+          Expanded(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.person_search,
+                        size: 72, color: Colors.grey[500]),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Find people',
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Search by username to send a connection request.',
+                      style: TextStyle(color: Colors.grey[500]),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        else
+          Expanded(
+            child: ListView.separated(
+              itemCount: _results.length,
+              separatorBuilder: (_, __) =>
+                  const Divider(height: 1, indent: 76),
+              itemBuilder: (context, index) {
+                final u = _results[index];
+                return ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 4),
+                  leading: AvatarIcon(
+                    iconKey: u.avatarEmoji,
+                    colorName: u.avatarColor,
+                    size: 48,
+                    seed: u.id,
+                  ),
+                  title: Text(
+                    u.name ?? 'Unknown',
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    '@${u.username ?? ''}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: FilledButton.tonalIcon(
+                    onPressed: (u.username?.isEmpty ?? true)
+                        ? null
+                        : () => _connect(u.username!),
+                    icon: const Icon(Icons.person_add_outlined),
+                    label: const Text('Connect'),
+                  ),
+                );
+              },
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+// requests tab — incoming connection requests. pushes count into
+// countNotifier so the appbar badge reflects it
+class _RequestsTab extends StatefulWidget {
+  final ValueNotifier<int> countNotifier;
+  const _RequestsTab({required this.countNotifier});
+
+  @override
+  State<_RequestsTab> createState() => _RequestsTabState();
+}
+
+class _RequestsTabState extends State<_RequestsTab> {
+  List<AppUser> _requests = [];
+  List<String> _requestIds = [];
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final api = context.read<ChatService>().api;
+      final data = await api.get('/api/social/requests');
+      final list = (data['requests'] as List)
+          .map((e) => Map<String, dynamic>.from(e as Map))
+          .toList();
+      if (mounted) {
+        setState(() {
+          _requestIds =
+              list.map((r) => (r['id'] ?? '').toString()).toList();
+          _requests = list
+              .map((r) => AppUser.fromJson(
+                  (r['from'] as Map<String, dynamic>?) ?? const {}))
+              .toList();
+          _loading = false;
+        });
+        widget.countNotifier.value = _requests.length;
+      }
+    } catch (_) {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  Future<void> _accept(String requestId) async {
+    if (requestId.isEmpty) return;
+    try {
+      await context.read<ChatService>().api.post('/api/social/accept/$requestId');
+      if (mounted) _load();
+    } catch (_) {}
+  }
+
+  Future<void> _decline(String requestId) async {
+    if (requestId.isEmpty) return;
+    try {
+      await context.read<ChatService>().api.post('/api/social/decline/$requestId');
+      if (mounted) _load();
+    } catch (_) {}
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_requests.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.inbox_outlined, size: 72, color: Colors.grey[500]),
+              const SizedBox(height: 16),
+              Text(
+                'No pending requests',
+                style: TextStyle(color: Colors.grey[400]),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    return ListView.separated(
+      itemCount: _requests.length,
+      separatorBuilder: (_, __) => const Divider(height: 1, indent: 76),
+      itemBuilder: (context, index) {
+        final from = _requests[index];
+        final requestId = index < _requestIds.length
+            ? _requestIds[index]
+            : '';
+        return ListTile(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          leading: AvatarIcon(
+            iconKey: from.avatarEmoji,
+            colorName: from.avatarColor,
+            size: 48,
+            seed: from.id,
+          ),
+          title: Text(
+            from.name ?? 'Unknown',
+            style: const TextStyle(fontWeight: FontWeight.w600),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            '@${from.username ?? ''}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton.filled(
+                tooltip: 'Accept',
+                onPressed: () => _accept(requestId),
+                icon: const Icon(Icons.check),
+              ),
+              const SizedBox(width: 4),
+              IconButton.outlined(
+                tooltip: 'Decline',
+                onPressed: () => _decline(requestId),
+                icon: const Icon(Icons.close),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+// mine tab — accepted connections
+class _ConnectionsTab extends StatefulWidget {
+  const _ConnectionsTab();
+
+  @override
+  State<_ConnectionsTab> createState() => _ConnectionsTabState();
+}
+
+class _ConnectionsTabState extends State<_ConnectionsTab> {
+  List<AppUser> _connections = [];
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final api = context.read<ChatService>().api;
+      final data = await api.get('/api/social/connections');
+      if (mounted) {
+        setState(() {
+          _connections = (data['connections'] as List)
+              .map((u) => AppUser.fromJson(u as Map<String, dynamic>))
+              .toList();
+          _loading = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_loading) return const Center(child: CircularProgressIndicator());
+    if (_connections.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.people_outline, size: 72, color: Colors.grey[500]),
+              const SizedBox(height: 16),
+              Text(
+                'No connections yet',
+                style: TextStyle(color: Colors.grey[400]),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Search for someone to connect with on the Find tab.',
+                style: TextStyle(color: Colors.grey[500]),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    return ListView.separated(
+      itemCount: _connections.length,
+      separatorBuilder: (_, __) => const Divider(height: 1, indent: 76),
+      itemBuilder: (context, index) {
+        final u = _connections[index];
+        return ListTile(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          leading: AvatarIcon(
+            iconKey: u.avatarEmoji,
+            colorName: u.avatarColor,
+            size: 48,
+            online: u.isOnline,
+            seed: u.id,
+          ),
+          title: Text(
+            u.name ?? 'Unknown',
+            style: const TextStyle(fontWeight: FontWeight.w600),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            '@${u.username ?? ''}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                tooltip: 'Message',
+                icon: const Icon(Icons.chat_bubble_outline, size: 20),
+                onPressed: () async {
+                  try {
+                    final chatService = context.read<ChatService>();
+                    await chatService.createDirectChat(u.id);
+                    if (context.mounted) Navigator.pop(context);
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Failed: ${e.toString().replaceFirst('Exception: ', '')}'),
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                    }
+                  }
+                },
+              ),
+              PopupMenuButton<String>(
+                icon: const Icon(Icons.more_vert, size: 20),
+                onSelected: (value) async {
+                  if (value == 'block') {
+                    final confirmed = await showDialog<bool>(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: const Text('Block user?'),
+                        content: Text('Block @${u.username}? They won\'t be able to send you messages.'),
+                        actions: [
+                          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+                          FilledButton(
+                            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+                            onPressed: () => Navigator.pop(ctx, true),
+                            child: const Text('Block'),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirmed == true && context.mounted) {
+                      try {
+                        await context.read<ChatService>().blockUser(u.id);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('@${u.username} blocked'), behavior: SnackBarBehavior.floating),
+                        );
+                        _load();
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Failed: ${e.toString().replaceFirst('Exception: ', '')}'), behavior: SnackBarBehavior.floating),
+                        );
+                      }
+                    }
+                  } else if (value == 'nickname') {
+                    final controller = TextEditingController(text: u.name);
+                    final nickname = await showDialog<String>(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: const Text('Set nickname'),
+                        content: TextField(
+                          controller: controller,
+                          decoration: const InputDecoration(hintText: 'Nickname'),
+                          autofocus: true,
+                        ),
+                        actions: [
+                          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+                          FilledButton(
+                            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+                            child: const Text('Save'),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (nickname != null && nickname.isNotEmpty && context.mounted) {
+                      try {
+                        final api = context.read<ChatService>().api;
+                        await api.post('/api/social/nickname', body: {
+                          'target_user_id': u.id,
+                          'nickname': nickname,
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Nickname set'), behavior: SnackBarBehavior.floating),
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Failed: ${e.toString().replaceFirst('Exception: ', '')}'), behavior: SnackBarBehavior.floating),
+                        );
+                      }
+                    }
+                  }
+                },
+                itemBuilder: (_) => [
+                  const PopupMenuItem(value: 'nickname', child: Text('Set nickname')),
+                  const PopupMenuItem(value: 'block', child: Text('Block', style: TextStyle(color: Colors.red))),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
