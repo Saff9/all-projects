@@ -1,0 +1,185 @@
+'use client'
+
+import { lazy, Suspense, useEffect } from 'react'
+import { ErrorBoundary } from '@/components/error-boundary'
+import { OfflineIndicator } from '@/components/offline-indicator'
+import { useChatStore } from '@/stores/chat-store'
+import { useSocket } from '@/hooks/use-socket'
+import { Sidebar } from './sidebar'
+import { ChatList } from './chat-list'
+import { ChatWindow } from './chat-window'
+import { AccentApplier } from './accent-applier'
+import { MobileNav } from './mobile-nav'
+import { apiGet, setOnUnauthorized } from '@/lib/api'
+import { initE2EE } from '@/lib/e2ee'
+
+const ChatInfoPanel = lazy(() => import('./chat-info-panel').then(m => ({ default: m.ChatInfoPanel })))
+const SettingsPanel = lazy(() => import('./settings-panel').then(m => ({ default: m.SettingsPanel })))
+const ConnectionsPanel = lazy(() => import('./connections-panel').then(m => ({ default: m.ConnectionsPanel })))
+
+function PanelFallback() {
+  return <div className="w-full sm:w-[380px] shrink-0 border-l bg-sidebar/60" />
+}
+
+import { useState } from 'react'
+import { VoiceCallModal } from './voice-call-modal'
+import { getSocket } from '@/hooks/use-socket'
+
+export function ChatApp() {
+  useSocket()
+
+  const infoPanelOpen = useChatStore(s => s.infoPanelOpen)
+  const settingsOpen = useChatStore(s => s.settingsOpen)
+  const connectionsPanelOpen = useChatStore(s => s.connectionsPanelOpen)
+  const activeChatId = useChatStore(s => s.activeChatId)
+  const chats = useChatStore(s => s.chats)
+  const currentUser = useChatStore(s => s.currentUser)
+  const setChats = useChatStore(s => s.setChats)
+  const setCurrentUser = useChatStore(s => s.setCurrentUser)
+  const setE2eeEnabled = useChatStore(s => s.setE2eeEnabled)
+
+  useEffect(() => {
+    setOnUnauthorized(() => {
+      setCurrentUser(null)
+    })
+    return () => setOnUnauthorized(null)
+  }, [setCurrentUser])
+
+  const [globalCallModalOpen, setGlobalCallModalOpen] = useState(false)
+  const [globalIncomingCallOffer, setGlobalIncomingCallOffer] = useState<any>(null)
+  const [globalCallChat, setGlobalCallChat] = useState<any>(null)
+
+  useEffect(() => {
+    const socket = getSocket()
+    if (!socket) return
+
+    const handleCallOffer = (data: any) => {
+      const matchChat = useChatStore.getState().chats.find(c => c.id === data.chatId)
+      if (matchChat && !useChatStore.getState().settingsOpen && !useChatStore.getState().connectionsPanelOpen) {
+        setGlobalCallChat(matchChat)
+        setGlobalIncomingCallOffer(data)
+        setGlobalCallModalOpen(true)
+      }
+    }
+
+    socket.on('call-offer', handleCallOffer)
+    return () => {
+      socket.off('call-offer', handleCallOffer)
+    }
+  }, [])
+
+  useEffect(() => {
+    // 1. Try loading cached chats instantly from cache
+    if (typeof window !== 'undefined') {
+      const cached = localStorage.getItem('zc-chats')
+      if (cached) {
+        try {
+          const chatsList = JSON.parse(cached)
+          setChats(chatsList)
+          // Attempt instant decryption of keys with cached chats
+          import('@/lib/e2ee').then(({ decryptAndStoreChatKeys }) => {
+            void decryptAndStoreChatKeys(chatsList).catch(err => {
+              console.warn('Initial key decryption failed:', err)
+            })
+          }).catch(() => {})
+        } catch {}
+      }
+    }
+
+    // 2. Fetch fresh chats and user info from the server
+    let mounted = true
+    ;(async () => {
+      try {
+        const [chatsData, meData] = await Promise.all([
+          apiGet<{ chats: any[] }>('/api/chats'),
+          apiGet<{ user: any }>('/api/users/me'),
+        ])
+        if (!mounted) return
+        if (meData?.user) {
+          setCurrentUser(meData.user)
+        } else {
+          setCurrentUser(null)
+          if (typeof window !== 'undefined') localStorage.removeItem('tc_token')
+          return
+        }
+        if (chatsData?.chats) {
+          setChats(chatsData.chats)
+          try {
+            const { decryptAndStoreChatKeys } = await import('@/lib/e2ee')
+            await decryptAndStoreChatKeys(chatsData.chats)
+          } catch (e) {
+            console.error('Group key decryption failed on startup:', e)
+          }
+        }
+
+        try {
+          const e2eeStatus = await initE2EE(meData.user.id)
+          if (mounted) setE2eeEnabled(e2eeStatus.isE2EEEnabled)
+        } catch {}
+      } catch (e: any) {
+        console.warn('Background sync failed to refresh chats/user, keeping cached session:', e)
+      }
+    })()
+    return () => { mounted = false }
+  }, [setChats, setCurrentUser, setE2eeEnabled])
+
+  return (
+    <div className="h-[100dvh] w-full flex flex-col overflow-hidden bg-background select-none">
+      <OfflineIndicator />
+      <AccentApplier />
+      <div className="flex-1 flex overflow-hidden relative">
+        <Sidebar />
+        <div className={`${activeChatId ? 'hidden' : 'flex'} md:flex w-full md:w-[360px] shrink-0 h-full`}>
+          <ChatList />
+        </div>
+        <div className={`${activeChatId ? 'flex' : 'hidden'} md:flex flex-1 min-w-0 relative h-full`}>
+          <ChatWindow />
+        </div>
+
+        {/* Global Right Overlay Panels for Desktop / Full-screen for Mobile */}
+        {settingsOpen && (
+          <ErrorBoundary fallback={<PanelFallback />}>
+            <Suspense fallback={<PanelFallback />}>
+              <div className="fixed inset-0 z-50 md:relative md:inset-auto md:z-20 w-full md:w-[380px] shrink-0 h-full flex bg-background">
+                <SettingsPanel />
+              </div>
+            </Suspense>
+          </ErrorBoundary>
+        )}
+        {connectionsPanelOpen && (
+          <ErrorBoundary fallback={<PanelFallback />}>
+            <Suspense fallback={<PanelFallback />}>
+              <div className="fixed inset-0 z-50 md:relative md:inset-auto md:z-20 w-full md:w-[380px] shrink-0 h-full flex bg-background">
+                <ConnectionsPanel />
+              </div>
+            </Suspense>
+          </ErrorBoundary>
+        )}
+        {infoPanelOpen && activeChatId && (
+          <ErrorBoundary fallback={<PanelFallback />}>
+            <Suspense fallback={<PanelFallback />}>
+              <div className="fixed inset-0 z-50 md:relative md:inset-auto md:z-20 w-full md:w-[340px] shrink-0 h-full flex bg-background">
+                <ChatInfoPanel />
+              </div>
+            </Suspense>
+          </ErrorBoundary>
+        )}
+      </div>
+      <MobileNav />
+
+      {/* Global Incoming Voice Call Modal */}
+      <VoiceCallModal
+        open={globalCallModalOpen}
+        onClose={() => {
+          setGlobalCallModalOpen(false)
+          setGlobalIncomingCallOffer(null)
+          setGlobalCallChat(null)
+        }}
+        chat={globalCallChat}
+        currentUser={currentUser}
+        isIncoming={true}
+        incomingOfferData={globalIncomingCallOffer}
+      />
+    </div>
+  )
+}
