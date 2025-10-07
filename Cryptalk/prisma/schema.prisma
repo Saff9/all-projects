@@ -1,0 +1,2 @@
+// Prisma is not used — the backend uses SQLAlchemy with async sessions.
+// This file is kept as a placeholder only.

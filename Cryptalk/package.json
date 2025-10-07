@@ -1,0 +1,10 @@
+{
+  "name": "cryptalk-scripts",
+  "private": true,
+  "scripts": {
+    "seed": "bun run scripts/seed.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
