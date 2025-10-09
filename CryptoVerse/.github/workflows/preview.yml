@@ -1,0 +1,328 @@
+# ==========================================
+# CryptoVerse Preview Deployments
+# ==========================================
+# This workflow creates preview deployments for pull requests.
+# Each PR gets its own isolated environment for testing.
+#
+# Features:
+# - Automatic preview URL generation
+# - Database migrations for preview
+# - Automatic cleanup on PR close
+# ==========================================
+
+name: Preview Deployment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    paths:
+      - 'cryptoverse/**'
+      - '.github/workflows/**'
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9.0.0'
+  DOCKER_REGISTRY: ghcr.io
+  PREVIEW_DOMAIN: preview.cryptoverse.example.com
+
+jobs:
+  # ==========================================
+  # Build Preview Images
+  # ==========================================
+  build-preview:
+    name: Build Preview Images
+    runs-on: ubuntu-latest
+    if: github.event.action != 'closed'
+    outputs:
+      api_image: ${{ steps.build-api.outputs.image }}
+      frontend_image: ${{ steps.build-frontend.outputs.image }}
+      preview_id: ${{ steps.preview-id.outputs.id }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Generate preview ID
+        id: preview-id
+        run: |
+          # Create a short, URL-safe preview ID from PR number
+          PREVIEW_ID="pr-${{ github.event.pull_request.number }}"
+          echo "id=${PREVIEW_ID}" >> $GITHUB_OUTPUT
+          echo "Preview ID: ${PREVIEW_ID}"
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build and push API image
+        id: build-api
+        uses: docker/build-push-action@v5
+        with:
+          context: ./cryptoverse
+          file: ./cryptoverse/infrastructure/docker/Dockerfile.api
+          push: true
+          tags: |
+            ${{ env.DOCKER_REGISTRY }}/${{ github.repository_owner }}/cryptoverse-api:preview-${{ github.event.pull_request.number }}
+            ${{ env.DOCKER_REGISTRY }}/${{ github.repository_owner }}/cryptoverse-api:preview-${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      - name: Build and push Frontend image
+        id: build-frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./cryptoverse
+          file: ./cryptoverse/infrastructure/docker/Dockerfile.frontend
+          push: true
+          tags: |
+            ${{ env.DOCKER_REGISTRY }}/${{ github.repository_owner }}/cryptoverse-frontend:preview-${{ github.event.pull_request.number }}
+            ${{ env.DOCKER_REGISTRY }}/${{ github.repository_owner }}/cryptoverse-frontend:preview-${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NEXT_PUBLIC_API_URL=https://${{ steps.preview-id.outputs.id }}-api.${{ env.PREVIEW_DOMAIN }}
+            NEXT_PUBLIC_TELEGRAM_BOT_ID=${{ secrets.TELEGRAM_BOT_ID }}
+
+  # ==========================================
+  # Deploy Preview Environment
+  # ==========================================
+  deploy-preview:
+    name: Deploy Preview Environment
+    runs-on: ubuntu-latest
+    needs: build-preview
+    if: github.event.action != 'closed'
+    environment:
+      name: preview-${{ github.event.pull_request.number }}
+      url: https://${{ needs.build-preview.outputs.preview_id }}.${{ env.PREVIEW_DOMAIN }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+      
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+      
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+      
+      - name: Create preview namespace
+        run: |
+          NAMESPACE="${{ needs.build-preview.outputs.preview_id }}"
+          kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
+      
+      - name: Deploy preview with Helm
+        run: |
+          NAMESPACE="${{ needs.build-preview.outputs.preview_id }}"
+          
+          # Create values file for preview
+          cat > preview-values.yaml <<EOF
+          namespace: ${NAMESPACE}
+          
+          api:
+            image: ${{ needs.build-preview.outputs.api_image }}
+            replicas: 1
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                cpu: 250m
+                memory: 256Mi
+            env:
+              NODE_ENV: preview
+              DATABASE_URL: postgresql://preview:preview@postgres:5432/preview
+              REDIS_URL: redis://redis:6379
+              JWT_SECRET: preview-jwt-secret-${{ github.sha }}
+          
+          frontend:
+            image: ${{ needs.build-preview.outputs.frontend_image }}
+            replicas: 1
+            resources:
+              requests:
+                cpu: 50m
+                memory: 64Mi
+              limits:
+                cpu: 100m
+                memory: 128Mi
+          
+          postgres:
+            enabled: true
+            database: preview
+            user: preview
+            password: preview
+          
+          redis:
+            enabled: true
+          
+          ingress:
+            host: ${NAMESPACE}.${{ env.PREVIEW_DOMAIN }}
+            apiHost: ${NAMESPACE}-api.${{ env.PREVIEW_DOMAIN }}
+          EOF
+          
+          # Deploy using kubectl (simplified for this example)
+          cd cryptoverse/infrastructure/kubernetes
+          
+          # Create namespace-specific resources
+          kubectl apply -f namespace.yaml -n ${NAMESPACE} || true
+          
+          # Deploy PostgreSQL (ephemeral for preview)
+          kubectl apply -f postgres-deployment.yaml -n ${NAMESPACE} || true
+          
+          # Deploy Redis
+          kubectl apply -f redis-deployment.yaml -n ${NAMESPACE} || true
+          
+          # Wait for database to be ready
+          kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=postgres -n ${NAMESPACE} --timeout=120s || true
+          
+          # Deploy API
+          sed "s|cryptoverse/api:latest|${{ needs.build-preview.outputs.api_image }}|g" api-deployment.yaml | kubectl apply -n ${NAMESPACE} -f -
+          kubectl apply -f api-service.yaml -n ${NAMESPACE}
+          
+          # Deploy Frontend
+          sed "s|cryptoverse/frontend:latest|${{ needs.build-preview.outputs.frontend_image }}|g" frontend-deployment.yaml | kubectl apply -n ${NAMESPACE} -f -
+          kubectl apply -f frontend-service.yaml -n ${NAMESPACE}
+          
+          # Deploy Ingress
+          sed "s|cryptoverse.example.com|${NAMESPACE}.${{ env.PREVIEW_DOMAIN }}|g" ingress.yaml | kubectl apply -n ${NAMESPACE} -f -
+      
+      - name: Wait for deployment
+        run: |
+          NAMESPACE="${{ needs.build-preview.outputs.preview_id }}"
+          kubectl rollout status deployment/cryptoverse-api -n ${NAMESPACE} --timeout=300s || true
+          kubectl rollout status deployment/cryptoverse-frontend -n ${NAMESPACE} --timeout=300s || true
+      
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const previewUrl = `https://${{ needs.build-preview.outputs.preview_id }}.${{ env.PREVIEW_DOMAIN }}`;
+            const apiUrl = `https://${{ needs.build-preview.outputs.preview_id }}-api.${{ env.PREVIEW_DOMAIN }}`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🚀 Preview Deployment Ready!
+              
+              **Preview URL:** [${previewUrl}](${previewUrl})
+              **API URL:** [${apiUrl}](${apiUrl})
+              
+              ---
+              
+              **Commit:** \`${{ github.sha }}\`
+              **Deployed at:** ${new Date().toISOString()}
+              
+              > This preview will be automatically removed when the PR is closed.`
+            });
+
+  # ==========================================
+  # Cleanup Preview Environment
+  # ==========================================
+  cleanup-preview:
+    name: Cleanup Preview Environment
+    runs-on: ubuntu-latest
+    if: github.event.action == 'closed'
+    
+    steps:
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+      
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+      
+      - name: Delete preview namespace
+        run: |
+          NAMESPACE="pr-${{ github.event.pull_request.number }}"
+          echo "Cleaning up preview environment: ${NAMESPACE}"
+          kubectl delete namespace ${NAMESPACE} --ignore-not-found=true
+      
+      - name: Delete preview images
+        uses: bots-house/ghcr-delete-image-action@v1.1.0
+        with:
+          owner: ${{ github.repository_owner }}
+          name: cryptoverse-api
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: preview-${{ github.event.pull_request.number }}
+        continue-on-error: true
+      
+      - name: Delete frontend preview images
+        uses: bots-house/ghcr-delete-image-action@v1.1.0
+        with:
+          owner: ${{ github.repository_owner }}
+          name: cryptoverse-frontend
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: preview-${{ github.event.pull_request.number }}
+        continue-on-error: true
+      
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🧹 Preview Environment Cleaned Up
+            
+            The preview deployment for this PR has been removed.`
+            });
+
+  # ==========================================
+  # Run Tests on Preview
+  # ==========================================
+  test-preview:
+    name: E2E Tests on Preview
+    runs-on: ubuntu-latest
+    needs: [build-preview, deploy-preview]
+    if: github.event.action != 'closed'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: 'cryptoverse/pnpm-lock.yaml'
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: cryptoverse
+      
+      - name: Run E2E tests
+        run: pnpm test:e2e
+        working-directory: cryptoverse
+        env:
+          E2E_BASE_URL: https://${{ needs.build-preview.outputs.preview_id }}.${{ env.PREVIEW_DOMAIN }}
+          E2E_API_URL: https://${{ needs.build-preview.outputs.preview_id }}-api.${{ env.PREVIEW_DOMAIN }}
+        continue-on-error: true
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: e2e-test-results
+          path: cryptoverse/test-results/
+          retention-days: 7

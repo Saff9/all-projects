@@ -1,0 +1,411 @@
+# ==========================================
+# CryptoVerse CI/CD Pipeline
+# ==========================================
+# This workflow handles:
+# - Linting and type checking
+# - Unit and integration tests
+# - Building Docker images
+# - Deploying to staging/production
+#
+# Required GitHub Secrets:
+# - DOCKER_USERNAME: Docker Hub username
+# - DOCKER_PASSWORD: Docker Hub password/token
+# - KUBE_CONFIG: Base64 encoded kubeconfig
+# - JWT_SECRET: JWT signing secret
+# - TELEGRAM_BOT_TOKEN: Telegram bot token
+# - DATABASE_URL: Database connection string
+# ==========================================
+
+name: CryptoVerse CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'cryptoverse/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'cryptoverse/**'
+      - '.github/workflows/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9.0.0'
+  DOCKER_REGISTRY: docker.io
+  IMAGE_NAME_API: cryptoverse/api
+  IMAGE_NAME_FRONTEND: cryptoverse/frontend
+
+jobs:
+  # ==========================================
+  # Lint and Type Check
+  # ==========================================
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cryptoverse
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: 'cryptoverse/pnpm-lock.yaml'
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Run ESLint
+        run: pnpm lint
+      
+      - name: Run TypeScript type check
+        run: pnpm typecheck
+      
+      - name: Check formatting
+        run: pnpm format:check
+
+  # ==========================================
+  # Unit Tests
+  # ==========================================
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    defaults:
+      run:
+        working-directory: cryptoverse
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: cryptoverse_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: 'cryptoverse/pnpm-lock.yaml'
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Generate Prisma client
+        run: pnpm --filter=@cryptoverse/database db:generate
+      
+      - name: Run database migrations
+        run: pnpm --filter=@cryptoverse/database db:migrate
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/cryptoverse_test
+      
+      - name: Run tests
+        run: pnpm test:ci
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/cryptoverse_test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: test-jwt-secret-key
+          NODE_ENV: test
+      
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./cryptoverse/coverage/lcov.info
+          fail_ci_if_error: false
+
+  # ==========================================
+  # Build Docker Images
+  # ==========================================
+  build:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    outputs:
+      api_image_tag: ${{ steps.meta-api.outputs.tags }}
+      frontend_image_tag: ${{ steps.meta-frontend.outputs.tags }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Extract metadata for API
+        id: meta-api
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME_API }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+      
+      - name: Extract metadata for Frontend
+        id: meta-frontend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+      
+      - name: Build and push API image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./cryptoverse
+          file: ./cryptoverse/infrastructure/docker/Dockerfile.api
+          push: true
+          tags: ${{ steps.meta-api.outputs.tags }}
+          labels: ${{ steps.meta-api.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      - name: Build and push Frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./cryptoverse
+          file: ./cryptoverse/infrastructure/docker/Dockerfile.frontend
+          push: true
+          tags: ${{ steps.meta-frontend.outputs.tags }}
+          labels: ${{ steps.meta-frontend.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NEXT_PUBLIC_API_URL=${{ secrets.API_URL }}
+            NEXT_PUBLIC_TELEGRAM_BOT_ID=${{ secrets.TELEGRAM_BOT_ID }}
+
+  # ==========================================
+  # Deploy to Staging
+  # ==========================================
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/develop'
+    environment:
+      name: staging
+      url: https://staging.cryptoverse.example.com
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+      
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+      
+      - name: Create namespace if not exists
+        run: |
+          kubectl create namespace cryptoverse-staging --dry-run=client -o yaml | kubectl apply -f -
+      
+      - name: Deploy to staging
+        run: |
+          cd cryptoverse/infrastructure/kubernetes
+          
+          # Replace image tags
+          sed -i "s|cryptoverse/api:latest|${{ needs.build.outputs.api_image_tag }}|g" api-deployment.yaml
+          sed -i "s|cryptoverse/frontend:latest|${{ needs.build.outputs.frontend_image_tag }}|g" frontend-deployment.yaml
+          
+          # Apply configurations
+          kubectl apply -f namespace.yaml -n cryptoverse-staging
+          kubectl apply -f configmap.yaml -n cryptoverse-staging
+          kubectl apply -f secrets.yaml -n cryptoverse-staging || true
+          kubectl apply -f postgres-deployment.yaml -n cryptoverse-staging || true
+          kubectl apply -f redis-deployment.yaml -n cryptoverse-staging || true
+          kubectl apply -f api-deployment.yaml -n cryptoverse-staging
+          kubectl apply -f frontend-deployment.yaml -n cryptoverse-staging
+          kubectl apply -f api-service.yaml -n cryptoverse-staging
+          kubectl apply -f frontend-service.yaml -n cryptoverse-staging
+          kubectl apply -f ingress.yaml -n cryptoverse-staging
+      
+      - name: Wait for deployment rollout
+        run: |
+          kubectl rollout status deployment/cryptoverse-api -n cryptoverse-staging --timeout=300s
+          kubectl rollout status deployment/cryptoverse-frontend -n cryptoverse-staging --timeout=300s
+      
+      - name: Verify deployment
+        run: |
+          kubectl get pods -n cryptoverse-staging
+          kubectl get services -n cryptoverse-staging
+          kubectl get ingress -n cryptoverse-staging
+
+  # ==========================================
+  # Deploy to Production
+  # ==========================================
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: https://cryptoverse.example.com
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+      
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+      
+      - name: Create namespace if not exists
+        run: |
+          kubectl create namespace cryptoverse --dry-run=client -o yaml | kubectl apply -f -
+      
+      - name: Deploy to production
+        run: |
+          cd cryptoverse/infrastructure/kubernetes
+          
+          # Replace image tags
+          API_TAG=$(echo "${{ needs.build.outputs.api_image_tag }}" | tr ',' '\n' | grep 'sha-' | head -1)
+          FRONTEND_TAG=$(echo "${{ needs.build.outputs.frontend_image_tag }}" | tr ',' '\n' | grep 'sha-' | head -1)
+          
+          sed -i "s|cryptoverse/api:latest|${API_TAG}|g" api-deployment.yaml
+          sed -i "s|cryptoverse/frontend:latest|${FRONTEND_TAG}|g" frontend-deployment.yaml
+          
+          # Apply configurations
+          kubectl apply -f namespace.yaml
+          kubectl apply -f configmap.yaml
+          kubectl apply -f secrets.yaml || true
+          kubectl apply -f postgres-deployment.yaml || true
+          kubectl apply -f redis-deployment.yaml || true
+          kubectl apply -f api-deployment.yaml
+          kubectl apply -f frontend-deployment.yaml
+          kubectl apply -f api-service.yaml
+          kubectl apply -f frontend-service.yaml
+          kubectl apply -f ingress.yaml
+      
+      - name: Wait for deployment rollout
+        run: |
+          kubectl rollout status deployment/cryptoverse-api -n cryptoverse --timeout=300s
+          kubectl rollout status deployment/cryptoverse-frontend -n cryptoverse --timeout=300s
+      
+      - name: Verify deployment
+        run: |
+          kubectl get pods -n cryptoverse
+          kubectl get services -n cryptoverse
+          kubectl get ingress -n cryptoverse
+      
+      - name: Create GitHub release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.run_number }}
+          name: Release v${{ github.run_number }}
+          body: |
+            ## Changes
+            See commit history for details.
+            
+            ## Docker Images
+            - API: ${{ needs.build.outputs.api_image_tag }}
+            - Frontend: ${{ needs.build.outputs.frontend_image_tag }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ==========================================
+  # Rollback Job (Manual)
+  # ==========================================
+  rollback:
+    name: Rollback Deployment
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment != ''
+    environment:
+      name: ${{ github.event.inputs.environment }}
+    
+    steps:
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+      
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+      
+      - name: Rollback API deployment
+        run: |
+          NAMESPACE=cryptoverse${{ github.event.inputs.environment == 'staging' && '-staging' || '' }}
+          kubectl rollout undo deployment/cryptoverse-api -n $NAMESPACE
+          kubectl rollout status deployment/cryptoverse-api -n $NAMESPACE --timeout=300s
+      
+      - name: Rollback Frontend deployment
+        run: |
+          NAMESPACE=cryptoverse${{ github.event.inputs.environment == 'staging' && '-staging' || '' }}
+          kubectl rollout undo deployment/cryptoverse-frontend -n $NAMESPACE
+          kubectl rollout status deployment/cryptoverse-frontend -n $NAMESPACE --timeout=300s
