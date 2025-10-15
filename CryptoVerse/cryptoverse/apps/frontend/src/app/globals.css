@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables for theming */
+:root {
+  --font-inter: 'Inter', system-ui, sans-serif;
+  
+  /* Colors */
+  --color-primary: 14 165 233;
+  --color-background: 15 23 42;
+  --color-foreground: 248 250 252;
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, rgb(14 165 233) 0%, rgb(6 182 212) 100%);
+  --gradient-gold: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+}
+
+/* Base styles */
+@layer base {
+  html {
+    font-family: var(--font-inter);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply bg-dark-900 text-white;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+  
+  /* Telegram WebApp specific styles */
+  :root {
+    --tg-theme-bg-color: #0f172a;
+    --tg-theme-text-color: #f8fafc;
+    --tg-theme-hint-color: #64748b;
+    --tg-theme-link-color: #0ea5e9;
+    --tg-theme-button-color: #0ea5e9;
+    --tg-theme-button-text-color: #ffffff;
+    --tg-theme-secondary-bg-color: #1e293b;
+  }
+}
+
+/* Component styles */
+@layer components {
+  /* Button variants */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-medium transition-all;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-dark-900;
+    @apply disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  
+  .btn-primary {
+    @apply btn bg-primary-500 text-white hover:bg-primary-600 active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-dark-700 text-white hover:bg-dark-600;
+  }
+  
+  .btn-ghost {
+    @apply btn bg-transparent text-dark-300 hover:bg-dark-800 hover:text-white;
+  }
+  
+  /* Card styles */
+  .card {
+    @apply rounded-2xl border border-dark-700 bg-dark-800/50 p-4 backdrop-blur-sm;
+  }
+  
+  .card-glow {
+    @apply card shadow-glow;
+  }
+  
+  /* Input styles */
+  .input {
+    @apply w-full rounded-xl border border-dark-600 bg-dark-800 px-4 py-2 text-white;
+    @apply placeholder:text-dark-400 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500;
+  }
+  
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+  
+  .badge-gold {
+    @apply badge bg-crypto-gold/20 text-crypto-gold;
+  }
+  
+  .badge-silver {
+    @apply badge bg-crypto-silver/20 text-crypto-silver;
+  }
+  
+  .badge-bronze {
+    @apply badge bg-crypto-bronze/20 text-crypto-bronze;
+  }
+}
+
+/* Utility styles */
+@layer utilities {
+  /* Glow effects */
+  .glow {
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.5);
+  }
+  
+  .glow-gold {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  }
+  
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-400 to-crypto-gold bg-clip-text text-transparent;
+  }
+  
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Safe area insets for mobile */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Telegram safe area */
+  .tg-safe-top {
+    padding-top: var(--tg-safe-area-inset-top, env(safe-area-inset-top));
+  }
+  
+  .tg-safe-bottom {
+    padding-bottom: var(--tg-safe-area-inset-bottom, env(safe-area-inset-bottom));
+  }
+}
+
+/* Animations */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Selection styles */
+::selection {
+  background-color: rgba(14, 165, 233, 0.3);
+  color: white;
+}
+
+/* Focus visible styles */
+:focus-visible {
+  outline: 2px solid rgb(14 165 233);
+  outline-offset: 2px;
+}
