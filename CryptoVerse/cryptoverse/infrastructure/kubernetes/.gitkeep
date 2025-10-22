@@ -1,0 +1,16 @@
+# Kubernetes Configuration
+
+This directory will contain Kubernetes configuration files for production deployment.
+
+## Structure (to be implemented)
+- `namespace.yaml` - Kubernetes namespace
+- `configmap.yaml` - Application configuration
+- `secrets.yaml` - Sensitive configuration
+- `deployments/` - Deployment configurations
+  - `api-deployment.yaml`
+  - `frontend-deployment.yaml`
+- `services/` - Service configurations
+  - `api-service.yaml`
+  - `frontend-service.yaml`
+- `ingress.yaml` - Ingress configuration
+- `hpa.yaml` - Horizontal Pod Autoscaler
