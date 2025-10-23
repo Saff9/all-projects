@@ -1,0 +1,169 @@
+# ==========================================
+# CryptoVerse Ingress Configuration
+# ==========================================
+# Prerequisites:
+# 1. Install NGINX Ingress Controller
+# 2. Install cert-manager for TLS (recommended)
+# 3. Configure DNS records for your domain
+#
+# NGINX Ingress Installation:
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+#
+# cert-manager Installation:
+# kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.2/cert-manager.yaml
+# ==========================================
+
+---
+# ==========================================
+# Ingress for CryptoVerse Application
+# ==========================================
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cryptoverse-ingress
+  namespace: cryptoverse
+  labels:
+    app.kubernetes.io/name: cryptoverse
+    app.kubernetes.io/component: ingress
+  annotations:
+    # NGINX Ingress annotations
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    
+    # SSL Configuration
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
+    nginx.ingress.kubernetes.io/ssl-protocols: "TLSv1.2 TLSv1.3"
+    
+    # Security Headers
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header X-Frame-Options "SAMEORIGIN" always;
+      add_header X-Content-Type-Options "nosniff" always;
+      add_header X-XSS-Protection "1; mode=block" always;
+      add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+      add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://telegram.org; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.cryptoverse.example.com wss://api.cryptoverse.example.com; frame-src https://telegram.org;" always;
+    
+    # Rate Limiting
+    nginx.ingress.kubernetes.io/limit-connections: "100"
+    nginx.ingress.kubernetes.io/limit-rps: "100"
+    nginx.ingress.kubernetes.io/limit-burst: "200"
+    
+    # Proxy Configuration
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "15"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+    
+    # WebSocket Support
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/proxy-set-headers: |
+      Upgrade $http_upgrade;
+      Connection "upgrade";
+    
+    # cert-manager (uncomment if using cert-manager)
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # cert-manager.io/acme-challenge-type: http01
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - cryptoverse.example.com
+        - api.cryptoverse.example.com
+      secretName: cryptoverse-tls
+  rules:
+    # Frontend Route
+    - host: cryptoverse.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cryptoverse-frontend-service
+                port:
+                  number: 3000
+          # API proxy from frontend domain
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: cryptoverse-api-service
+                port:
+                  number: 3001
+    
+    # API Route (dedicated subdomain)
+    - host: api.cryptoverse.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cryptoverse-api-service
+                port:
+                  number: 3001
+
+---
+# ==========================================
+# cert-manager ClusterIssuer (Optional)
+# ==========================================
+# Uncomment this section if using cert-manager
+# apiVersion: cert-manager.io/v1
+# kind: ClusterIssuer
+# metadata:
+#   name: letsencrypt-prod
+# spec:
+#   acme:
+#     server: https://acme-v02.api.letsencrypt.org/directory
+#     email: admin@cryptoverse.example.com
+#     privateKeySecretRef:
+#       name: letsencrypt-prod
+#     solvers:
+#       - http01:
+#           ingress:
+#             class: nginx
+
+---
+# ==========================================
+# cert-manager Certificate (Optional)
+# ==========================================
+# Uncomment this section if using cert-manager
+# apiVersion: cert-manager.io/v1
+# kind: Certificate
+# metadata:
+#   name: cryptoverse-cert
+#   namespace: cryptoverse
+# spec:
+#   secretName: cryptoverse-tls
+#   issuerRef:
+#     name: letsencrypt-prod
+#     kind: ClusterIssuer
+#   dnsNames:
+#     - cryptoverse.example.com
+#     - api.cryptoverse.example.com
+
+---
+# ==========================================
+# Network Policy for Ingress
+# ==========================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cryptoverse-ingress-policy
+  namespace: cryptoverse
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: cryptoverse
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 3000
+        - protocol: TCP
+          port: 3001
