@@ -1,0 +1,14 @@
+# ==========================================
+# CryptoVerse Namespace
+# ==========================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cryptoverse
+  labels:
+    name: cryptoverse
+    app.kubernetes.io/name: cryptoverse
+    app.kubernetes.io/part-of: cryptoverse-platform
+    app.kubernetes.io/managed-by: kubectl
+  annotations:
+    description: "CryptoVerse Telegram Mini App namespace"
