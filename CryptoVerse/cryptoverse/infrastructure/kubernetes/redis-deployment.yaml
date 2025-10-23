@@ -1,0 +1,315 @@
+# ==========================================
+# CryptoVerse Redis Deployment
+# ==========================================
+# NOTE: For production, consider using a managed Redis service like:
+# - AWS ElastiCache
+# - Google Cloud Memorystore
+# - Azure Cache for Redis
+# - Upstash, Redis Cloud, or other managed Redis providers
+#
+# This configuration is suitable for development/staging environments
+# ==========================================
+
+---
+# ==========================================
+# Redis Service
+# ==========================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: cryptoverse
+  labels:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/component: cache
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/component: cache
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: redis
+      protocol: TCP
+
+---
+# ==========================================
+# Redis ConfigMap
+# ==========================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-config
+  namespace: cryptoverse
+  labels:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/component: config
+data:
+  redis.conf: |
+    # Redis Configuration
+    bind 0.0.0.0
+    port 6379
+    protected-mode yes
+    
+    # Memory Management
+    maxmemory 256mb
+    maxmemory-policy allkeys-lru
+    
+    # Persistence (RDB snapshots)
+    save 900 1
+    save 300 10
+    save 60 10000
+    
+    # AOF Persistence
+    appendonly yes
+    appendfsync everysec
+    appendfilename "appendonly.aof"
+    
+    # Performance
+    tcp-keepalive 300
+    timeout 0
+    tcp-backlog 511
+    
+    # Logging
+    loglevel notice
+    logfile ""
+    
+    # Security (use password in production)
+    # requirepass your-redis-password
+    
+    # Disable dangerous commands
+    rename-command FLUSHDB ""
+    rename-command FLUSHALL ""
+    rename-command DEBUG ""
+    rename-command CONFIG ""
+    rename-command SHUTDOWN ""
+    
+    # Client limits
+    maxclients 10000
+
+---
+# ==========================================
+# Redis Deployment
+# ==========================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: cryptoverse
+  labels:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/component: cache
+    app.kubernetes.io/part-of: cryptoverse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: redis
+      app.kubernetes.io/component: cache
+  strategy:
+    type: Recreate  # Use Recreate for stateful workloads
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: redis
+        app.kubernetes.io/component: cache
+        app.kubernetes.io/part-of: cryptoverse
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9121"
+    spec:
+      serviceAccountName: redis
+      securityContext:
+        fsGroup: 999
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+      containers:
+        # Redis Server
+        - name: redis
+          image: redis:7-alpine
+          imagePullPolicy: IfNotPresent
+          command:
+            - redis-server
+            - /etc/redis/redis.conf
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: TCP
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cryptoverse-secrets
+                  key: REDIS_PASSWORD
+                  optional: true
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            exec:
+              command:
+                - redis-cli
+                - ping
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            exec:
+              command:
+                - redis-cli
+                - ping
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+            - name: redis-config
+              mountPath: /etc/redis
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+        
+        # Redis Exporter (Prometheus metrics)
+        - name: redis-exporter
+          image: oliver006/redis_exporter:v1.55.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: metrics
+              containerPort: 9121
+              protocol: TCP
+          env:
+            - name: REDIS_ADDR
+              value: "redis://localhost:6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cryptoverse-secrets
+                  key: REDIS_PASSWORD
+                  optional: true
+          resources:
+            requests:
+              cpu: "25m"
+              memory: "32Mi"
+            limits:
+              cpu: "100m"
+              memory: "64Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: metrics
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: metrics
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+      
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: redis-pvc
+        - name: redis-config
+          configMap:
+            name: redis-config
+        - name: tmp
+          emptyDir: {}
+
+---
+# ==========================================
+# Redis PersistentVolumeClaim
+# ==========================================
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+  namespace: cryptoverse
+  labels:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/component: storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard  # Change to your storage class
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+# ==========================================
+# Redis Service Account
+# ==========================================
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: redis
+  namespace: cryptoverse
+  labels:
+    app.kubernetes.io/name: redis
+automountServiceAccountToken: false
+
+---
+# ==========================================
+# Redis Network Policy
+# ==========================================
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: redis-network-policy
+  namespace: cryptoverse
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: redis
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow connections from API pods only
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: cryptoverse-api
+      ports:
+        - protocol: TCP
+          port: 6379
+        - protocol: TCP
+          port: 9121  # Metrics
+  egress:
+    # Allow DNS resolution
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
