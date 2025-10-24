@@ -1,0 +1,343 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// User Models
+// ==========================================
+
+model User {
+  id            String    @id @default(cuid())
+  telegramId    String    @unique
+  username      String?
+  firstName     String?
+  lastName      String?
+  photoUrl      String?
+  coins         BigInt    @default(0)
+  miningRate    Float     @default(1.0)
+  totalMined    BigInt    @default(0)
+  energy        Int       @default(1000)
+  maxEnergy     Int       @default(1000)
+  energyUpdatedAt DateTime @default(now())
+  referralCode  String    @unique
+  referredBy    String?
+  referredByUser User?    @relation("Referrals", fields: [referredBy], references: [id])
+  referrals     User[]    @relation("Referrals")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  characters    UserCharacter[]
+  achievements  UserAchievement[]
+  quests        UserQuest[]
+  airdrops      UserAirdrop[]
+  wallets       Wallet[]
+  miningSessions MiningSession[]
+  stats         UserStats?
+
+  @@index([telegramId])
+  @@index([referralCode])
+  @@index([coins])
+}
+
+model UserStats {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalTaps           BigInt   @default(0)
+  totalEarned         BigInt   @default(0)
+  achievementsUnlocked Int    @default(0)
+  charactersOwned     Int      @default(0)
+  questsCompleted     Int      @default(0)
+  currentStreak       Int      @default(0)
+  bestStreak          Int      @default(0)
+  lastActiveAt        DateTime @default(now())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// ==========================================
+// Character Models
+// ==========================================
+
+enum CharacterRarity {
+  COMMON
+  UNCOMMON
+  RARE
+  EPIC
+  LEGENDARY
+}
+
+model Character {
+  id                  String            @id @default(cuid())
+  name                String
+  description         String?
+  imageUrl            String?
+  rarity              CharacterRarity   @default(COMMON)
+  baseMiningBonus     Float             @default(1.0)
+  specialAbility      String?
+  maxLevel            Int               @default(10)
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  // Relations
+  userCharacters      UserCharacter[]
+
+  @@index([rarity])
+}
+
+model UserCharacter {
+  id            String      @id @default(cuid())
+  userId        String
+  characterId   String
+  level         Int         @default(1)
+  experience    BigInt      @default(0)
+  acquiredAt    DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  character     Character   @relation(fields: [characterId], references: [id])
+
+  @@unique([userId, characterId])
+  @@index([userId])
+  @@index([characterId])
+}
+
+// ==========================================
+// Mining Models
+// ==========================================
+
+model MiningSession {
+  id          String    @id @default(cuid())
+  userId      String
+  startTime   DateTime  @default(now())
+  endTime     DateTime?
+  coinsEarned BigInt    @default(0)
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isActive])
+}
+
+model MiningBoost {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  multiplier  Float
+  duration    Int       // Duration in seconds
+  cost        BigInt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ==========================================
+// Achievement Models
+// ==========================================
+
+enum AchievementCategory {
+  MINING
+  SOCIAL
+  COLLECTION
+  QUEST
+  SPECIAL
+}
+
+model Achievement {
+  id            String              @id @default(cuid())
+  name          String
+  description   String?
+  icon          String?
+  category      AchievementCategory @default(MINING)
+  requirement   Int
+  reward        BigInt
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  // Relations
+  userAchievements UserAchievement[]
+
+  @@index([category])
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  achievementId String
+  progress      Int         @default(0)
+  unlockedAt    DateTime?
+  claimed       Boolean     @default(false)
+  claimedAt     DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+
+  @@unique([userId, achievementId])
+  @@index([userId])
+  @@index([achievementId])
+  @@index([claimed])
+}
+
+// ==========================================
+// Quest Models
+// ==========================================
+
+enum QuestType {
+  DAILY
+  WEEKLY
+  SPECIAL
+}
+
+enum QuestStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CLAIMED
+}
+
+model Quest {
+  id            String      @id @default(cuid())
+  name          String
+  description   String?
+  type          QuestType   @default(DAILY)
+  requirement   Int
+  reward        BigInt
+  expiresAt     DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  userQuests    UserQuest[]
+
+  @@index([type])
+  @@index([expiresAt])
+}
+
+model UserQuest {
+  id          String      @id @default(cuid())
+  userId      String
+  questId     String
+  progress    Int         @default(0)
+  status      QuestStatus @default(PENDING)
+  startedAt   DateTime    @default(now())
+  completedAt DateTime?
+  claimedAt   DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Relations
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quest       Quest       @relation(fields: [questId], references: [id])
+
+  @@unique([userId, questId])
+  @@index([userId])
+  @@index([questId])
+  @@index([status])
+}
+
+// ==========================================
+// Airdrop Models
+// ==========================================
+
+model Airdrop {
+  id            String    @id @default(cuid())
+  name          String
+  description   String?
+  totalTokens   BigInt
+  tokensPerUser BigInt
+  startDate     DateTime
+  endDate       DateTime
+  requirements  String[]  // JSON array of requirements
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  userAirdrops  UserAirdrop[]
+
+  @@index([isActive])
+  @@index([startDate])
+  @@index([endDate])
+}
+
+model UserAirdrop {
+  id          String    @id @default(cuid())
+  userId      String
+  airdropId   String
+  eligible    Boolean   @default(false)
+  claimed     Boolean   @default(false)
+  claimedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  airdrop     Airdrop   @relation(fields: [airdropId], references: [id])
+
+  @@unique([userId, airdropId])
+  @@index([userId])
+  @@index([airdropId])
+  @@index([eligible])
+  @@index([claimed])
+}
+
+// ==========================================
+// Wallet Models
+// ==========================================
+
+model Wallet {
+  id          String    @id @default(cuid())
+  userId      String
+  address     String
+  network     String    @default("ethereum")
+  isVerified  Boolean   @default(false)
+  verifiedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, address])
+  @@index([userId])
+  @@index([address])
+}
+
+// ==========================================
+// Leaderboard Models
+// ==========================================
+
+enum LeaderboardType {
+  COINS
+  MINING
+  ACHIEVEMENTS
+  REFERRALS
+}
+
+model LeaderboardSnapshot {
+  id          String          @id @default(cuid())
+  type        LeaderboardType
+  data        String          // JSON string of leaderboard entries
+  capturedAt  DateTime        @default(now())
+
+  @@index([type])
+  @@index([capturedAt])
+}
