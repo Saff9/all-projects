@@ -1,0 +1,37 @@
+{
+  "name": "cryptoverse",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CryptoVerse - A production-ready crypto Telegram Mini App",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "api:dev": "turbo run dev --filter=@cryptoverse/api",
+    "api:build": "turbo run build --filter=@cryptoverse/api",
+    "frontend:dev": "turbo run dev --filter=@cryptoverse/frontend",
+    "frontend:build": "turbo run build --filter=@cryptoverse/frontend",
+    "db:generate": "turbo run db:generate --filter=@cryptoverse/database",
+    "db:push": "turbo run db:push --filter=@cryptoverse/database",
+    "db:migrate": "turbo run db:migrate --filter=@cryptoverse/database",
+    "db:seed": "turbo run db:seed --filter=@cryptoverse/database",
+    "db:studio": "turbo run db:studio --filter=@cryptoverse/database"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.3.2"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}
