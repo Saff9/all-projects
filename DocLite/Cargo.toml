@@ -1,0 +1,47 @@
+﻿[package]
+name = "doclite"
+version = "0.1.0"
+edition = "2021"
+authors = ["DocLite Contributors"]
+description = "A fast, embedded, serverless NoSQL document database engine with ACID transactions, WAL, B+Tree indexing, and MongoDB-compatible queries (SQLite for NoSQL)."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/saff9/DocLite"
+homepage = "https://github.com/saff9/DocLite"
+keywords = ["nosql", "database", "embedded", "document-store", "sqlite"]
+categories = ["database-implementations", "embedded-systems", "data-structures"]
+readme = "README.md"
+
+[lib]
+name = "doclite"
+crate-type = ["rlib", "cdylib", "staticlib"]
+
+[[bin]]
+name = "doclite"
+path = "src/bin/main.rs"
+test = false
+
+[[example]]
+name = "rust_quickstart"
+path = "examples/rust_quickstart.rs"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["preserve_order"] }
+byteorder = "1.5"
+crc32fast = "1.4"
+parking_lot = "0.12"
+regex = "1.10"
+rand = "0.8"
+clap = { version = "4.5", features = ["derive"] }
+colored = "2.1"
+rustyline = "14.0"
+lazy_static = "1.5"
+
+[dev-dependencies]
+tempfile = "3.10"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
