@@ -1,0 +1,34 @@
+﻿[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "doclite"
+version = "0.1.0"
+description = "Python driver for DocLite - The serverless embedded NoSQL document database (SQLite for NoSQL)"
+readme = "../README.md"
+requires-python = ">=3.8"
+license = { text = "MIT OR Apache-2.0" }
+authors = [
+    { name = "DocLite Contributors" }
+]
+keywords = ["nosql", "database", "embedded", "document-store", "sqlite", "mongodb"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Database :: Database Engines/Servers",
+]
+
+[project.urls]
+Homepage = "https://github.com/saff9/DocLite"
+Repository = "https://github.com/saff9/DocLite.git"
+"Bug Tracker" = "https://github.com/saff9/DocLite/issues"
+Funding = "https://razorpay.me/@CodeChap?amount=kXxURMaXFk%2Bmrv%2B9uGrYpg%3D%3D"
