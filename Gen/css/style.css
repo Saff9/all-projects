@@ -1,0 +1,52 @@
+:root{
+  --bg:#f6fbfd;
+  --panel:#ffffff;
+  --muted:#6b7785;
+  --text:#112133;
+  --accent:#17a2b8;
+  --accent-2:#00c851;
+  --radius:12px;
+  --shadow: 0 8px 30px rgba(16,24,32,0.06);
+  --container:980px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+.container{max-width:var(--container);margin:20px auto;padding:16px}
+.site-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:transparent;max-width:var(--container);margin:18px auto}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:56px;height:56px;border-radius:12px;object-fit:cover;box-shadow:var(--shadow)}
+.title{font-family:Poppins,Inter;font-weight:700;margin:0}
+.subtitle{color:var(--muted);font-size:13px}
+.main-nav{display:flex;gap:8px;align-items:center}
+.nav-link{padding:8px 12px;border-radius:999px;border:1px solid rgba(17,33,51,0.06);text-decoration:none;color:var(--text);cursor:pointer}
+.nav-link.cta{background:linear-gradient(90deg,var(--accent),#5ad1d6);color:#fff;border:0}
+.nav-link.active{background:#e9fbfd;border:0}
+.admin-btn{background:transparent;border:0;padding:6px 10px}
+
+/* cards and layout */
+.card{background:var(--panel);padding:14px;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:12px}
+.hero{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.hero-stats{display:flex;gap:12px;margin-top:8px}
+.hero-stats > div{min-width:90px}
+.muted{color:var(--muted);font-size:13px}
+.btn{padding:8px 12px;border-radius:10px;border:1px solid rgba(17,33,51,0.06);cursor:pointer;background:transparent}
+.btn.primary{background:var(--accent);color:#fff;border:0}
+.section-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:8px}
+.section-head input{padding:8px;border-radius:8px;border:1px solid rgba(17,33,51,0.06);width:240px}
+.list .post{margin-bottom:12px}
+.post .post-body{margin-top:8px;line-height:1.5}
+.skeleton{background:linear-gradient(90deg,#eee,#f6f6f6,#eee);background-size:200% 100%;animation:shimmer 1.2s infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skeleton.h-10{height:10px;border-radius:6px}
+.skeleton-card{padding:12px}
+
+/* about layout */
+.about-card{display:flex;gap:18px;align-items:center}
+.about-img{width:120px;height:120px;border-radius:12px;object-fit:cover}
+
+/* footer */
+.site-footer{text-align:center;color:var(--muted);margin:24px 0}
+
+/* responsive */
+@media(max-width:920px){ .hero{flex-direction:column;align-items:flex-start} .section-head input{width:100%} .main-nav{flex-wrap:wrap;gap:6px} .about-card{flex-direction:column;align-items:flex-start} }
