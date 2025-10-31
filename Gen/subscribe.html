@@ -1,0 +1,56 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Subscribe — Apex Smart</title>
+  <meta name="description" content="Subscribe to Saffan for updates — Apex Smart" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand"><img src="/assets/logo.jpg" class="logo" /><div><h1 class="title">Apex Smart</h1></div></div>
+    <nav class="main-nav">
+      <a href="/index.html" class="nav-link">Home</a>
+      <a href="/blog.html" class="nav-link">Blog</a>
+      <a href="/about.html" class="nav-link">About</a>
+      <a href="/subscribe.html" class="nav-link active cta">Subscribe</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Subscribe to Saffan</h2>
+      <p>Get notified when a new post is published. We'll store your contact solely for notifications.</p>
+      <input id="subName" class="input" placeholder="Your name (optional)" />
+      <input id="subEmail" class="input" placeholder="Email (recommended)" />
+      <input id="subPhone" class="input" placeholder="Phone (optional)" />
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button id="subscribeBtn" class="btn primary">Subscribe</button>
+        <button id="signupBtn" class="btn">Sign up (create account)</button>
+      </div>
+      <div id="subMsg" class="muted" style="margin-top:10px"></div>
+    </section>
+
+    <section class="card" style="margin-top:12px">
+      <h3>Sign in</h3>
+      <input id="loginEmail" class="input" placeholder="Email" />
+      <input id="loginPass" class="input" placeholder="Password" type="password" />
+      <div style="display:flex;gap:8px">
+        <button id="loginBtn" class="btn primary">Sign in</button>
+        <button id="logoutBtn" class="btn" style="display:none">Sign out</button>
+      </div>
+      <div id="authMsg" class="muted" style="margin-top:10px"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">© 2025 Apex Smart</footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/subscribe.js"></script>
+</body>
+</html>
