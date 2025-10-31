@@ -1,0 +1,3 @@
+﻿User-agent: *
+Allow: /
+Sitemap: https://saff9.github.io/ApexSmart-/sitemap.xml
