@@ -1,0 +1,194 @@
+﻿Analyzing idle_city_flutter...                                  
+
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:11:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:12:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:23:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:24:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:35:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:36:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:47:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:48:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:59:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:60:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:72:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:73:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:84:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:85:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:96:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:97:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:108:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:109:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:120:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:121:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:133:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:134:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:145:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:146:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:157:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:158:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:169:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:170:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:181:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:182:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:194:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:195:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:206:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:207:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:218:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:219:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:230:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:231:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:242:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:243:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:255:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:256:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:267:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:268:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:279:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:280:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:291:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:292:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:303:18 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:304:17 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:12:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:13:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:14:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:15:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:16:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:22:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:23:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:24:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:25:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:26:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:32:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:33:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:34:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:35:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:36:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:44:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:45:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:46:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:47:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:48:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:49:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:55:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:56:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:57:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:58:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:59:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:60:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:66:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:67:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:68:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:69:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:70:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:71:12 - undefined_identifier
+  error - element isn't a type - lib\models\creature.dart:81:9 - not_a_type
+  error - rarity isn't a type - lib\models\creature.dart:82:9 - not_a_type
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:109:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:148:72 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:191:53 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:202:65 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:207:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:229:82 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:323:36 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:323:64 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:328:49 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:331:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:331:73 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:335:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:357:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:357:80 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:360:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:403:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:406:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:406:76 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:409:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:425:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:456:61 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:458:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:461:49 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:461:81 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:470:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:496:53 - deprecated_member_use
+  error - Undefined class 'CreatureElement' - lib\screens\creature_screen.dart:15:3 - undefined_class
+  error - Undefined name 'CreatureRarity' - lib\screens\creature_screen.dart:26:68 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\screens\creature_screen.dart:82:24 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:146:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:182:30 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:258:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:384:49 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:407:43 - deprecated_member_use
+warning - Unused import: '../models/creature.dart' - lib\screens\dashboard_screen.dart:6:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:35:65 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:38:50 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:77:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:79:75 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:333:36 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:349:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:386:36 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:412:36 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:414:55 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:439:32 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:447:59 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:447:87 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:143:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:148:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:220:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:240:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:241:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:246:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:250:50 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:281:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:284:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:53:52 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:55:71 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:126:74 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:148:55 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:173:51 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:175:70 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:311:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:349:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings_screen.dart:24:52 - deprecated_member_use
+  error - The named parameter 'border' isn't defined - lib\screens\settings_screen.dart:218:7 - undefined_named_parameter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings_screen.dart:218:61 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings_screen.dart:253:65 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings_screen.dart:260:30 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings_screen.dart:275:67 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:86:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:91:31 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:108:21 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:116:26 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:121:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:126:31 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:149:25 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\daily_reward_dialog.dart:46:46 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\daily_reward_dialog.dart:49:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\daily_reward_dialog.dart:110:52 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\daily_reward_dialog.dart:111:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\daily_reward_dialog.dart:117:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\daily_reward_dialog.dart:118:46 - deprecated_member_use
+
+flutter : 168 
+issues found. (ran 
+in 3.0s)
+At line:1 char:1
++ flutter analyze 
+--no-pub 2>&1 | 
+Out-File -FilePath 
+"analyze_output_v4 
+...
++ ~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
+    + CategoryInfo 
+             : No  
+  tSpecified: (1   
+ 68 issues foun    
+d. (ran in 3.0    
+s):String) [],     
+RemoteExcepti    on
+    + FullyQualifi 
+   edErrorId : Na  
+  tiveCommandErr   
+ or
+ 
