@@ -1,0 +1,321 @@
+﻿Analyzing idle_city_flutter...                                  
+
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:8:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:8:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:10:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:10:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:10:48 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:10:64 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:14:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:14:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:16:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:16:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:16:48 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:16:64 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:20:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:20:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:22:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:22:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:22:48 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:22:64 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:26:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:26:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:28:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:28:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:28:48 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:28:64 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:32:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:32:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:34:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:34:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:34:48 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:34:64 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:40:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:40:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:42:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:42:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:42:49 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:42:65 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:46:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:46:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:48:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:48:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:48:49 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:48:65 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:52:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:52:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:54:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:54:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:54:49 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:54:65 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:58:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:58:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:60:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:60:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:60:49 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:60:65 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:64:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:64:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:66:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:66:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:66:49 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:66:65 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:72:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:72:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:74:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:74:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:74:49 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:74:65 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:78:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:78:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:80:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:80:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:80:49 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:80:65 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:84:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:84:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:86:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:86:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:86:49 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:86:65 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:90:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:90:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:92:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:92:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:92:49 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:92:65 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:96:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:96:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:98:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:98:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:98:49 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:98:65 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:104:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:104:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:106:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:106:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:106:47 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:106:63 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:110:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:110:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:112:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:112:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:112:47 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:112:63 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:116:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:116:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:118:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:118:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:118:47 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:118:63 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:122:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:122:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:124:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:124:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:124:47 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:124:63 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:128:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:128:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:130:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:130:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:130:47 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:130:63 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:136:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:136:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:138:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:138:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:138:50 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:138:66 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:142:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:142:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:144:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:144:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:144:50 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:144:66 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:148:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:148:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:150:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:150:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:150:50 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:150:66 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:154:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:154:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:156:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:156:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:156:50 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:156:66 - undefined_identifier
+  error - The named parameter 'element' is required, but there's no corresponding argument - lib\data\creature_data.dart:160:7 - missing_required_argument
+  error - The named parameter 'rarity' is required, but there's no corresponding argument - lib\data\creature_data.dart:160:7 - missing_required_argument
+  error - The named parameter 'CreatureElement' isn't defined - lib\data\creature_data.dart:162:9 - undefined_named_parameter
+  error - Undefined name 'CreatureElement' - lib\data\creature_data.dart:162:26 - undefined_identifier
+  error - The named parameter 'CreatureRarity' isn't defined - lib\data\creature_data.dart:162:50 - undefined_named_parameter
+  error - Undefined name 'CreatureRarity' - lib\data\creature_data.dart:162:66 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:12:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:13:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:14:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:15:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:16:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:22:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:23:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:24:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:25:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:26:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:32:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:33:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:34:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:35:12 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\models\creature.dart:36:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:44:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:45:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:46:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:47:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:48:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:49:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:55:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:56:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:57:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:58:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:59:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:60:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:66:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:67:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:68:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:69:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:70:12 - undefined_identifier
+  error - Undefined name 'CreatureRarity' - lib\models\creature.dart:71:12 - undefined_identifier
+  error - element isn't a type - lib\models\creature.dart:81:9 - not_a_type
+  error - rarity isn't a type - lib\models\creature.dart:82:9 - not_a_type
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:109:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:148:72 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:191:53 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:202:65 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:207:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:229:82 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:323:36 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:323:64 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:328:49 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:331:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:331:73 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:335:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:357:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:357:80 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:360:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:403:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:406:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:406:76 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:409:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:425:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:456:61 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:458:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:461:49 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:461:81 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:470:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\business_screen.dart:496:53 - deprecated_member_use
+  error - Undefined name 'CreatureRarity' - lib\screens\creature_screen.dart:47:71 - undefined_identifier
+  error - Undefined name 'CreatureElement' - lib\screens\creature_screen.dart:77:26 - undefined_identifier
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:165:26 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:203:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:203:72 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:205:49 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:208:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:208:69 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:212:41 - deprecated_member_use
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:247:31 - undefined_getter
+  error - The getter 'CreatureElement' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:261:37 - undefined_getter
+  error - The getter 'CreatureElement' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:265:30 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:278:32 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:293:35 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:305:28 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:309:37 - undefined_getter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:321:53 - deprecated_member_use
+  error - The getter 'CreatureElement' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:322:39 - undefined_getter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:373:41 - deprecated_member_use
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:386:34 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:387:34 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:392:56 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:395:41 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:410:37 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:419:35 - undefined_getter
+  error - The getter 'CreatureElement' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:419:76 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:424:32 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:425:81 - undefined_getter
+  error - The getter 'CreatureElement' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:480:62 - undefined_getter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:489:57 - deprecated_member_use
+  error - The getter 'CreatureElement' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:490:43 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:510:42 - undefined_getter
+  error - The getter 'CreatureElement' isn't defined for the type 'Creature' - lib\screens\creature_screen.dart:511:42 - undefined_getter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:538:55 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\creature_screen.dart:546:55 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:33:65 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:36:50 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:75:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:77:75 - deprecated_member_use
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\dashboard_screen.dart:247:53 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\dashboard_screen.dart:259:55 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\dashboard_screen.dart:268:48 - undefined_getter
+  error - The getter 'CreatureRarity' isn't defined for the type 'Creature' - lib\screens\dashboard_screen.dart:269:97 - undefined_getter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:331:36 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:347:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:384:36 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:410:36 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\dashboard_screen.dart:412:55 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:143:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:148:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:220:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:240:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:241:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:246:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:250:50 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:281:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\home_screen.dart:284:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:53:52 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:55:71 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:126:74 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:148:55 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:173:51 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:175:70 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:311:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\prestige_screen.dart:349:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings_screen.dart:24:52 - deprecated_member_use
+  error - The named parameter 'border' isn't defined - lib\screens\settings_screen.dart:218:7 - undefined_named_parameter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings_screen.dart:218:61 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings_screen.dart:253:65 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings_screen.dart:260:30 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings_screen.dart:275:67 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:86:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:91:31 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:108:21 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:116:26 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:121:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:126:31 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\theme\app_theme.dart:149:25 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\daily_reward_dialog.dart:46:46 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\daily_reward_dialog.dart:49:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\daily_reward_dialog.dart:110:52 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\daily_reward_dialog.dart:111:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\daily_reward_dialog.dart:117:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\daily_reward_dialog.dart:118:46 - deprecated_member_use
+
+flutter : 295 
+issues found. (ran 
+in 3.5s)
+At line:1 char:1
++ flutter analyze 
+--no-pub 2>&1 | 
+Out-File -FilePath 
+"analyze_output_v3 
+...
++ ~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
+    + CategoryInfo 
+             : No  
+  tSpecified: (2   
+ 95 issues foun    
+d. (ran in 3.5    
+s):String) [],     
+RemoteExcepti    on
+    + FullyQualifi 
+   edErrorId : Na  
+  tiveCommandErr   
+ or
+ 
