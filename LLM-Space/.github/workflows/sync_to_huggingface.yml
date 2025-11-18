@@ -1,0 +1,36 @@
+name: Sync to Hugging Face Spaces
+
+on:
+  push:
+    branches: [main]
+  # Allows manual triggers from GitHub UI
+  workflow_dispatch:
+
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Push Code to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          if [ -z "$HF_TOKEN" ]; then
+            echo "::error::HF_TOKEN secret is missing! Please configure your Hugging Face Write Token in GitHub Secrets."
+            echo "Go to: GitHub Repository -> Settings -> Secrets and variables -> Actions -> 'New repository secret'"
+            echo "Name: HF_TOKEN"
+            echo "Value: Your Hugging Face Access Token (Get one at https://huggingface.co/settings/tokens)"
+            exit 1
+          fi
+          
+          # Force push to HF space using the universal x-token-auth username
+          git remote add hf https://huggingface.co/spaces/Saffn/llm || true
+          git push --force https://x-token-auth:$HF_TOKEN@huggingface.co/spaces/Saffn/llm main
+
+
+
