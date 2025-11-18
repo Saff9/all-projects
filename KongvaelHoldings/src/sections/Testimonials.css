@@ -1,0 +1,115 @@
+.testimonials__header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.testimonials__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-12);
+}
+
+.testimonials__card {
+    padding: var(--space-6);
+}
+
+.testimonials__stars {
+    font-size: var(--fs-sm);
+    margin-bottom: var(--space-3);
+}
+
+.testimonials__text {
+    font-size: var(--fs-sm);
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-5);
+}
+
+.testimonials__author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.testimonials__avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: white;
+    flex-shrink: 0;
+}
+
+.testimonials__info {
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonials__name {
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.testimonials__role {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+}
+
+/* CTA */
+.testimonials__cta {
+    text-align: center;
+    padding: var(--space-8);
+    background: var(--bg-glass-medium);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-glass);
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonials__cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+}
+
+.testimonials__cta-count {
+    font-size: var(--fs-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-4);
+}
+
+.testimonials__cta-count strong {
+    color: var(--text-primary);
+}
+
+.testimonials__cta h3 {
+    font-size: var(--fs-xl);
+    margin-bottom: 8px;
+}
+
+.testimonials__cta p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-4);
+}
+
+@media (max-width: 768px) {
+    .testimonials__grid {
+        grid-template-columns: 1fr;
+    }
+}
