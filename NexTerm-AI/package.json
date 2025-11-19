@@ -1,0 +1,17 @@
+{
+  "name": "nexterm-ai",
+  "private": true,
+  "version": "1.0.0",
+  "description": "NexTerm AI — Agentic Terminal powered by multiple AI providers",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview --host",
+    "test:build": "vite build --mode test"
+  },
+  "devDependencies": {
+    "terser": "^5.46.1",
+    "vite": "^7.3.1"
+  }
+}
