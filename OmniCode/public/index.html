@@ -1,0 +1,905 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  
+  <!-- Google Search Console Site Verification -->
+  <meta name="google-site-verification" content="Q7mAqyFVwG2zeScg2UAuMLlidBEjgjwhvFngytF5_Ko">
+  <meta name="google-site-verification" content="zfi0SQfCZoenZcVVjw3EWg-VlwQUjHi9NTNCDddscUE">
+  
+  <!-- Primary SEO Metadata -->
+  <title>OmniCode // Sovereign Public Codebase Meta-Forge & Universal AST Search</title>
+  <meta name="description" content="OmniCode is the autonomous meta-forge indexing all public open-source software with sub-millisecond AST symbol search, polyglot algorithm comparator, and Obsidian-style neural universe cluster graphs.">
+  <meta name="keywords" content="github alternative, open source code indexer, ast symbol search, code explorer, polyglot programming, git repository search, obsidian graph code visualizer">
+  <meta name="author" content="OmniCode Sovereign Engine">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" id="canonical-link" href="/">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/jpeg" href="assets/logo.jpg" loading="lazy">
+  <meta name="theme-color" content="#07090e">
+  
+  <!-- Open Graph / Facebook / LinkedIn Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" id="og-url" content="/">
+  <meta property="og:title" content="OmniCode // Sovereign Public Codebase Meta-Forge">
+  <meta property="og:description" content="Index, explore, and analyze thousands of public repositories with AST symbol search and Obsidian-style neural universe cluster graphs.">
+  <meta property="og:image" id="og-image" content="/assets/logo.jpg">
+  <meta property="og:site_name" content="OmniCode Meta-Forge">
+
+  <!-- Twitter Meta -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="/">
+  <meta name="twitter:title" content="OmniCode // Sovereign Public Codebase Meta-Forge">
+  <meta name="twitter:description" content="Universal AST symbol analyzer, polyglot comparator, and autonomous code indexer for all public open-source software.">
+  <meta name="twitter:image" content="/assets/logo.jpg">
+
+  <!-- Schema.org JSON-LD Structured Data for Google Rich Snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "OmniCode Sovereign Meta-Forge",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "description": "Autonomous public codebase indexer, universal AST symbol analyzer, and polyglot code studio.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://omni-code-ten.vercel.app/",
+        "name": "OmniCode",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://omni-code-ten.vercel.app/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
+  
+  <!-- Typography & Performance Optimization -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/explorer.css">
+  <link rel="stylesheet" href="css/viewer.css">
+</head>
+<body>
+  <div id="omni-app" class="omni-shell">
+    
+    <!-- TOP NAVIGATION BAR -->
+    <header class="omni-topbar">
+      <div class="topbar-left">
+        <!-- Mobile Hamburger Button -->
+        <button class="btn-hamburger" id="btn-mobile-hamburger" title="Open Menu" aria-label="Open Navigation Drawer" aria-expanded="false" aria-controls="mobile-drawer-overlay">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+
+        <a class="brand-container" id="brand-home-link" title="OmniCode Meta-Forge" aria-label="OmniCode Home">
+          <img src="assets/logo.jpg" alt="OmniCode Logo" class="brand-img-logo" width="28" height="28" fetchpriority="high">
+          <span class="brand-title">OmniCode</span>
+          <span class="brand-version-badge">v2.0</span>
+        </a>
+
+        <!-- Desktop Navigation Tabs -->
+        <nav class="omni-tabs desktop-tabs" role="tablist" aria-label="Main navigation">
+          <button class="tab-btn active" data-tab="explorer" id="tab-btn-explorer" role="tab" aria-selected="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Explore</span>
+          </button>
+          <button class="tab-btn" data-tab="viewer" id="tab-btn-viewer" role="tab" aria-selected="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>Code Studio</span>
+          </button>
+          <button class="tab-btn" data-tab="symbols" id="tab-btn-symbols" role="tab" aria-selected="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+            <span>Symbols</span>
+          </button>
+          <button class="tab-btn" data-tab="comparator" id="tab-btn-comparator" role="tab" aria-selected="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="3" x2="12" y2="21"></line></svg>
+            <span>Polyglot</span>
+          </button>
+          <button class="tab-btn" data-tab="graph" id="tab-btn-graph" role="tab" aria-selected="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="6" y1="9" x2="6" y2="15"></line><line x1="8.5" y1="7.5" x2="15.5" y2="15.5"></line></svg>
+            <span>Obsidian Cluster</span>
+          </button>
+          <button class="tab-btn" data-tab="rawfiles" id="tab-btn-rawfiles" role="tab" aria-selected="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+            <span>Raw Files</span>
+          </button>
+          <button class="tab-btn" data-tab="crawler" id="tab-btn-crawler" role="tab" aria-selected="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line></svg>
+            <span>Harvester</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Right Actions: Buy Me a Coffee, GitHub, Command Search & Index Codebase -->
+      <div class="topbar-right">
+        <!-- Buy Me a Coffee Button -->
+        <a href="https://razorpay.me/@CodeChap" target="_blank" rel="noopener noreferrer" class="btn-coffee-sponsor" title="Buy Me a Coffee / Support Developer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+          <span>Buy Me a Coffee</span>
+        </a>
+
+        <!-- GitHub Repository Link -->
+        <a href="https://github.com/saff9/OmniCode" target="_blank" rel="noopener noreferrer" class="btn-github-nav" title="Star on GitHub">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
+          <span>GitHub</span>
+        </a>
+
+        <!-- Theme Switcher -->
+        <button class="btn-command-search" id="btn-toggle-theme" title="Switch Theme (Obsidian / Matrix / Tokyo / Dracula)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <span id="theme-label-text">Theme</span>
+        </button>
+
+        <!-- Shortcuts HUD Button -->
+        <button class="btn-command-search" id="btn-open-shortcuts" title="Keyboard Shortcuts (?)">
+          <kbd class="kbd-tag" style="font-size: 11px; font-weight: 700;">?</kbd>
+        </button>
+
+        <button class="btn-command-search" id="btn-open-palette" title="Quick Jump (Ctrl+K / ⌘K)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span>Search</span>
+          <kbd class="kbd-tag">⌘K</kbd>
+        </button>
+
+        <button class="btn-primary-action" id="btn-open-ingest-modal" title="Index any public git remote or local folder">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Index</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-drawer-backdrop" id="mobile-drawer-overlay" style="display: none;">
+      <div class="mobile-drawer-content">
+        <div class="mobile-drawer-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <img src="assets/logo.jpg" alt="OmniCode" class="brand-img-logo">
+            <span class="brand-title" style="display: inline-block;">OmniCode</span>
+          </div>
+          <button class="btn-modal-close" id="btn-close-mobile-drawer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <div class="mobile-nav-list">
+          <button class="mobile-nav-item active" data-tab="explorer">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Explore Codebases</span>
+          </button>
+          <button class="mobile-nav-item" data-tab="viewer">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span>Code Studio & AST</span>
+          </button>
+          <button class="mobile-nav-item" data-tab="symbols">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+            <span>Global Symbols</span>
+          </button>
+          <button class="mobile-nav-item" data-tab="comparator">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="3" x2="12" y2="21"></line></svg>
+            <span>Polyglot Matrix</span>
+          </button>
+          <button class="mobile-nav-item" data-tab="graph">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="6" y1="9" x2="6" y2="15"></line><line x1="8.5" y1="7.5" x2="15.5" y2="15.5"></line></svg>
+            <span>Obsidian Cluster Graph</span>
+          </button>
+          <button class="mobile-nav-item" data-tab="rawfiles">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+            <span>Raw Files & Tree Catalog</span>
+          </button>
+          <button class="mobile-nav-item" data-tab="crawler">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line></svg>
+            <span>Harvester Mission Control</span>
+          </button>
+        </div>
+
+        <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 8px;">
+          <a href="https://razorpay.me/@CodeChap" target="_blank" rel="noopener noreferrer" class="btn-coffee-sponsor" style="justify-content: center; padding: 8px 12px; font-size: 12px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+            <span>☕ Buy Me a Coffee</span>
+          </a>
+          <a href="https://github.com/saff9/OmniCode" target="_blank" rel="noopener noreferrer" class="btn-github-nav" style="justify-content: center; padding: 8px 12px; font-size: 12px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
+            <span>GitHub Repository</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN WORKSPACE -->
+    <main class="omni-workspace">
+      
+      <!-- ================= 1. REPOSITORY EXPLORER ================= -->
+      <section class="tab-pane active" id="pane-explorer">
+        <div class="explorer-container">
+          
+          <!-- Filter Sidebar -->
+          <aside class="explorer-sidebar">
+            <div class="sidebar-header">
+              <h3>Filters</h3>
+              <button class="btn-text-action" id="btn-reset-filters">Reset</button>
+            </div>
+
+            <!-- Language Pills -->
+            <div class="filter-section">
+              <span class="filter-title">Languages</span>
+              <div class="language-pills-container" id="language-filter-list">
+                <!-- Injected dynamically -->
+              </div>
+            </div>
+
+            <!-- Technical Domain -->
+            <div class="filter-section">
+              <label for="domain-select" class="filter-title">Domain</label>
+              <select id="domain-select" class="omni-select" aria-label="Filter repositories by technical domain">
+                <option value="all">All Domains</option>
+                <option value="Compilers & Languages">Compilers & Languages</option>
+                <option value="Kernels & Systems">Kernels & Systems</option>
+                <option value="AI & Machine Learning">AI & Machine Learning</option>
+                <option value="Databases & Storage">Databases & Storage</option>
+                <option value="Distributed Systems & Cloud">Distributed Systems & Cloud</option>
+                <option value="Web Frameworks & Runtimes">Web Frameworks & Runtimes</option>
+                <option value="Game Engines & Graphics">Game Engines & Graphics</option>
+                <option value="Developer Tools & CLI">Developer Tools & CLI</option>
+                <option value="Cryptography & Security">Cryptography & Security</option>
+              </select>
+            </div>
+
+            <!-- License Filter -->
+            <div class="filter-section">
+              <label for="license-select" class="filter-title">License</label>
+              <select id="license-select" class="omni-select" aria-label="Filter repositories by open source license">
+                <option value="all">All Licenses</option>
+                <option value="MIT">MIT License</option>
+                <option value="Apache-2.0">Apache 2.0</option>
+                <option value="BSD-3-Clause">BSD-3-Clause</option>
+                <option value="GPL-3.0">GPL-3.0</option>
+                <option value="GPL-2.0">GPL-2.0</option>
+                <option value="MPL-2.0">MPL-2.0</option>
+                <option value="Unlicense">Public Domain</option>
+              </select>
+            </div>
+
+            <!-- Min Stars Slider -->
+            <div class="filter-section">
+              <div class="slider-top-row">
+                <label for="stars-range" class="filter-title">Min Stars</label>
+                <span id="star-count-display" class="slider-val-tag">0</span>
+              </div>
+              <input type="range" id="stars-range" min="0" max="100000" step="5000" value="0" class="omni-range" aria-label="Filter repositories by minimum stars">
+            </div>
+
+            <!-- Storage Overview Box -->
+            <div class="sidebar-storage-badge">
+              <div class="storage-badge-row">
+                <span class="storage-badge-label">Unique Visitors</span>
+                <span class="storage-badge-val" id="stat-unique-visitors" style="color: var(--accent-cyan); font-weight: 700; font-family: var(--font-mono); font-size: 11px;">
+                  <span id="val-visitors-total">1,842</span> <span style="color: var(--text-faint);">/</span> <span style="color: var(--accent-emerald);" id="val-visitors-today">48 today</span>
+                </span>
+              </div>
+              <div class="storage-badge-row">
+                <span class="storage-badge-label">Storage Engine</span>
+                <span class="storage-badge-val color-emerald" id="sidebar-db-status">Sovereign DB</span>
+              </div>
+              <div class="storage-badge-row">
+                <span class="storage-badge-label">Indexed Repos</span>
+                <span class="storage-badge-val" id="stat-total-repos">6,035</span>
+              </div>
+              <div class="storage-badge-row">
+                <span class="storage-badge-label">Total SLOC</span>
+                <span class="storage-badge-val" id="stat-total-sloc">16,496,478</span>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Main Stream Area -->
+          <div class="explorer-main">
+            
+            <!-- Search & Controls Bar -->
+            <div class="explorer-control-bar">
+              <div class="search-bar-row">
+                <label for="global-search-input" class="sr-only">Search codebases, symbols, and domains</label>
+                <svg class="search-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="global-search-input" placeholder="Search codebases, symbols, domains or use operators (e.g. lang:rust stars:>50k domain:AI)..." autocomplete="off" aria-label="Search codebases, symbols, and domains">
+                <button class="btn-search-clear" id="btn-clear-search" style="display: none;" aria-label="Clear search input">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+              </div>
+
+              <!-- Trending Velocity Radar Bar -->
+              <div class="trending-radar-bar" role="toolbar" aria-label="Trending Velocity Radar Filters">
+                <span class="radar-title">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align: -1px; margin-right: 2px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  RADAR:
+                </span>
+                <button class="radar-pill active" data-filter="all" aria-label="Show All Repositories">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="radar-icon"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                  All (2,500+)
+                </button>
+                <button class="radar-pill" data-filter="legends" aria-label="Filter 100K+ Legend Repositories">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="radar-icon" style="color: #fbbf24;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  100K+ Legends
+                </button>
+                <button class="radar-pill" data-filter="ai" aria-label="Filter AI and LLM Repositories">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="radar-icon"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  AI & LLM Core
+                </button>
+                <button class="radar-pill" data-filter="rust" aria-label="Filter Rust Repositories">
+                  <span class="lang-icon-badge rust-badge">RS</span>
+                  Pure Rust
+                </button>
+                <button class="radar-pill" data-filter="go" aria-label="Filter Go Repositories">
+                  <span class="lang-icon-badge go-badge">GO</span>
+                  Cloud Go
+                </button>
+                <button class="radar-pill" data-filter="systems" aria-label="Filter Systems Repositories">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="radar-icon"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                  Systems & OS
+                </button>
+                <button class="radar-pill" data-filter="web" aria-label="Filter Web Repositories">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="radar-icon"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                  Modern Web
+                </button>
+              </div>
+
+              <!-- Filter Operator Chips -->
+              <div class="filter-chips-row" role="toolbar" aria-label="Filter syntax quick chips">
+                <span class="chip-caption">Filter syntax:</span>
+                <button class="query-chip" data-query="lang:rust">lang:rust</button>
+                <button class="query-chip" data-query="lang:go">lang:go</button>
+                <button class="query-chip" data-query="lang:zig">lang:zig</button>
+                <button class="query-chip" data-query="lang:python">lang:python</button>
+                <button class="query-chip" data-query="domain:&quot;AI &amp; Machine Learning&quot;">domain:AI</button>
+                <button class="query-chip" data-query="domain:&quot;Kernels &amp; Systems&quot;">domain:Kernels</button>
+                <button class="query-chip" data-query="stars:>100000">stars:>100k</button>
+              </div>
+
+              <!-- Stream Toolbar: Results Count + Layout View Mode Switcher + Sorter -->
+              <div class="stream-header-toolbar">
+                <div class="stream-match-count" id="results-count-text">Loading sovereign index...</div>
+                
+                <div class="stream-toolbar-right">
+                  <!-- View Mode Switcher: Grid vs Compact List -->
+                  <div class="layout-toggle-group" role="group" aria-label="Layout view mode">
+                    <button class="btn-layout-toggle active" data-mode="grid" id="btn-view-grid" title="Grid View" aria-label="Switch to Grid View">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    </button>
+                    <button class="btn-layout-toggle" data-mode="list" id="btn-view-list" title="List View" aria-label="Switch to List View">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                    </button>
+                  </div>
+
+                  <!-- Sorter -->
+                  <div class="stream-sort-controls">
+                    <label for="sort-by-select" class="sort-label-text">Sort:</label>
+                    <select id="sort-by-select" class="omni-select-mini" aria-label="Sort repositories by criteria">
+                      <option value="stars">Stars</option>
+                      <option value="sloc">Lines of Code</option>
+                      <option value="complexity">Complexity</option>
+                      <option value="health">Health Score</option>
+                      <option value="files">File Count</option>
+                      <option value="name">Name (A-Z)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Repositories Grid Display -->
+            <div class="repo-cards-container" id="repo-cards-container" aria-live="polite">
+              <div class="omni-wave-loader">
+                <div class="wave-bars-track">
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                </div>
+                <span class="wave-loader-caption">Hydrating sovereign repositories...</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2. CODE STUDIO & AST INSPECTOR ================= -->
+      <section class="tab-pane" id="pane-viewer">
+        <div class="studio-layout">
+          
+          <!-- Left Studio Sidebar -->
+          <aside class="studio-sidebar-pane">
+            <div class="studio-repo-picker">
+              <label for="viewer-repo-select">Target Codebase</label>
+              <select id="viewer-repo-select" class="omni-select">
+                <!-- Options -->
+              </select>
+            </div>
+
+            <!-- Git & Cloud Web IDE Launch Matrix -->
+            <div class="studio-git-toolbar">
+              <a href="#" target="_blank" rel="noopener noreferrer" class="btn-forge-external" id="btn-official-git-link" title="Open on GitHub">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
+                <span>GitHub</span>
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer" class="btn-forge-external ide-btn" id="btn-open-vscode-web" title="Launch instant VS Code in browser (github.dev)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                <span>VS Code</span>
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer" class="btn-forge-external ide-btn" id="btn-open-gitpod" title="Open in Gitpod Cloud Container">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                <span>Gitpod</span>
+              </a>
+              <button class="btn-clone-snippet" id="btn-quick-clone" title="Copy git clone command">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Clone</span>
+              </button>
+            </div>
+
+            <!-- Sidebar Navigation Tabs: Files / Symbols / Architecture -->
+            <div class="studio-nav-segmented">
+              <button class="studio-seg-btn active" data-pane="tree" id="seg-btn-tree">Files (<span id="viewer-file-count">0</span>)</button>
+              <button class="studio-seg-btn" data-pane="symbols" id="seg-btn-symbols">AST (<span id="viewer-symbol-count">0</span>)</button>
+              <button class="studio-seg-btn" data-pane="arch" id="seg-btn-arch">⚡ Architecture</button>
+            </div>
+
+            <!-- File Hierarchy Tree -->
+            <div class="studio-sidebar-section active" id="studio-pane-tree">
+              <div class="pane-scrollable-list" id="viewer-tree-list"></div>
+            </div>
+
+            <!-- AST Symbol Inspector -->
+            <div class="studio-sidebar-section" id="studio-pane-symbols" style="display: none;">
+              <div class="pane-scrollable-list" id="viewer-symbol-list"></div>
+            </div>
+
+            <!-- Architecture & AST Logic Inspector -->
+            <div class="studio-sidebar-section" id="studio-pane-arch" style="display: none;">
+              <div class="arch-inspector-body" id="viewer-arch-body">
+                <div class="arch-card">
+                  <div class="arch-card-header">Complexity Grade</div>
+                  <div class="arch-grade-badge" id="arch-grade">A+</div>
+                  <div class="arch-sub-text" id="arch-complexity-desc">Low cognitive overhead, clean modular logic</div>
+                </div>
+                <div class="arch-card">
+                  <div class="arch-card-header">Algorithmic Class</div>
+                  <div class="arch-algo-class" id="arch-algo-class">O(1) / O(N)</div>
+                  <div class="arch-sub-text">Sequential iteration and deterministic branching</div>
+                </div>
+                <div class="arch-card">
+                  <div class="arch-card-header">AST Functions & Entry Points</div>
+                  <div class="arch-function-jump-list" id="arch-function-list">
+                    <span style="font-size: 11px; color: var(--text-muted);">Select a file to inspect AST functions</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Right Studio Viewport -->
+          <div class="studio-main-viewport">
+            
+            <!-- Viewport Header -->
+            <div class="studio-viewport-topbar">
+              <div class="viewport-path-breadcrumbs">
+                <span class="crumb-repo" id="breadcrumb-repo-name">--</span>
+                <span class="crumb-divider">/</span>
+                <span class="crumb-file" id="breadcrumb-file-path">Select a file</span>
+              </div>
+
+              <div class="viewport-tools-group">
+                <div class="view-mode-pill-toggle">
+                  <button class="btn-view-pill active" id="btn-mode-code">Source</button>
+                  <button class="btn-view-pill" id="btn-mode-readme">README</button>
+                </div>
+                <button class="btn-action-pill" id="btn-run-security-scan" title="Run Static Code Health & Security Analysis">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 3px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                  <span>Health Scan</span>
+                </button>
+                <button class="btn-action-pill" id="btn-export-bundle" title="Export Sovereign Codebase Manifest JSON">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 3px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span>Export</span>
+                </button>
+                <span class="metric-tag-pill" id="metric-language">--</span>
+                <span class="metric-tag-pill" id="metric-sloc">-- SLOC</span>
+                <span class="metric-tag-pill" id="metric-complexity">C: --</span>
+                <button class="btn-action-pill" id="btn-copy-code">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 3px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span>Copy</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Code Surface -->
+            <div class="editor-code-container" id="viewport-code-surface">
+              <div class="editor-line-gutter" id="editor-line-numbers"></div>
+              <pre class="editor-code-stream" id="editor-code-content"><code>// Select any file from the file tree on the left to inspect source code and AST symbols.</code></pre>
+            </div>
+
+            <!-- Rendered Markdown Readme Surface -->
+            <div class="editor-markdown-container" id="viewport-readme-surface" style="display: none;">
+              <div class="markdown-document" id="rendered-readme-content"></div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. GLOBAL SYMBOL SEARCH ================= -->
+      <section class="tab-pane" id="pane-symbols">
+        <div class="symbols-workspace">
+          <div class="symbols-search-header">
+            <div class="symbol-input-box">
+              <label for="symbol-search-input" class="sr-only">Search AST symbols</label>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="symbol-search-input" placeholder="Search functions, structs, classes across ALL indexed public codebases (e.g. new, Engine, Future, Start)..." autocomplete="off" aria-label="Search functions, structs, and classes across indexed codebases">
+            </div>
+            <div class="symbol-controls-right">
+              <label for="symbol-type-filter" class="sr-only">Filter by symbol type</label>
+              <select id="symbol-type-filter" class="omni-select-mini" aria-label="Filter AST symbols by type">
+                <option value="all">All Types</option>
+                <option value="function">Functions & Methods</option>
+                <option value="struct">Structs & Classes</option>
+                <option value="trait">Traits & Interfaces</option>
+                <option value="enum">Enums & Types</option>
+              </select>
+              <button class="btn-primary-action" id="btn-exec-symbol-search" aria-label="Execute symbol search">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>Search Symbols</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="symbols-results-grid" id="symbols-results-container">
+            <div style="grid-column: 1 / -1; padding: 60px 20px; text-align: center; color: var(--text-muted);">
+              <h3 style="font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px;">Omni-Symbol Cross-Repository Search</h3>
+              <p style="font-size: 12px;">Type any function name, struct, or interface above to search through AST tokens across thousands of codebases.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 4. POLYGLOT MATRIX ================= -->
+      <section class="tab-pane" id="pane-comparator">
+        <div class="comparator-workspace">
+          <div class="comparator-top-bar">
+            <div class="comparator-info-titles">
+              <h2>Polyglot Algorithm Comparator</h2>
+              <p>Compare implementation patterns across compiled and interpreted languages.</p>
+            </div>
+            
+            <div class="sort-group">
+              <label for="comparator-algo-select" class="sort-label-text">Algorithm:</label>
+              <select id="comparator-algo-select" class="omni-select" aria-label="Select algorithm to compare">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Polyglot Matrix Cards -->
+          <div class="comparator-grid-view" id="comparator-matrix-container">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 5. OBSIDIAN-STYLE NEURAL UNIVERSE CLUSTER ================= -->
+      <section class="tab-pane" id="pane-graph">
+        <div class="graph-workspace">
+          <div class="graph-top-nav">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <label for="cluster-mode-select" class="sr-only">Cluster View Mode</label>
+              <select id="cluster-mode-select" class="omni-select-mini" style="font-weight: 600;" aria-label="Select galaxy universe cluster view mode">
+                <option value="universe">Galaxy Universe (All 2,300+ Repos)</option>
+                <option value="repository">Target Repository Architecture</option>
+              </select>
+              <label for="graph-repo-select" class="sr-only">Select Target Repository</label>
+              <select id="graph-repo-select" class="omni-select-mini" aria-label="Select target repository for architecture graph">
+                <!-- Options -->
+              </select>
+              <label for="cluster-search-input" class="sr-only">Highlight node in cluster</label>
+              <input type="text" id="cluster-search-input" placeholder="Highlight node..." class="omni-input" style="width: 140px; padding: 3px 8px; font-size: 11px;" aria-label="Highlight node in cluster graph">
+            </div>
+
+            <div class="stream-toolbar-right">
+              <span class="stream-match-count" id="graph-node-count">Nodes: 0</span>
+              <span class="stream-match-count" id="graph-edge-count">Edges: 0</span>
+              <button class="btn-action-pill" id="btn-reset-graph-view" aria-label="Reset cluster camera view">Reset View</button>
+            </div>
+          </div>
+
+          <div class="graph-surface-box" id="graph-canvas-wrapper">
+            <canvas id="architecture-canvas"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 6. HARVESTER MISSION CONTROL ================= -->
+      <section class="tab-pane" id="pane-crawler">
+        <div class="mission-workspace">
+          
+          <!-- Telemetry Status Tiles -->
+          <div class="mission-stats-strip">
+            <div class="mission-tile">
+              <span class="mission-tile-label">HARVESTER PIPELINE</span>
+              <div class="mission-tile-num green" id="telemetry-crawler-status">1,000+ REPOS/MIN</div>
+              <span class="storage-sub-note">16 Parallel Ingestion Workers</span>
+            </div>
+            <div class="mission-tile">
+              <span class="mission-tile-label">TOTAL REPOSITORIES</span>
+              <div class="mission-tile-num" id="telemetry-total-repos">--</div>
+              <span class="storage-sub-note">Sovereign Local Index</span>
+            </div>
+            <div class="mission-tile">
+              <span class="mission-tile-label">SOURCE FILES</span>
+              <div class="mission-tile-num" id="telemetry-total-files">--</div>
+              <span class="storage-sub-note">Parsed with AST tables</span>
+            </div>
+            <div class="mission-tile">
+              <span class="mission-tile-label">LINES OF CODE</span>
+              <div class="mission-tile-num" id="telemetry-total-sloc">--</div>
+              <span class="storage-sub-note">Aggregated SLOC</span>
+            </div>
+          </div>
+
+          <!-- Dual Operation Panels -->
+          <div class="mission-split-view">
+            <div class="mission-form-panel">
+              <span class="filter-title">Ingestion & Discovery Engines</span>
+
+              <!-- Live Autonomous Explorer Card -->
+              <div class="mission-method-card" style="background-color: hsla(200, 85%, 52%, 0.05); border-color: hsla(200, 85%, 52%, 0.3);">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <span class="storage-sub-note" style="font-weight: 700; color: var(--accent-cyan);">Autonomous GitHub Explorer</span>
+                  <span style="font-size: 10px; color: var(--accent-emerald); font-family: var(--font-mono);">● Neon DB Sync</span>
+                </div>
+                <p style="font-size: 11px; color: var(--text-muted); margin: 4px 0 8px 0;">Discovers live GitHub Trending, developer topics, and GitLab repos, extracting real AST symbols & saving to Neon PostgreSQL.</p>
+                <button class="btn-primary-action" id="btn-trigger-live-harvest" style="width: 100%; justify-content: center; background: linear-gradient(135deg, hsl(200, 85%, 52%), hsl(155, 65%, 45%)); border: none; color: #fff; font-weight: 700; padding: 7px 12px;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                  <span>Crawl & Index Live GitHub Repos</span>
+                </button>
+              </div>
+
+              <div class="mission-method-card">
+                <span class="storage-sub-note" style="font-weight: 600; color: var(--text-primary);">Git Remote URL</span>
+                <div style="display: flex; gap: 6px; margin-top: 4px;">
+                  <input type="text" id="input-git-url" placeholder="https://github.com/rust-lang/rust.git" class="omni-input">
+                  <button class="btn-primary-action" id="btn-enqueue-git">Index</button>
+                </div>
+              </div>
+
+              <div class="mission-method-card">
+                <span class="storage-sub-note" style="font-weight: 600; color: var(--text-primary);">Direct Forge Scraper</span>
+                <div style="display: flex; gap: 6px; margin-top: 4px;">
+                  <input type="text" id="input-forge-repo" placeholder="owner/repo (e.g. torvalds/linux)" class="omni-input">
+                  <button class="btn-primary-action" id="btn-enqueue-forge">Scrape</button>
+                </div>
+              </div>
+
+              <div class="mission-method-card">
+                <span class="storage-sub-note" style="font-weight: 600; color: var(--text-primary);">Local Folder Path</span>
+                <div style="display: flex; gap: 6px; margin-top: 4px;">
+                  <input type="text" id="input-local-path" placeholder="C:\Users\...\my-project" class="omni-input">
+                  <button class="btn-primary-action" id="btn-enqueue-local">Scan</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mission-log-box">
+              <div class="storage-panel-head">
+                <h3>REAL-TIME LOG FEED</h3>
+                <button class="btn-text-action" id="btn-clear-logs">Clear</button>
+              </div>
+              <div class="mission-log-output" id="crawler-log-feed">
+                <div style="color: var(--text-muted);"><span style="color: var(--text-faint);">[SYSTEM]</span> Harvester active at 1,000+ repos/min.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 7. GLOBAL RAW FILES & TREE CATALOG ================= -->
+      <section class="tab-pane" id="pane-rawfiles">
+        <div class="rawfiles-workspace">
+          
+          <!-- Top Filter Toolbar -->
+          <div class="rawfiles-toolbar">
+            <div class="rawfiles-toolbar-left">
+              <label for="rawfiles-search-input" class="sr-only">Search across indexed files</label>
+              <input type="text" id="rawfiles-search-input" placeholder="Search across 100,000+ indexed files (*.rs, scheduler.go, CMakeLists.txt)..." class="omni-input" style="flex: 1; min-width: 220px;" aria-label="Search across indexed files">
+              
+              <label for="rawfiles-lang-select" class="sr-only">Filter by language</label>
+              <select id="rawfiles-lang-select" class="omni-select-mini" style="font-weight: 600;" aria-label="Filter raw files by language">
+                <option value="">All Languages</option>
+                <option value="Rust">Rust</option>
+                <option value="Go">Go</option>
+                <option value="TypeScript">TypeScript</option>
+                <option value="Python">Python</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="C++">C++</option>
+                <option value="C">C</option>
+                <option value="Zig">Zig</option>
+                <option value="Solidity">Solidity</option>
+                <option value="Markdown">Markdown</option>
+              </select>
+
+              <label for="rawfiles-repo-select" class="sr-only">Filter by repository</label>
+              <select id="rawfiles-repo-select" class="omni-select-mini" style="max-width: 220px;" aria-label="Filter raw files by repository">
+                <option value="">All Repositories (2,500+)</option>
+              </select>
+            </div>
+
+            <div class="rawfiles-toolbar-right">
+              <span class="stream-match-count" id="rawfiles-total-badge">0 Files</span>
+            </div>
+          </div>
+
+          <!-- Files Grid Scroll Area -->
+          <div class="rawfiles-scroll-body">
+            <div class="rawfiles-grid-container" id="rawfiles-grid-container">
+              <div class="omni-wave-loader">
+                <div class="wave-bars-track">
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                </div>
+                <span class="wave-loader-caption">Streaming raw source files...</span>
+              </div>
+            </div>
+            
+            <div id="rawfiles-pagination"></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- MODAL: Command Palette (Ctrl+K) -->
+    <div class="palette-modal-backdrop" id="palette-modal-overlay" style="display: none;">
+      <div class="palette-window">
+        <div class="palette-search-row">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="palette-search-input" placeholder="Jump to repository, language, or algorithm..." autocomplete="off">
+          <kbd class="kbd-tag">ESC</kbd>
+        </div>
+        <div class="palette-list" id="palette-results-container">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: Code Health & Security Analysis -->
+    <div class="modal-overlay" id="security-modal-overlay" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>Codebase Health & Security Audit</span>
+          </h3>
+          <button class="btn-modal-close" id="btn-security-modal-close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body" id="security-modal-body">
+          <div style="padding: 20px; text-align: center; color: var(--text-muted);">Running static analysis on indexed files...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: Index Codebase Dialog -->
+    <div class="modal-overlay" id="ingest-modal-overlay" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span>Index Public Codebase</span>
+          </h3>
+          <button class="btn-modal-close" id="btn-modal-close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 12px; color: var(--text-secondary);">Provide any public Git URL or local folder path to index it into OmniCode immediately without API tokens:</p>
+          <div class="modal-field">
+            <label>Git Remote URL / Local Directory Path</label>
+            <input type="text" id="modal-input-url" placeholder="https://github.com/owner/repository.git" class="omni-input">
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" id="btn-modal-cancel">Cancel</button>
+            <button class="btn-primary-action" id="btn-modal-submit">Start Indexing</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: Raw File Inspector & Code Preview -->
+    <div class="modal-overlay" id="raw-preview-modal-overlay" style="display: none;">
+      <div class="modal-dialog" style="max-width: 880px; max-height: 85vh; display: flex; flex-direction: column;">
+        <div class="modal-header">
+          <h3 id="raw-preview-title" style="font-family: var(--font-mono); font-size: 13px; font-weight: 700;">File Inspector</h3>
+          <button class="btn-modal-close" id="btn-close-raw-preview">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body" style="overflow: hidden; display: flex; flex-direction: column; gap: 10px; flex: 1;">
+          <div id="raw-preview-meta" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
+          <pre class="raw-code-pre" id="raw-preview-code" style="flex: 1;"></pre>
+          <div class="modal-footer" style="padding-top: 10px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: flex-end; gap: 8px;">
+            <button class="btn-secondary" id="btn-copy-raw-file">📋 Copy Raw Code</button>
+            <button class="btn-primary-action" id="btn-open-in-studio">⚡ Open in Code Studio</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: Developer Keyboard Shortcuts Cheat Sheet -->
+    <div class="modal-overlay" id="shortcuts-modal-overlay" style="display: none;">
+      <div class="modal-dialog" style="max-width: 540px;">
+        <div class="modal-header">
+          <h3>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M6 8h.001M10 8h.001M14 8h.001M18 8h.001M8 12h.001M12 12h.001M16 12h.001M6 16h12"></path></svg>
+            <span>Developer Keyboard Shortcuts</span>
+          </h3>
+          <button class="btn-modal-close" id="btn-close-shortcuts">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body" style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="shortcut-row"><span>Global Search / Jump Palette</span><kbd class="kbd-tag">⌘K / Ctrl+K</kbd></div>
+          <div class="shortcut-row"><span>Cycle Theme (Obsidian / Matrix / Tokyo / Dracula)</span><kbd class="kbd-tag">T</kbd></div>
+          <div class="shortcut-row"><span>Toggle Keybindings Help</span><kbd class="kbd-tag">?</kbd></div>
+          <div class="shortcut-row"><span>Explore Codebases Tab</span><kbd class="kbd-tag">1</kbd></div>
+          <div class="shortcut-row"><span>Code Studio & AST Tab</span><kbd class="kbd-tag">2</kbd></div>
+          <div class="shortcut-row"><span>Global Symbols Tab</span><kbd class="kbd-tag">3</kbd></div>
+          <div class="shortcut-row"><span>Polyglot Matrix Tab</span><kbd class="kbd-tag">4</kbd></div>
+          <div class="shortcut-row"><span>Obsidian Galaxy Cluster Tab</span><kbd class="kbd-tag">5</kbd></div>
+          <div class="shortcut-row"><span>Raw Files Catalog Tab</span><kbd class="kbd-tag">6</kbd></div>
+          <div class="shortcut-row"><span>Harvester Mission Control Tab</span><kbd class="kbd-tag">7</kbd></div>
+          <div class="shortcut-row"><span>Close Any Open Modal</span><kbd class="kbd-tag">Esc</kbd></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+  </div>
+
+  <!-- Client-Side Modules -->
+  <script src="js/searchEngine.js"></script>
+  <script src="js/repoViewer.js"></script>
+  <script src="js/comparator.js"></script>
+  <script src="js/graphVisualizer.js"></script>
+  <script src="js/crawlerConsole.js"></script>
+  <script src="js/rawFilesViewer.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Dynamic SEO: Set canonical & OG URLs to actual deployed domain
+    (function() {
+      var base = window.location.origin;
+      var canon = document.getElementById('canonical-link');
+      var ogUrl = document.getElementById('og-url');
+      var ogImg = document.getElementById('og-image');
+      if (canon) canon.href = base + '/';
+      if (ogUrl) ogUrl.content = base + '/';
+      if (ogImg) ogImg.content = base + '/assets/logo.jpg';
+    })();
+  </script>
+</body>
+</html>
