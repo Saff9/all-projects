@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: scrapai-api
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - DATABASE_URL=sqlite:///./scrapai.db
+      - ENABLE_BACKGROUND_WORKERS=true
+      - WORKER_INTERVAL=4
+      - EMBEDDING_MODEL=local-tfidf-semantic
+      - REQUEST_DELAY=1.0
+      - RESPECT_ROBOTS=true
+    volumes:
+      - ./data:/app/data
+      - ./scrapai.db:/app/scrapai.db
+    command: python backend/main.py
+    restart: unless-stopped
+
+  # Optional Dedicated Workers (if scaling horizontally)
+  crawler-worker:
+    build: .
+    container_name: scrapai-crawler-worker
+    environment:
+      - DATABASE_URL=sqlite:///./scrapai.db
+      - REQUEST_DELAY=1.0
+    volumes:
+      - ./scrapai.db:/app/scrapai.db
+    command: python workers/crawler_worker.py
+    depends_on:
+      - api
+    restart: unless-stopped
+    profiles:
+      - distributed
+
+  embedding-worker:
+    build: .
+    container_name: scrapai-embedding-worker
+    environment:
+      - DATABASE_URL=sqlite:///./scrapai.db
+      - EMBEDDING_MODEL=local-tfidf-semantic
+    volumes:
+      - ./scrapai.db:/app/scrapai.db
+    command: python workers/embedding_worker.py
+    depends_on:
+      - api
+    restart: unless-stopped
+    profiles:
+      - distributed
