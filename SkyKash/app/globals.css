@@ -1,0 +1,88 @@
+/* app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Poppins', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-kashmir-light-neutral-50 text-kashmir-light-neutral-900;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark body {
+    @apply bg-kashmir-dark-neutral-50 text-kashmir-dark-neutral-100;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-kashmir-light-blue-500 hover:bg-kashmir-light-blue-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg;
+  }
+  
+  .dark .btn-primary {
+    @apply bg-kashmir-dark-blue-500 hover:bg-kashmir-dark-blue-600;
+  }
+
+  .btn-secondary {
+    @apply bg-kashmir-light-green-500 hover:bg-kashmir-light-green-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg;
+  }
+  
+  .dark .btn-secondary {
+    @apply bg-kashmir-dark-green-500 hover:bg-kashmir-dark-green-600;
+  }
+  
+  .card {
+    @apply bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/40;
+  }
+  
+  .dark .card {
+    @apply bg-kashmir-dark-neutral-100/90 border-kashmir-dark-neutral-300/40;
+  }
+
+  /* Fix mobile overflow issues */
+  .mobile-container {
+    @apply max-w-full overflow-x-hidden;
+  }
+
+  /* Better grid for mobile */
+  .feature-grid {
+    @apply grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3;
+  }
+}
+
+/* Hide scrollbar for better mobile experience */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Mobile-specific fixes */
+@media (max-width: 768px) {
+  .mobile-padding {
+    @apply px-4;
+  }
+  
+  .mobile-text {
+    @apply text-sm;
+  }
+  
+  /* Fix the colored lines issue */
+  body {
+    background-image: none !important;
+  }
+  
+  /* Ensure proper spacing on mobile */
+  .container {
+    @apply px-4;
+  }
+}
