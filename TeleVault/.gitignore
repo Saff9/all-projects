@@ -1,0 +1,47 @@
+# Environments & Dependencies
+node_modules/
+.npm/
+.pnpm-store/
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Databases & Local State
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.session
+*.session-journal
+televault.db
+backend/televault.db
+
+# Build Artifacts
+dist/
+build/
+.output/
+*.tsbuildinfo
+.vite/
+
+# Secrets & Environment Files
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# IDE & System Files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+logs/
