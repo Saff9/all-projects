@@ -1,0 +1,8 @@
+/* TeleVault App Styles */
+/* Component-specific styles that can't be expressed in Tailwind */
+
+/* Waveform animation used by audio viewer */
+@keyframes waveform-bounce {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
