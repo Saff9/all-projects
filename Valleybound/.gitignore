@@ -1,0 +1,26 @@
+# Godot project files to exclude from git
+project/.godot/
+project/android/
+project/.import/
+
+# Build output
+build/*.apk
+build/*.aab
+
+# Keystore (NEVER commit this — store as GitHub Secret instead)
+keystore/
+*.keystore
+*.jks
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor temp files
+*.tmp
+*.bak
+
+# Godot export templates (downloaded by CI)
+export_templates/
+
+
