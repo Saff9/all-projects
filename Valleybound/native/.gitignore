@@ -1,0 +1,11 @@
+build/
+out/
+*.user
+*.suo
+*.vcxproj*
+*.sln
+*.exe
+*.obj
+*.pdb
+*.ilk
+valleybound_save.dat
