@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Valleybound Concept Preview</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hud">
+      <div>
+        <h1>Valleybound</h1>
+        <p>Kashmir-inspired open-world concept preview</p>
+      </div>
+      <div class="status">
+        <span id="seasonLabel">Autumn</span>
+        <span id="taskLabel">Task: reach the broken crossing</span>
+      </div>
+    </section>
+
+    <section class="game-wrap">
+      <canvas id="game" width="1200" height="720" aria-label="Valleybound concept preview"></canvas>
+      <aside class="panel">
+        <h2>Controls</h2>
+        <p>WASD / arrows: move</p>
+        <p>Touch stick: move</p>
+        <p>1-4: seasons</p>
+        <p>F / action: interact</p>
+        <div class="season-buttons" aria-label="Season controls">
+          <button type="button" data-season="0">Spring</button>
+          <button type="button" data-season="1">Summer</button>
+          <button type="button" data-season="2">Autumn</button>
+          <button type="button" data-season="3">Winter</button>
+        </div>
+        <h2>Places</h2>
+        <ul>
+          <li>Srinagar Lake District</li>
+          <li>Budgam Orchard Plain</li>
+          <li>Pahalgam Shepherd River</li>
+          <li>Gulmarg Flower Meadow</li>
+          <li>Baramulla Trade Road</li>
+          <li>Jammu Warm Foothills</li>
+        </ul>
+      </aside>
+    </section>
+    <section class="touch-controls" aria-label="Touch controls">
+      <div class="stick" id="stick">
+        <div class="stick-knob" id="stickKnob"></div>
+      </div>
+      <button class="action" id="actionButton" type="button">Action</button>
+    </section>
+  </main>
+  <script src="main.js"></script>
+</body>
+</html>
