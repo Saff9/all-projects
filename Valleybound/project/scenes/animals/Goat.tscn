@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/animals/Animal.tscn" id="1_Animal"]
+[ext_resource type="Script" path="res://scripts/animals/Goat.gd" id="2_Goat"]
+[ext_resource type="PackedScene" path="res://scenes/animals/goat.glb" id="3_GoatModel"]
+
+[node name="Goat" instance=ExtResource("1_Animal")]
+script = ExtResource("2_Goat")
+
+[node name="VisualMesh" parent="." index="1"]
+mesh = null
+
+[node name="GoatModel" parent="VisualMesh" index="0" instance=ExtResource("3_GoatModel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)

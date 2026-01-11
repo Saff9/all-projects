@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3]
+
+; =============================================================
+; DadiZoona.tscn — 3D Dadi Zoona NPC Scene (W2-04)
+; Inherits from NPC.tscn base layout
+; =============================================================
+
+[ext_resource type="PackedScene" path="res://scenes/animals/NPC.tscn" id="1_NPC"]
+[ext_resource type="Script" path="res://scripts/npcs/DadiZoona.gd" id="2_DadiZoona"]
+
+[node name="DadiZoona" instance=ExtResource("1_NPC")]
+script = ExtResource("2_DadiZoona")
+max_health = 40.0
