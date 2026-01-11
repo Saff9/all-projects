@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3]
+
+; =============================================================
+; MushtaqBhai.tscn — 3D Mushtaq Bhai NPC Scene (W2-04)
+; Inherits from NPC.tscn base layout
+; =============================================================
+
+[ext_resource type="PackedScene" path="res://scenes/animals/NPC.tscn" id="1_NPC"]
+[ext_resource type="Script" path="res://scripts/npcs/MushtaqBhai.gd" id="2_MushtaqBhai"]
+
+[node name="MushtaqBhai" instance=ExtResource("1_NPC")]
+script = ExtResource("2_MushtaqBhai")
+max_health = 40.0

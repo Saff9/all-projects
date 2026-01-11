@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/IceWraith.gd" id="1_IceWraith"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_IceWraith"]
+albedo_color = Color(0.7, 0.9, 1.0, 0.7)
+roughness = 0.1
+emission_enabled = true
+emission = Color(0.3, 0.6, 0.9, 1)
+transparency = 1
+
+[sub_resource type="SphereMesh" id="Mesh_IceWraith"]
+material = SubResource("Mat_IceWraith")
+radius = 0.5
+height = 1.0
+
+[sub_resource type="SphereShape3D" id="Shape_IceWraith"]
+radius = 0.5
+
+[node name="IceWraith" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_IceWraith")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("Mesh_IceWraith")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape_IceWraith")
