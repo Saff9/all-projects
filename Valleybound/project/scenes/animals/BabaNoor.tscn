@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3]
+
+; =============================================================
+; BabaNoor.tscn — 3D Baba Noor NPC Scene (W2-04)
+; Inherits from NPC.tscn base layout
+; =============================================================
+
+[ext_resource type="PackedScene" path="res://scenes/animals/NPC.tscn" id="1_NPC"]
+[ext_resource type="Script" path="res://scripts/npcs/BabaNoor.gd" id="2_BabaNoor"]
+
+[node name="BabaNoor" instance=ExtResource("1_NPC")]
+script = ExtResource("2_BabaNoor")
+max_health = 40.0

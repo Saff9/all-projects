@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/animals/Animal.tscn" id="1_Animal"]
+[ext_resource type="Script" path="res://scripts/animals/Cow.gd" id="2_Cow"]
+[ext_resource type="PackedScene" path="res://scenes/animals/cow.glb" id="3_CowModel"]
+
+[node name="Cow" instance=ExtResource("1_Animal")]
+script = ExtResource("2_Cow")
+
+; Override main collision shape for cow size (feet sitting at y=0, center at y=0.45)
+[node name="CollisionShape3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+
+; Override mesh instance for cow size
+[node name="VisualMesh" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+mesh = null
+
+[node name="CowModel" parent="VisualMesh" index="0" instance=ExtResource("3_CowModel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0)
