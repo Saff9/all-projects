@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/WolfPack.gd" id="1_WolfPack"]
+[ext_resource type="PackedScene" path="res://scenes/animals/ShadowWolf.tscn" id="2_ShadowWolf"]
+
+[node name="ShadowWolfPack" type="Node3D"]
+script = ExtResource("1_WolfPack")
+wolf_count = 3
+wolf_scene = ExtResource("2_ShadowWolf")
