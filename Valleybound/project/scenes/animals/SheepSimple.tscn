@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3]
+
+; =============================================================
+; SheepSimple.tscn — 3D Placeholder Sheep Scene
+; Wadi-e-Kashmir | Godot 4.3
+; =============================================================
+; Root: SheepSimple (CharacterBody3D)
+;   ├── CollisionShape3D (BoxShape3D)
+;   ├── VisualMesh (MeshInstance3D - BoxMesh, white/grey)
+;   └── WanderTimer (Timer)
+
+[ext_resource type="Script" path="res://scripts/animals/SheepSimple.gd" id="1_SheepSimple"]
+[ext_resource type="PackedScene" path="res://scenes/animals/sheep.glb" id="2_SheepModel"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sheep"]
+size = Vector3(0.8, 0.6, 1.0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sheep"]
+albedo_color = Color(0.9, 0.9, 0.9, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sheep"]
+material = SubResource("StandardMaterial3D_sheep")
+size = Vector3(0.8, 0.6, 1.0)
+
+[node name="SheepSimple" type="CharacterBody3D"]
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1_SheepSimple")
+
+; Sheep body shape. Center y at 0.3 (so it sits on ground plane y=0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+shape = SubResource("BoxShape3D_sheep")
+
+[node name="VisualMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="SheepModel" parent="VisualMesh" instance=ExtResource("2_SheepModel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+
+; Wander timer (drives idle -> wander cycles)
+[node name="WanderTimer" type="Timer" parent="."]
+one_shot = true
