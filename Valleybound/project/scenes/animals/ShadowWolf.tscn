@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3]
+
+; =============================================================
+; ShadowWolf.tscn — 3D Shadow Wolf Scene (W2-02)
+; Inherits from Wolf.tscn base layout
+; =============================================================
+
+[ext_resource type="PackedScene" path="res://scenes/animals/Wolf.tscn" id="1_Wolf"]
+[ext_resource type="Script" path="res://scripts/enemies/ShadowWolf.gd" id="2_ShadowWolf"]
+
+[node name="ShadowWolf" instance=ExtResource("1_Wolf")]
+script = ExtResource("2_ShadowWolf")
+max_health = 65.0 ; Boost base health for shadow wolf
