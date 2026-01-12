@@ -1,0 +1,98 @@
+[gd_scene load_steps=8 format=3]
+
+; =============================================================
+; Wolf.tscn — 3D Wolf Enemy Scene (W2-02)
+; Wadi-e-Kashmir | Godot 4.3
+; =============================================================
+
+[ext_resource type="Script" path="res://scripts/enemies/Wolf.gd" id="1_Wolf"]
+[ext_resource type="PackedScene" path="res://scenes/animals/wolf.glb" id="2_WolfModel"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_body"]
+size = Vector3(0.8, 0.6, 1.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wolf"]
+albedo_color = Color(0.45, 0.45, 0.47, 1) ; Dark grey wolf albedo
+roughness = 0.8
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hurt"]
+size = Vector3(1.0, 0.8, 1.4)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_detect"]
+radius = 30.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_player_detect"]
+radius = 15.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_attack"]
+radius = 1.6
+
+[node name="Wolf" type="CharacterBody3D"]
+collision_layer = 2 ; Layer 2 = Enemy body
+collision_mask = 1 ; Collides with ground/walls (Layer 1)
+script = ExtResource("1_Wolf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+shape = SubResource("BoxShape3D_body")
+
+[node name="VisualMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="WolfModel" parent="VisualMesh" instance=ExtResource("2_WolfModel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+
+; HurtBox: Player attacks enter here (Layer 2 = Enemy hurtbox, Mask = Player attack layers)
+[node name="HurtBox" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+monitoring = true
+monitorable = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+shape = SubResource("BoxShape3D_hurt")
+
+; DetectionArea: Senses Sheep (Mask 1)
+[node name="DetectionArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 1 ; Sheep and Player are Layer 1
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+shape = SubResource("SphereShape3D_detect")
+
+; PlayerDetection: Senses Player specifically (Mask 1)
+[node name="PlayerDetection" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerDetection"]
+shape = SubResource("SphereShape3D_player_detect")
+
+; AttackArea: Overlaps target to deal damage (Mask 1)
+[node name="AttackArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackArea"]
+shape = SubResource("SphereShape3D_attack")
+
+; Godot 3D Navigation
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.5
+target_desired_distance = 0.5
+path_max_distance = 3.0
+
+; Label3D debug state
+[node name="StateDebug" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+visible = false
+billboard = 1
+text = "PATROL"
+font_size = 32
