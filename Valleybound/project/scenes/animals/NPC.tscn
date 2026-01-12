@@ -1,0 +1,91 @@
+[gd_scene load_steps=10 format=3]
+
+; =============================================================
+; NPC.tscn — 3D Base NPC Scene (W2-04)
+; Wadi-e-Kashmir | Godot 4.3
+; =============================================================
+
+[ext_resource type="Script" path="res://scripts/npcs/NPC.gd" id="1_NPC"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_npc"]
+albedo_color = Color(0.68, 0.4, 0.75, 1) ; Purple NPC albedo
+roughness = 0.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_npc"]
+material = SubResource("StandardMaterial3D_npc")
+radius = 0.4
+height = 1.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_interact"]
+radius = 3.2 ; 3.2m interaction trigger range (scaled from 80px)
+
+; Bobbing animation setup for QuestLabel above NPC's head
+[sub_resource type="Animation" id="Animation_bob"]
+resource_name = "bob_quest"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("QuestMarker/QuestLabel:position:y")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.3, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_npc"]
+_data = {
+"bob_quest": SubResource("Animation_bob")
+}
+
+[node name="NPC" type="CharacterBody3D"]
+collision_layer = 1 ; Solid obstacle
+collision_mask = 1
+script = ExtResource("1_NPC")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="PlaceholderMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_npc")
+
+; InteractZone: Area3D sensing player overlaps (Layer 0, Mask 1 = detects player)
+[node name="InteractZone" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("SphereShape3D_interact")
+
+; Quest Marker node above head (y = 2.0m)
+[node name="QuestMarker" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
+
+[node name="QuestLabel" type="Label3D" parent="QuestMarker"]
+billboard = 1
+double_sided = false
+no_depth_test = true
+text = "!"
+modulate = Color(1, 0.9, 0.1, 1) ; Yellow text color
+font_size = 72
+outline_size = 16
+outline_modulate = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_npc")
+}
+autoplay = "bob_quest"
