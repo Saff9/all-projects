@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+
+; =============================================================
+; WolfSpawner.tscn — 3D Wolf Pack Spawner Scene
+; Wadi-e-Kashmir | Godot 4.3
+; =============================================================
+
+[ext_resource type="Script" path="res://scripts/enemies/WolfSpawner.gd" id="1_WolfSpawner"]
+
+[node name="WolfSpawner" type="Node3D"]
+script = ExtResource("1_WolfSpawner")
+max_packs = 3
