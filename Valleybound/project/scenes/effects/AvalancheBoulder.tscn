@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/effects/AvalancheBoulder.gd" id="1_Boulder"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_Boulder"]
+albedo_color = Color(0.85, 0.88, 0.92, 1)
+roughness = 0.9
+
+[sub_resource type="SphereMesh" id="Mesh_Boulder"]
+material = SubResource("Mat_Boulder")
+radius = 1.0
+height = 2.0
+
+[sub_resource type="SphereShape3D" id="Shape_Boulder"]
+radius = 1.0
+
+[node name="AvalancheBoulder" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 1
+mass = 120.0
+physics_material_override = null
+gravity_scale = 1.0
+contact_monitor = true
+max_contacts_reported = 4
+script = ExtResource("1_Boulder")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("Mesh_Boulder")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape_Boulder")
