@@ -1,0 +1,149 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/main/MainMenu.gd" id="1_mainmenu"]
+
+[sub_resource type="Gradient" id="Gradient_bg"]
+colors = PackedColorArray(0.05, 0.1, 0.25, 1, 0.53, 0.81, 0.92, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
+gradient = SubResource("Gradient_bg")
+fill_from = Vector2(0.5, 0.0)
+fill_to = Vector2(0.5, 1.0)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_leaves"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(540, 1, 1)
+direction = Vector3(-0.5, 1.0, 0.0)
+spread = 20.0
+initial_velocity_min = 60.0
+initial_velocity_max = 140.0
+gravity = Vector3(0.0, 98.0, 0.0)
+scale_min = 8.0
+scale_max = 18.0
+color = Color(0.9, 0.45, 0.1, 0.85)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mainmenu")
+
+; Background full screen gradient
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_bg")
+
+; Mountain Silhouette at bottom
+[node name="MountainSilhouette" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -300.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.05, 0.05, 0.1, 1)
+
+; GPUParticles2D falling orange autumn leaves
+[node name="LeafParticles" type="GPUParticles2D" parent="."]
+position = Vector2(540, 0)
+amount = 50
+process_material = SubResource("ParticleProcessMaterial_leaves")
+lifetime = 10.0
+preprocess = 6.0
+
+; Title container centered at top
+[node name="TitleContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -500.0
+offset_top = 220.0
+offset_right = 500.0
+offset_bottom = 520.0
+grow_horizontal = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 1.0, 1.0)
+theme_override_colors/font_shadow_color = Color(0.0, 0.0, 0.0, 0.5)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 64
+text = "وادئ کشمیر"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.2, 1.0)
+theme_override_colors/font_shadow_color = Color(0.0, 0.0, 0.0, 0.5)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 32
+text = "Wadi-e-Kashmir"
+horizontal_alignment = 1
+
+[node name="TaglineLabel" type="Label" parent="TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 0.9)
+theme_override_font_sizes/font_size = 18
+text = "Born in the valley. Tested by the mountain."
+horizontal_alignment = 1
+
+; Button container centered
+[node name="ButtonContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -120.0
+offset_right = 220.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="NewGameButton" type="Button" parent="ButtonContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+pivot_offset = Vector2(220, 32)
+theme_override_font_sizes/font_size = 24
+text = "New Game"
+
+[node name="ContinueButton" type="Button" parent="ButtonContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+pivot_offset = Vector2(220, 32)
+theme_override_font_sizes/font_size = 24
+text = "Continue"
+
+[node name="SettingsButton" type="Button" parent="ButtonContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+pivot_offset = Vector2(220, 32)
+theme_override_font_sizes/font_size = 24
+text = "Settings"
+
+[node name="CreditsButton" type="Button" parent="ButtonContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+pivot_offset = Vector2(220, 32)
+theme_override_font_sizes/font_size = 24
+text = "Credits"

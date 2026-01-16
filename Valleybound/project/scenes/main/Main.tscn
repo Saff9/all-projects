@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+; =============================================================
+; Main.tscn — Root entry scene (3D Transition)
+; Wadi-e-Kashmir | Godot 4.3
+; =============================================================
+
+[ext_resource type="Script" path="res://scripts/main/Main.gd" id="1_main"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_main")
