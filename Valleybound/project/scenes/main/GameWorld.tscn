@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3]
+
+; =============================================================
+; GameWorld.tscn — persistent root scene (3D Transition)
+; Wadi-e-Kashmir | Godot 4.3
+; =============================================================
+
+[ext_resource type="Script"      path="res://scripts/main/GameWorld.gd" id="1_gameworld"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn"        id="2_HUD"]
+[ext_resource type="PackedScene" path="res://scenes/ui/FadeLayer.tscn"  id="3_FadeLayer"]
+[ext_resource type="PackedScene" path="res://scenes/ui/QuestLog.tscn"   id="4_QuestLog"]
+[ext_resource type="PackedScene" path="res://scenes/ui/InventoryUI.tscn" id="5_InventoryUI"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn"  id="6_PauseMenu"]
+[ext_resource type="PackedScene" path="res://scenes/ui/GameOver.tscn"   id="7_GameOver"]
+
+[node name="GameWorld" type="Node"]
+script = ExtResource("1_gameworld")
+
+; WorldContainer changes type from Node2D to Node3D to hold the 3D world levels (Gulmarg, etc.)
+[node name="WorldContainer" type="Node3D" parent="."]
+
+; HUD stays CanvasLayer (2D UI overlay)
+[node name="HUD" parent="." instance=ExtResource("2_HUD")]
+
+; Transition Fade layer
+[node name="FadeLayer" parent="." instance=ExtResource("3_FadeLayer")]
+
+; Quest Log Layer
+[node name="QuestLog" parent="." instance=ExtResource("4_QuestLog")]
+
+; Inventory UI Layer
+[node name="InventoryUI" parent="." instance=ExtResource("5_InventoryUI")]
+
+; Pause Menu Layer (layer=8)
+[node name="PauseMenu" parent="." instance=ExtResource("6_PauseMenu")]
+
+; Game Over Layer (layer=9)
+[node name="GameOver" parent="." instance=ExtResource("7_GameOver")]
