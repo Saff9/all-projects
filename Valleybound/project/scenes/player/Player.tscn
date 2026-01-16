@@ -1,0 +1,148 @@
+[gd_scene format=3 uid="uid://c8qq50g74qvsh"]
+
+[ext_resource type="Script" uid="uid://bajaauc7cr8mq" path="res://scripts/player/Player.gd" id="1_Player"]
+[ext_resource type="PackedScene" path="res://scenes/player/aryancharacter.glb" id="2_AryanModel"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_player"]
+albedo_color = Color(0.121569, 0.466667, 0.705882, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_player"]
+material = SubResource("StandardMaterial3D_player")
+radius = 0.4
+height = 1.8
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hitbox"]
+size = Vector3(1.2, 0.8, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hurt"]
+height = 1.9
+
+[sub_resource type="RectangleShape2D" id="RectShape_btn"]
+size = Vector2(140, 60)
+
+[node name="Player" type="CharacterBody3D" unique_id=846371272]
+script = ExtResource("1_Player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=867236681]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="PlaceholderMesh" type="MeshInstance3D" parent="." unique_id=900621499]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="AryanModel" parent="PlaceholderMesh" instance=ExtResource("2_AryanModel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
+
+[node name="AttackHitbox" type="Area3D" parent="PlaceholderMesh" unique_id=1636843754]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, -1)
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlaceholderMesh/AttackHitbox" unique_id=1210894578]
+transform = Transform3D(1, 0, 0, 0, 0.9998167, -0.019145092, 0, 0.019145092, 0.9998167, -0.35954952, -0.44802845, -1.601593)
+shape = SubResource("BoxShape3D_hitbox")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=50145720]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+spring_length = 3.5
+margin = 0.1
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D" unique_id=736925160]
+current = true
+
+[node name="HurtBox" type="Area3D" parent="." unique_id=350645972]
+collision_layer = 4
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox" unique_id=434877891]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_hurt")
+
+[node name="MobileControls" type="CanvasLayer" parent="." unique_id=2037573326]
+layer = 2
+
+[node name="SprintButton" type="TouchScreenButton" parent="MobileControls" unique_id=1296193775]
+position = Vector2(850, 1340)
+shape = SubResource("RectShape_btn")
+shape_centered = false
+passby_press = true
+action = "sprint"
+
+[node name="SprintLabel" type="Label" parent="MobileControls" unique_id=1945287317]
+modulate = Color(1, 1, 0, 1)
+anchors_preset = -1
+anchor_right = 0.83300006
+offset_left = 860.0
+offset_top = 1348.0
+offset_right = 90.359924
+offset_bottom = 1390.0
+text = "RUN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AttackButton" type="TouchScreenButton" parent="MobileControls" unique_id=1888436993]
+position = Vector2(850, 1680)
+shape = SubResource("RectShape_btn")
+shape_centered = false
+passby_press = true
+action = "attack"
+
+[node name="AttackLabel" type="Label" parent="MobileControls" unique_id=311095223]
+modulate = Color(1, 0.2, 0.2, 1)
+offset_left = 860.0
+offset_top = 1688.0
+offset_right = 990.0
+offset_bottom = 1730.0
+text = "⚔ ATK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DodgeButton" type="TouchScreenButton" parent="MobileControls" unique_id=698633659]
+position = Vector2(650, 1680)
+shape = SubResource("RectShape_btn")
+shape_centered = false
+passby_press = true
+action = "dodge"
+
+[node name="DodgeLabel" type="Label" parent="MobileControls" unique_id=1561014383]
+modulate = Color(0.2, 1, 0.2, 1)
+offset_left = 660.0
+offset_top = 1688.0
+offset_right = 790.0
+offset_bottom = 1730.0
+text = "⟳ ROLL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SwitchButton" type="TouchScreenButton" parent="MobileControls" unique_id=1276836939]
+position = Vector2(394, 262)
+shape = SubResource("RectShape_btn")
+shape_centered = false
+passby_press = true
+action = "switch_weapon"
+
+[node name="SwitchLabel" type="Label" parent="MobileControls" unique_id=399896069]
+modulate = Color(0.2, 0.8, 1, 1)
+offset_left = 860.0
+offset_top = 68.0
+offset_right = 990.0
+offset_bottom = 110.0
+text = "🔄 SW"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ActiveWeaponLabel" type="Label" parent="MobileControls" unique_id=6973532]
+modulate = Color(0.9, 0.9, 0.9, 1)
+offset_left = 60.0
+offset_top = 220.0
+offset_right = 350.0
+offset_bottom = 260.0
+text = "Weapon: Slingshot"
+vertical_alignment = 1
