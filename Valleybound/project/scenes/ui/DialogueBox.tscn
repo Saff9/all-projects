@@ -1,0 +1,100 @@
+[gd_scene load_steps=3 format=3]
+
+; =============================================================
+; DialogueBox.tscn — UI Dialogue Box overlay (W2-04)
+; Wadi-e-Kashmir | Godot 4.3
+; =============================================================
+
+[ext_resource type="Script" path="res://scripts/ui/DialogueBox.gd" id="1_DialogueBox"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.12, 0.12, 0.14, 0.9) ; Dark charcoal translucent panel
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.35, 0.35, 0.38, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="DialogueBox" type="CanvasLayer"]
+layer = 5 ; Renders on top of other HUD layers
+script = ExtResource("1_DialogueBox")
+
+; Translucent panel at bottom of the 1080x1920 screen
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -510.0
+offset_top = -240.0
+offset_right = 510.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBox" type="HBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+; NPC Grey Portrait Box
+[node name="Portrait" type="ColorRect" parent="Panel/MarginContainer/HBox"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.4, 0.4, 0.43, 1)
+
+[node name="VBox" type="VBoxContainer" parent="Panel/MarginContainer/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="NPCNameLabel" type="Label" parent="Panel/MarginContainer/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0, 1) ; Gold text color
+theme_override_font_sizes/font_size = 28
+text = "NPC Name"
+
+[node name="DialogueText" type="RichTextLabel" parent="Panel/MarginContainer/HBox/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 22
+bbcode_enabled = true
+text = "Dialogue lines will write here..."
+fit_content = true
+
+; Advancing tap prompt
+[node name="TapPrompt" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -45.0
+offset_right = -30.0
+offset_bottom = -15.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.6, 0.8, 1, 0.7)
+theme_override_font_sizes/font_size = 18
+text = "Tap to continue ▶"
+horizontal_alignment = 2

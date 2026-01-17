@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3]
+
+; =============================================================
+; DamageNumber.tscn — 3D Damage Number Scene (W2-03)
+; Wadi-e-Kashmir | Godot 4.3
+; =============================================================
+
+[ext_resource type="Script" path="res://scripts/ui/DamageNumber.gd" id="1_DamageNumber"]
+
+[node name="DamageNumber" type="Label3D"]
+billboard = 1
+double_sided = false
+no_depth_test = true
+text = "0"
+modulate = Color(1, 0, 0, 1)
+outline_modulate = Color(0, 0, 0, 1)
+font_size = 48
+outline_size = 12
+script = ExtResource("1_DamageNumber")
