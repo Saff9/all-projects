@@ -1,0 +1,151 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/HUD.gd" id="1_HUD"]
+[ext_resource type="PackedScene" path="res://scenes/ui/DialogueBox.tscn" id="2_DialogueBox"]
+
+[node name="HUD" type="CanvasLayer" unique_id=865951040]
+script = ExtResource("1_HUD")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=281298267]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1626591236]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TopRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1239081082]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="BarsGroup" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopRow" unique_id=113248080]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="HealthRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TopRow/BarsGroup" unique_id=295071749]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="HealthIcon" type="Label" parent="MarginContainer/VBoxContainer/TopRow/BarsGroup/HealthRow" unique_id=1325579677]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "❤"
+vertical_alignment = 1
+
+[node name="HealthBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/TopRow/BarsGroup/HealthRow" unique_id=450719015]
+custom_minimum_size = Vector2(150, 18)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+value = 100.0
+show_percentage = false
+
+[node name="HungerRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TopRow/BarsGroup" unique_id=1057051276]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="HungerIcon" type="Label" parent="MarginContainer/VBoxContainer/TopRow/BarsGroup/HungerRow" unique_id=1176257899]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "🍖"
+vertical_alignment = 1
+
+[node name="HungerBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/TopRow/BarsGroup/HungerRow" unique_id=488947989]
+custom_minimum_size = Vector2(150, 18)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+value = 100.0
+show_percentage = false
+
+[node name="ColdRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TopRow/BarsGroup" unique_id=1188064371]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="ColdIcon" type="Label" parent="MarginContainer/VBoxContainer/TopRow/BarsGroup/ColdRow" unique_id=495261957]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "❄"
+vertical_alignment = 1
+
+[node name="ColdBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/TopRow/BarsGroup/ColdRow" unique_id=1961927720]
+custom_minimum_size = Vector2(150, 18)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+value = 100.0
+show_percentage = false
+
+[node name="SeasonLabel" type="Label" parent="MarginContainer/VBoxContainer/TopRow" unique_id=1997316863]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "🌸 Spring — Day 1"
+horizontal_alignment = 1
+
+[node name="MinimapPlaceholder" type="ColorRect" parent="MarginContainer/VBoxContainer/TopRow" unique_id=213279382]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+color = Color(0.18, 0.18, 0.18, 0.85)
+
+[node name="GameOverScreen" type="ColorRect" parent="." unique_id=2014809172]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.75)
+
+[node name="CenterContainer" type="CenterContainer" parent="GameOverScreen" unique_id=1086292398]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverScreen/CenterContainer" unique_id=304727222]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 28
+
+[node name="GameOverTitle" type="Label" parent="GameOverScreen/CenterContainer/VBoxContainer" unique_id=203278042]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.15, 0.15, 1)
+theme_override_font_sizes/font_size = 72
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="CauseLabel" type="Label" parent="GameOverScreen/CenterContainer/VBoxContainer" unique_id=287937166]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="RestartButton" type="Button" parent="GameOverScreen/CenterContainer/VBoxContainer" unique_id=771833429]
+custom_minimum_size = Vector2(220, 60)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 30
+text = "Play Again"
+
+[node name="DialogueBox" parent="." instance=ExtResource("2_DialogueBox")]
