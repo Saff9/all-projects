@@ -1,0 +1,364 @@
+[gd_scene load_steps=22 format=3]
+
+; =============================================================
+; Srinagar.tscn — 3D Srinagar Hub Scene (W2-05)
+; Wadi-e-Kashmir | Godot 4.3
+; =============================================================
+
+[ext_resource type="Script"      path="res://scripts/world/Srinagar.gd"          id="1_Srinagar"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn"          id="2_Player"]
+[ext_resource type="PackedScene" path="res://scenes/animals/MushtaqBhai.tscn"     id="3_MushtaqBhai"]
+[ext_resource type="Script"      path="res://scripts/world/BlizzardEvent.gd"    id="4_BlizzardEvent"]
+
+; ── Shared Materials ──────────────────────────────────────────
+
+[sub_resource type="Shader" id="Shader_ground"]
+code = "
+shader_type spatial;
+render_mode specular_toon;
+uniform vec3 stone_color : source_color = vec3(0.32, 0.32, 0.35);
+uniform vec3 grout_color : source_color = vec3(0.18, 0.18, 0.2);
+void fragment() {
+	float grid_x = step(0.06, sin(UV.x * 120.0) * 0.5 + 0.5);
+	float grid_z = step(0.06, sin(UV.y * 120.0) * 0.5 + 0.5);
+	ALBEDO = mix(grout_color, stone_color, grid_x * grid_z);
+	ROUGHNESS = 0.85;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="Mat_Ground"]
+shader = SubResource("Shader_ground")
+
+[sub_resource type="Shader" id="Shader_water"]
+code = "
+shader_type spatial;
+render_mode specular_toon;
+uniform vec3 albedo : source_color = vec3(0.05, 0.38, 0.52);
+uniform vec3 albedo_deep : source_color = vec3(0.01, 0.12, 0.24);
+void fragment() {
+	float w1 = sin(UV.x * 30.0 + TIME * 1.2) * 0.5 + 0.5;
+	float w2 = cos(UV.y * 30.0 - TIME * 1.0) * 0.5 + 0.5;
+	float wave = (w1 + w2) * 0.5;
+	ALBEDO = mix(albedo_deep, albedo, wave * 0.8 + 0.2);
+	METALLIC = 0.1;
+	ROUGHNESS = 0.08;
+	SPECULAR = 0.5;
+	NORMAL_MAP = vec3(0.5 + sin(TIME + UV.x*80.0)*0.08, 0.5 + cos(TIME + UV.y*80.0)*0.08, 1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="Mat_DalLake"]
+shader = SubResource("Shader_water")
+
+[sub_resource type="Shader" id="Shader_building"]
+code = "
+shader_type spatial;
+render_mode specular_toon;
+uniform vec3 brick_color : source_color = vec3(0.42, 0.32, 0.26);
+uniform vec3 mortar_color : source_color = vec3(0.55, 0.5, 0.45);
+void fragment() {
+	float brick_x = step(0.08, sin(UV.x * 50.0) * 0.5 + 0.5);
+	float brick_y = step(0.08, sin(UV.y * 80.0) * 0.5 + 0.5);
+	float grid = brick_x * brick_y;
+	ALBEDO = mix(mortar_color, brick_color, grid);
+	ROUGHNESS = 0.9;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="Mat_Building"]
+shader = SubResource("Shader_building")
+
+[sub_resource type="StandardMaterial3D" id="Mat_Stall"]
+albedo_color = Color(0.3, 0.2, 0.15, 1) ; Dark brown wood
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_Boat"]
+albedo_color = Color(0.4, 0.22, 0.1, 1) ; Wooden boat brown
+roughness = 0.8
+
+; ── Shared Shapes ─────────────────────────────────────────────
+
+[sub_resource type="BoxShape3D" id="Shape_Ground"]
+size = Vector3(128.0, 2.0, 66.0)
+
+[sub_resource type="BoxShape3D" id="Shape_DalLake"]
+size = Vector3(128.0, 2.0, 30.0)
+
+[sub_resource type="BoxShape3D" id="Shape_Building"]
+size = Vector3(6.4, 6.4, 6.4)
+
+[sub_resource type="BoxShape3D" id="Shape_Stall"]
+size = Vector3(4.0, 3.0, 4.0)
+
+[sub_resource type="BoxShape3D" id="Shape_Boat"]
+size = Vector3(8.0, 1.0, 3.0)
+
+[sub_resource type="BoxShape3D" id="Shape_WallH"]
+size = Vector3(138.0, 10.0, 2.0)
+
+[sub_resource type="BoxShape3D" id="Shape_WallV"]
+size = Vector3(2.0, 10.0, 106.0)
+
+[sub_resource type="BoxShape3D" id="Shape_TransitionH"]
+size = Vector3(20.0, 5.0, 4.0)
+
+[sub_resource type="BoxShape3D" id="Shape_TransitionV"]
+size = Vector3(4.0, 5.0, 20.0)
+
+[sub_resource type="BoxShape3D" id="Shape_TransitionDiag"]
+size = Vector3(10.0, 5.0, 10.0)
+
+; ── Atmospheric Setup ─────────────────────────────────────────
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSky_sky"]
+sky_top_color = Color(0.384314, 0.635294, 0.827451, 1)
+sky_horizon_color = Color(0.643137, 0.776471, 0.854902, 1)
+ground_bottom_color = Color(0.2, 0.2, 0.2, 1)
+ground_horizon_color = Color(0.643137, 0.776471, 0.854902, 1)
+
+[sub_resource type="Sky" id="Sky_srinagar"]
+sky_material = SubResource("ProceduralSky_sky")
+
+[sub_resource type="Environment" id="Env_Srinagar"]
+background_mode = 2
+sky = SubResource("Sky_srinagar")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 2
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.643137, 0.776471, 0.854902, 1)
+fog_density = 0.005
+
+; ── Meshes ────────────────────────────────────────────────────
+
+[sub_resource type="BoxMesh" id="Mesh_Ground"]
+material = SubResource("Mat_Ground")
+size = Vector3(128.0, 2.0, 66.0)
+
+[sub_resource type="BoxMesh" id="Mesh_DalLake"]
+material = SubResource("Mat_DalLake")
+size = Vector3(128.0, 2.0, 30.0)
+
+[sub_resource type="BoxMesh" id="Mesh_Building"]
+material = SubResource("Mat_Building")
+size = Vector3(6.4, 6.4, 6.4)
+
+[sub_resource type="BoxMesh" id="Mesh_Stall"]
+material = SubResource("Mat_Stall")
+size = Vector3(4.0, 3.0, 4.0)
+
+[sub_resource type="BoxMesh" id="Mesh_Boat"]
+material = SubResource("Mat_Boat")
+size = Vector3(8.0, 1.0, 3.0)
+
+; =============================================================
+; SCENE ROOT
+; =============================================================
+
+[node name="Srinagar" type="Node3D"]
+script = ExtResource("1_Srinagar")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_Srinagar")
+
+[node name="SunLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 15, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 60.0
+
+; Ground: stone streets covering Z in [-48.0, 18.0]
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0, -15.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("Shape_Ground")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("Mesh_Ground")
+
+; Dal Lake: water body covering Z in [18.0, 48.0]
+[node name="DalLake" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0, 33.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DalLake"]
+shape = SubResource("Shape_DalLake")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DalLake"]
+mesh = SubResource("Mesh_DalLake")
+
+; ShikaraBoat on Dal Lake
+[node name="ShikaraBoat" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 28.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShikaraBoat"]
+shape = SubResource("Shape_Boat")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ShikaraBoat"]
+mesh = SubResource("Mesh_Boat")
+
+; Buildings static block placeholders
+[node name="Buildings" type="Node3D" parent="."]
+
+[node name="Building_1" type="StaticBody3D" parent="Buildings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.0, 0, -28.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Buildings/Building_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+shape = SubResource("Shape_Building")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Buildings/Building_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("Mesh_Building")
+
+[node name="Building_2" type="StaticBody3D" parent="Buildings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0, -33.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Buildings/Building_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+shape = SubResource("Shape_Building")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Buildings/Building_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("Mesh_Building")
+
+[node name="Building_3" type="StaticBody3D" parent="Buildings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.0, 0, -28.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Buildings/Building_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+shape = SubResource("Shape_Building")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Buildings/Building_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("Mesh_Building")
+
+; MarketArea stalls
+[node name="MarketArea" type="Node3D" parent="."]
+
+[node name="Stall1" type="StaticBody3D" parent="MarketArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.0, 0, -8.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MarketArea/Stall1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("Shape_Stall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MarketArea/Stall1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Mesh_Stall")
+
+[node name="Stall2" type="StaticBody3D" parent="MarketArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.0, 0, -8.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MarketArea/Stall2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("Shape_Stall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MarketArea/Stall2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("Mesh_Stall")
+
+; Mushtaq Bhai NPC instance
+[node name="MushtaqBhai" parent="." instance=ExtResource("3_MushtaqBhai")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.0, 0.1, -8.0)
+
+; Transition exits
+[node name="Transitions" type="Node3D" parent="."]
+
+[node name="ToGulmarg" type="Area3D" parent="Transitions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -45.0)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Transitions/ToGulmarg"]
+shape = SubResource("Shape_TransitionH")
+
+[node name="ToBudgam" type="Area3D" parent="Transitions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -61.0, 1.5, 0.0)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Transitions/ToBudgam"]
+shape = SubResource("Shape_TransitionV")
+
+[node name="ToBaramulla" type="Area3D" parent="Transitions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.0, 1.5, -42.0)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Transitions/ToBaramulla"]
+shape = SubResource("Shape_TransitionDiag")
+
+[node name="ToPahalgam" type="Area3D" parent="Transitions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 43.0)
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Transitions/ToPahalgam"]
+shape = SubResource("Shape_TransitionH")
+
+; Map border invisible collision walls
+[node name="MapBounds" type="Node3D" parent="."]
+
+[node name="WallTop" type="StaticBody3D" parent="MapBounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.0, -49.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MapBounds/WallTop"]
+shape = SubResource("Shape_WallH")
+
+[node name="WallBottom" type="StaticBody3D" parent="MapBounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.0, 49.0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MapBounds/WallBottom"]
+shape = SubResource("Shape_WallH")
+
+[node name="WallLeft" type="StaticBody3D" parent="MapBounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -65.0, 5.0, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MapBounds/WallLeft"]
+shape = SubResource("Shape_WallV")
+
+[node name="WallRight" type="StaticBody3D" parent="MapBounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65.0, 5.0, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MapBounds/WallRight"]
+shape = SubResource("Shape_WallV")
+
+; Player instance
+[node name="Player" parent="." instance=ExtResource("2_Player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0.1, 0.0)
+
+[node name="BlizzardEvent" type="Node" parent="."]
+script = ExtResource("4_BlizzardEvent")

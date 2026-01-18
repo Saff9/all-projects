@@ -1,0 +1,167 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/ShamanCave.gd" id="1_ShamanCave"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_Player"]
+[ext_resource type="PackedScene" path="res://scenes/animals/ShadowWolf.tscn" id="3_ShadowWolf"]
+[ext_resource type="PackedScene" path="res://scenes/animals/IceWraith.tscn" id="4_IceWraith"]
+[ext_resource type="PackedScene" path="res://scenes/animals/Shaman.tscn" id="5_Shaman"]
+[ext_resource type="PackedScene" path="res://scenes/world/CrystalStaff.tscn" id="6_CrystalStaff"]
+
+[sub_resource type="Shader" id="Shader_cave_ground"]
+code = "shader_type spatial;
+render_mode specular_toon;
+uniform vec3 stone_color : source_color = vec3(0.12, 0.11, 0.14);
+uniform vec3 glow_color : source_color = vec3(0.65, 0.1, 0.9);
+void fragment() {
+	float vein1 = sin(UV.x * 25.0 + sin(UV.y * 30.0)) * 0.5 + 0.5;
+	float vein2 = cos(UV.y * 20.0 + cos(UV.x * 25.0)) * 0.5 + 0.5;
+	float vein = step(0.96, vein1 * vein2);
+	float noise = sin(UV.x * 800.0) * cos(UV.y * 800.0) * 0.05;
+	ALBEDO = mix(stone_color + vec3(noise), glow_color, vein);
+	EMISSION = glow_color * vein * 2.5;
+	ROUGHNESS = mix(0.9, 0.2, vein);
+}"
+
+[sub_resource type="ShaderMaterial" id="Mat_CaveGround"]
+shader = SubResource("Shader_cave_ground")
+
+[sub_resource type="Shader" id="Shader_cave_pillar"]
+code = "shader_type spatial;
+render_mode specular_toon;
+uniform vec3 pillar_color : source_color = vec3(0.08, 0.07, 0.1);
+uniform vec3 glow_color : source_color = vec3(0.65, 0.1, 0.9);
+void fragment() {
+	float vein_v = sin(UV.x * 15.0 + sin(UV.y * 25.0)) * 0.5 + 0.5;
+	float vein = step(0.97, vein_v);
+	ALBEDO = mix(pillar_color, glow_color, vein);
+	EMISSION = glow_color * vein * 2.0;
+	ROUGHNESS = mix(0.95, 0.3, vein);
+}"
+
+[sub_resource type="ShaderMaterial" id="Mat_CavePillar"]
+shader = SubResource("Shader_cave_pillar")
+
+[sub_resource type="BoxShape3D" id="Shape_CaveGround"]
+size = Vector3(128.0, 2.0, 96.0)
+
+[sub_resource type="BoxShape3D" id="Shape_Transition"]
+size = Vector3(30.0, 5.0, 4.0)
+
+[sub_resource type="Environment" id="Env_ShamanCave"]
+background_mode = 1
+background_color = Color(0.02, 0.01, 0.04, 1)
+ambient_light_source = 1
+fog_enabled = true
+fog_light_color = Color(0.05, 0.02, 0.1, 1)
+fog_density = 0.02
+
+[sub_resource type="BoxMesh" id="Mesh_CaveGround"]
+material = SubResource("Mat_CaveGround")
+size = Vector3(128.0, 2.0, 96.0)
+
+[node name="ShamanCave" type="Node3D"]
+script = ExtResource("1_ShamanCave")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_ShamanCave")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("Shape_CaveGround")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("Mesh_CaveGround")
+
+[node name="CrystalLights" type="Node3D" parent="."]
+
+[node name="PurpleLight1" type="OmniLight3D" parent="CrystalLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0, 2.5, 25.0)
+light_color = Color(0.65, 0.1, 0.9, 1)
+light_energy = 5.0
+omni_range = 15.0
+
+[node name="PurpleLight2" type="OmniLight3D" parent="CrystalLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0, 2.5, 5.0)
+light_color = Color(0.65, 0.1, 0.9, 1)
+light_energy = 5.0
+omni_range = 15.0
+
+[node name="PurpleLight3" type="OmniLight3D" parent="CrystalLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 3.5, -20.0)
+light_color = Color(0.65, 0.1, 0.9, 1)
+light_energy = 8.0
+omni_range = 25.0
+
+[node name="Transitions" type="Node3D" parent="."]
+
+[node name="CliffLeft" type="CSGBox3D" parent="Transitions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.0, 5.0, 0)
+use_collision = true
+size = Vector3(50.0, 10.0, 96.0)
+material = SubResource("Mat_CavePillar")
+
+[node name="CliffRight" type="CSGBox3D" parent="Transitions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.0, 5.0, 0)
+use_collision = true
+size = Vector3(50.0, 10.0, 96.0)
+material = SubResource("Mat_CavePillar")
+
+[node name="ExitDoor" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 45.0)
+collision_layer = 0
+collision_mask = 1
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExitDoor"]
+shape = SubResource("Shape_Transition")
+
+[node name="PathSection1" type="Node3D" parent="."]
+
+[node name="ShadowWolf" parent="PathSection1" instance=ExtResource("3_ShadowWolf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0, 0.1, 25.0)
+
+[node name="IceWraith" parent="PathSection1" instance=ExtResource("4_IceWraith")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, 1.5, 20.0)
+
+[node name="PathSection2" type="Node3D" parent="."]
+
+[node name="ShadowWolf1" parent="PathSection2" instance=ExtResource("3_ShadowWolf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0, 0.1, 5.0)
+
+[node name="ShadowWolf2" parent="PathSection2" instance=ExtResource("3_ShadowWolf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 0.1, 2.0)
+
+[node name="PathSection3" type="Node3D" parent="."]
+
+[node name="IceWraith" parent="PathSection3" instance=ExtResource("4_IceWraith")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0, 1.5, -10.0)
+
+[node name="ShadowWolf_TrollFallback" parent="PathSection3" instance=ExtResource("3_ShadowWolf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0, 0.1, -12.0)
+
+[node name="BossArena" type="Node3D" parent="."]
+
+[node name="Shaman" parent="BossArena" instance=ExtResource("5_Shaman")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -25.0)
+
+[node name="CrystalStaff" parent="BossArena" instance=ExtResource("6_CrystalStaff")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0, 0.1, -22.0)
+
+[node name="ArenaWallLeft" type="CSGBox3D" parent="BossArena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0, 5.0, -15.0)
+use_collision = true
+size = Vector3(6.0, 10.0, 6.0)
+material = SubResource("Mat_CavePillar")
+
+[node name="ArenaWallRight" type="CSGBox3D" parent="BossArena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0, 5.0, -15.0)
+use_collision = true
+size = Vector3(6.0, 10.0, 6.0)
+material = SubResource("Mat_CavePillar")
+
+[node name="Player" parent="." instance=ExtResource("2_Player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 40.0)
