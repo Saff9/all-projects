@@ -1,0 +1,211 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/Pahalgam.gd" id="1_Pahalgam"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_Player"]
+[ext_resource type="PackedScene" path="res://scenes/animals/BabaNoor.tscn" id="3_BabaNoor"]
+
+[sub_resource type="Shader" id="Shader_ground"]
+code = "shader_type spatial;
+render_mode specular_toon;
+uniform vec3 albedo_color : source_color = vec3(0.82, 0.85, 0.88);
+float rand(vec2 co) {
+    return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+}
+void fragment() {
+	float noise = rand(UV * 2500.0) * 0.04;
+	float view_dot = dot(NORMAL, VIEW);
+	float r = rand(UV * 4500.0 + sin(TIME * 0.04));
+	float sparkles = 0.0;
+	if (r > 0.992) {
+		sparkles = step(0.82, view_dot) * 0.65;
+	}
+	ALBEDO = albedo_color - vec3(noise) + vec3(sparkles);
+	ROUGHNESS = 0.35;
+	SPECULAR = 0.45;
+}"
+
+[sub_resource type="ShaderMaterial" id="Mat_Ground"]
+shader = SubResource("Shader_ground")
+
+[sub_resource type="Shader" id="Shader_ice"]
+code = "shader_type spatial;
+render_mode specular_toon;
+uniform vec3 ice_color : source_color = vec3(0.65, 0.8, 0.95);
+float rand(vec2 co) {
+    return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+}
+void fragment() {
+	float view_dot = dot(NORMAL, VIEW);
+	float r = rand(UV * 3000.0 + sin(TIME * 0.02));
+	float sparkles = step(0.998, r) * 0.4;
+	ALBEDO = ice_color + vec3(sparkles);
+	ROUGHNESS = 0.05;
+	METALLIC = 0.25;
+	SPECULAR = 0.85;
+	ALPHA = mix(0.5, 0.85, step(0.5, view_dot));
+}"
+
+[sub_resource type="ShaderMaterial" id="Mat_Ice"]
+shader = SubResource("Shader_ice")
+
+[sub_resource type="Shader" id="Shader_cliff"]
+code = "shader_type spatial;
+render_mode specular_toon;
+uniform vec3 rock_color : source_color = vec3(0.2, 0.22, 0.25);
+void fragment() {
+	float layer = sin(UV.y * 80.0 + sin(UV.x * 20.0)) * 0.04 + 0.96;
+	ALBEDO = rock_color * layer;
+	ROUGHNESS = 0.96;
+}"
+
+[sub_resource type="ShaderMaterial" id="Mat_Cliff"]
+shader = SubResource("Shader_cliff")
+
+[sub_resource type="StandardMaterial3D" id="Mat_Trunk"]
+albedo_color = Color(0.22, 0.12, 0.05, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Canopy"]
+albedo_color = Color(0.08, 0.25, 0.1, 1)
+roughness = 0.8
+
+[sub_resource type="BoxShape3D" id="Shape_Ground"]
+size = Vector3(128.0, 2.0, 96.0)
+
+[sub_resource type="BoxShape3D" id="Shape_IcePatch"]
+size = Vector3(16.0, 0.2, 16.0)
+
+[sub_resource type="BoxShape3D" id="Shape_Transition"]
+size = Vector3(128.0, 5.0, 6.0)
+
+[sub_resource type="BoxShape3D" id="Shape_CaveEntrance"]
+size = Vector3(6.0, 5.0, 6.0)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSky_sky"]
+sky_top_color = Color(0.6, 0.68, 0.75, 1)
+sky_horizon_color = Color(0.75, 0.8, 0.82, 1)
+ground_bottom_color = Color(0.2, 0.2, 0.2, 1)
+
+[sub_resource type="Sky" id="Sky_pahalgam"]
+sky_material = SubResource("ProceduralSky_sky")
+
+[sub_resource type="Environment" id="Env_Pahalgam"]
+background_mode = 2
+sky = SubResource("Sky_pahalgam")
+ambient_light_source = 3
+reflected_light_source = 2
+fog_enabled = true
+fog_light_color = Color(0.75, 0.8, 0.82, 1)
+fog_density = 0.015
+
+[sub_resource type="BoxMesh" id="Mesh_Ground"]
+material = SubResource("Mat_Ground")
+size = Vector3(128.0, 2.0, 96.0)
+
+[sub_resource type="BoxMesh" id="Mesh_IcePatch"]
+material = SubResource("Mat_Ice")
+size = Vector3(16.0, 0.1, 16.0)
+
+[node name="Pahalgam" type="Node3D"]
+script = ExtResource("1_Pahalgam")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_Pahalgam")
+
+[node name="SunLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 15, 0)
+light_color = Color(0.85, 0.9, 0.95, 1)
+light_energy = 0.6
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("Shape_Ground")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("Mesh_Ground")
+
+[node name="IcePatches" type="Node3D" parent="."]
+
+[node name="IcePatch_1" type="Area3D" parent="IcePatches"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 0.05, 5.0)
+collision_layer = 0
+collision_mask = 1
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="IcePatches/IcePatch_1"]
+shape = SubResource("Shape_IcePatch")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="IcePatches/IcePatch_1"]
+mesh = SubResource("Mesh_IcePatch")
+
+[node name="IcePatch_2" type="Area3D" parent="IcePatches"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0, 0.05, -20.0)
+collision_layer = 0
+collision_mask = 1
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="IcePatches/IcePatch_2"]
+shape = SubResource("Shape_IcePatch")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="IcePatches/IcePatch_2"]
+mesh = SubResource("Mesh_IcePatch")
+
+[node name="ToSrinagar" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 45.0)
+collision_layer = 0
+collision_mask = 1
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ToSrinagar"]
+shape = SubResource("Shape_Transition")
+
+[node name="CaveEntrance" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -42.0)
+collision_layer = 0
+collision_mask = 1
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CaveEntrance"]
+shape = SubResource("Shape_CaveEntrance")
+
+[node name="CaveDoor" type="CSGBox3D" parent="CaveEntrance"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, -1.0)
+use_collision = true
+size = Vector3(4.0, 4.0, 1.0)
+material = SubResource("Mat_Cliff")
+
+[node name="Cliffs" type="Node3D" parent="."]
+
+[node name="CliffLeft" type="CSGBox3D" parent="Cliffs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.0, 5.0, 0)
+use_collision = true
+size = Vector3(50.0, 10.0, 96.0)
+material = SubResource("Mat_Cliff")
+
+[node name="CliffRight" type="CSGBox3D" parent="Cliffs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.0, 5.0, 0)
+use_collision = true
+size = Vector3(50.0, 10.0, 96.0)
+material = SubResource("Mat_Cliff")
+
+[node name="CliffObstacle1" type="CSGBox3D" parent="Cliffs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0, 5.0, 15.0)
+use_collision = true
+size = Vector3(15.0, 10.0, 15.0)
+material = SubResource("Mat_Cliff")
+
+[node name="CliffObstacle2" type="CSGBox3D" parent="Cliffs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0, 5.0, -10.0)
+use_collision = true
+size = Vector3(15.0, 10.0, 15.0)
+material = SubResource("Mat_Cliff")
+
+[node name="BabaNoor" parent="." instance=ExtResource("3_BabaNoor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0, 0.1, -25.0)
+
+[node name="Player" parent="." instance=ExtResource("2_Player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 42.0)
