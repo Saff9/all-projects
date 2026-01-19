@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/WorldItem.gd" id="1_WorldItem"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pickup"]
+radius = 1.0
+
+[node name="WorldItem" type="Area3D"]
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+monitorable = false
+script = ExtResource("1_WorldItem")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_pickup")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+size = Vector3(0.4, 0.4, 0.4)
