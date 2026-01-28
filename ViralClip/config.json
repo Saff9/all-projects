@@ -1,0 +1,19 @@
+{
+    "port": 8080,
+    "host": "0.0.0.0",
+    "output_dir": "./output",
+    "clips_dir": "./output/clips",
+    "groq_api_key": "",
+    "whisper_model": "whisper-large-v3",
+    "llm_model": "llama-3.3-70b-versatile",
+    "max_clip_duration": 60,
+    "min_clip_duration": 10,
+    "max_clips": 8,
+    "default_platform": "general",
+    "clip_crf": 23,
+    "clip_preset": "fast",
+    "cookies_from_browser": "",
+    "cookies_file": "",
+    "video_ratio": "16:9",
+    "caption_style": "bold"
+}

@@ -1,0 +1,10 @@
+services:
+  viralclip:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./output:/app/output
+    environment:
+      - VIRALCLIP_DIR=/app
+    restart: unless-stopped
