@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-bg: #020617;
+  --color-card: rgba(15, 23, 42, 0.5);
+  --color-card-border: #1e293b;
+  --color-accent: #8b5cf6;
+  --color-accent-hover: #7c3aed;
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-primary: #f1f5f9;
+  --color-secondary: #94a3b8;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #334155 transparent;
+}
+
+::selection {
+  background-color: rgba(139, 92, 246, 0.3);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
