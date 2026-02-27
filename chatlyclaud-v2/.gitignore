@@ -1,0 +1,102 @@
+# ============================================================================
+# FILE: .gitignore
+# PURPOSE: Prevent committing sensitive and generated files
+# ============================================================================
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code related
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# ============================================================================
+# SECURITY: Sensitive files that should NEVER be committed
+# ============================================================================
+
+# Environment variables and API keys
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+
+# Firebase configuration files
+**google-services.json
+**GoogleService-Info.plist
+firebase_options.dart
+lib/firebase_options.dart
+web/firebase-config.js
+
+# Android signing keys
+*.jks
+*.keystore
+key.properties
+android/key.properties
+android/app/keystore.properties
+android/app/upload-keystore.jks
+
+# iOS signing and provisioning
+ios/Runner.xcworkspace/xcuserdata/
+ios/Pods/
+ios/*.mobileprovision
+ios/*.p12
+ios/*.cer
+
+# Private keys and certificates
+*.pem
+*.key
+*.p8
+*.pfx
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Coverage
+coverage/
+*.lcov
+
+# Testing
+.test_coverage.dart
+
+# Log files
+flutter_*.log
