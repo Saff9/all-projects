@@ -1,0 +1,30 @@
+# Analysis options for Chatly
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Error prevention
+    avoid_empty_else: true
+    avoid_print: false
+    avoid_returning_null_for_future: true
+    cancel_subscriptions: true
+    close_sinks: true
+
+    # Code style
+    always_declare_return_types: false
+    annotate_overrides: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_final_fields: true
+    prefer_final_locals: true
+    prefer_single_quotes: true
+    use_key_in_widget_constructors: true
+    use_super_parameters: true
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  errors:
+    missing_required_param: error
+    invalid_annotation_target: ignore
