@@ -1,0 +1,79 @@
+name: chatly
+description: Private, encrypted messaging app with Signal Protocol & Firebase
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  provider: ^6.1.1
+
+  # Firebase
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
+  firebase_messaging: ^14.7.10
+  firebase_analytics: ^10.8.0
+  firebase_crashlytics: ^3.4.9
+  firebase_storage: ^11.6.0
+  cloud_firestore: ^4.14.0
+
+  # Google Sign-In
+  google_sign_in: ^6.1.6
+
+  # Encryption
+  encrypt: ^5.0.3
+  pointycastle: ^3.7.3
+  crypto: ^3.0.3
+  flutter_secure_storage: ^9.0.0
+
+  # UI
+  google_fonts: ^6.1.0
+  font_awesome_flutter: ^10.6.0
+  shimmer: ^3.0.0
+  lottie: ^3.0.0
+  cached_network_image: ^3.3.1
+
+  # Utilities
+  intl: ^0.19.0
+  flutter_dotenv: ^5.1.0
+  http: ^1.2.0
+  path: ^1.8.3
+  path_provider: ^2.1.2
+  shared_preferences: ^2.2.2
+  url_launcher: ^6.2.4
+  connectivity_plus: ^5.0.2
+  device_info_plus: ^9.1.2
+
+  # Image Handling
+  image_picker: ^1.0.7
+
+  # Payments
+  in_app_purchase: ^3.1.11
+
+  # Web Support
+  universal_html: ^2.2.4
+  js: ^0.6.7
+
+  # Localization
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.7
+  mockito: ^5.4.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - .env
+    - assets/
+    - assets/images/
+    - assets/animations/
