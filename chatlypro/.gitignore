@@ -1,0 +1,74 @@
+# ─── Node.js / npm ────────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.log
+
+# ─── TypeScript Build Output ───────────────────────────────────────────────────
+dist/
+.tsbuildinfo
+
+# ─── Flutter / Dart ───────────────────────────────────────────────────────────
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+*.g.dart
+.pub-cache/
+.pub/
+build/
+
+# Platform-specific generated folders (we track native config, but ignore transient/build artifacts via general rules)
+
+# ─── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+.venv/
+venv/
+.env.python
+
+# ─── Secrets — Never Commit ────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+*.p12
+*.pfx
+key.properties
+keystore.properties
+release-key.properties
+google-services.json
+GoogleService-Info.plist
+
+# ─── Editor / OS Artifacts ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# ─── CI Build Cache ────────────────────────────────────────────────────────────
+.gradle/
+.cache/
+android-sdk/
+
+# ─── Release Artifacts ────────────────────────────────────────────────────────
+# Compiled binaries should be distributed via GitHub Releases, not committed.
+*.apk
+*.aab
+*.AppImage
+*.exe
+*.dmg
+*.deb
+*.rpm
+*.zip
+!apps/**/resources/**/*.zip
