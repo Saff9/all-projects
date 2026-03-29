@@ -1,0 +1,65 @@
+# Flutter/Dart
+/.dart_tool/
+/.packages
+/.pub-cache/
+/.pub/
+/build/
+/.flutter-plugins
+/.flutter-plugins-dependencies
+/pubspec.lock
+/pubspec_overrides.yaml
+
+# Android
+/android/app/*.jks
+/android/app/*.keystore
+/android/key.properties
+/android/local.properties
+/android/captures/
+
+# iOS
+/ios/Pods/
+/ios/Podfile.lock
+/ios/Flutter/Generated.xcconfig
+/ios/Flutter/App.framework
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Flutter.podspec
+/ios/Flutter/engine
+/ios/Flutter/flutter_export_environment.sh
+/ios/Flutter/Flutter.xcframework
+/ios/Runner.xcworkspace/
+/ios/Runner/GeneratedPluginRegistrant.h
+/ios/Runner/GeneratedPluginRegistrant.m
+/ios/Flutter/AppFrameworkInfo.plist
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.sublime-workspace
+*.sublime-project
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Packages
+packages/
+
+# Logs
+*.log
+
+# Testing
+coverage/
+
+# Local Netlify folder
+.netlify
