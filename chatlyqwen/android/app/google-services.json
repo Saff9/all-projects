@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1064092004983",
+    "project_id": "run-track-37263",
+    "storage_bucket": "run-track-37263.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064092004983:android:cb3fe93b905fdf82e00c72",
+        "android_client_info": {
+          "package_name": "com.chatly.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeNKquR8g54HRH2R1yvvAWpt5VEw9PeRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
