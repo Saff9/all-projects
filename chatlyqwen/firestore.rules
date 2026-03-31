@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Messages collection
+    match /messages/{message} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Chats collection
+    match /chats/{chat} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Anonymous messages
+    match /anonymous/{message} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && 
+                  request.resource.data.userId == request.auth.uid &&
+                  request.resource.data.timestamp == request.time;
+      allow update: if false; // No updates allowed
+      allow delete: if request.auth != null && 
+                   resource.data.userId == request.auth.uid;
+    }
+  }
+}
