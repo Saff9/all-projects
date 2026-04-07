@@ -1,0 +1,13 @@
+{
+  "app_name": "Chatly",
+  "welcome_message": "Welcome to Chatly",
+  "login": "Log In",
+  "signup": "Sign Up",
+  "anonymous_chat": "Anonymous Chat",
+  "message": "Message",
+  "settings": "Settings",
+  "theme": "Theme",
+  "privacy_policy": "Privacy Policy",
+  "terms_of_service": "Terms of Service",
+  "error_unknown": "Something went wrong. Please try again."
+}

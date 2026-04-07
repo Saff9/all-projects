@@ -1,0 +1,13 @@
+{
+  "app_name": "चटली",
+  "welcome_message": "चटली में आपका स्वागत है",
+  "login": "लॉग इन",
+  "signup": "साइन अप",
+  "anonymous_chat": "अनाम चैट",
+  "message": "संदेश",
+  "settings": "सेटिंग्स",
+  "theme": "थीम",
+  "privacy_policy": "गोपनीयता नीति",
+  "terms_of_service": "सेवा की शर्तें",
+  "error_unknown": "कुछ गलत हुआ। कृपया पुन: प्रयास करें।"
+}
