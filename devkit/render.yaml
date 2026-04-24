@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: devkit
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://devkit.onrender.com
+    healthCheckPath: /
+    autoDeploy: true
+
+# Static Site (optional - for free tier)
+# services:
+#   - type: static
+#     name: devkit
+#     buildCommand: npm install && npm run build
+#     staticPublishPath: .next
+#     envVars:
+#       - key: NODE_ENV
+#         value: production
