@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": "123456789",
+      "username": "dev_hacker",
+      "firstName": "Dev",
+      "lastName": "Hacker",
+      "photoUrl": "",
+      "bitz": 1,
+      "totalEarned": 1,
+      "totalSpent": 0,
+      "clickPower": 1,
+      "totalClicks": 1,
+      "energy": 999,
+      "maxEnergy": 1000,
+      "lastEnergyRefill": "2026-01-31T09:52:35.172Z",
+      "botnets": [],
+      "firewall": {
+        "level": 1,
+        "virusStrength": 1,
+        "lastUpgrade": "2026-01-31T09:52:34.959Z"
+      },
+      "pvp": {
+        "hacksAttempted": 0,
+        "hacksSuccessful": 0,
+        "hacksDefended": 0,
+        "bitzStolen": 0,
+        "bitzLost": 0,
+        "lastHackAttempt": null
+      },
+      "createdAt": "2026-01-31T09:52:34.961Z",
+      "updatedAt": "2026-01-31T11:24:44.866Z",
+      "lastActive": "2026-01-31T11:24:44.866Z"
+    }
+  ]
+}
