@@ -1,0 +1,27 @@
+{
+  "name": "the-glitch-hacker-backend",
+  "version": "1.0.0",
+  "description": "Backend API for The Glitch Hacker Telegram Mini App",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "telegram",
+    "mini-app",
+    "game",
+    "crypto",
+    "clicker"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "node-cron": "^3.0.3"
+  }
+}
