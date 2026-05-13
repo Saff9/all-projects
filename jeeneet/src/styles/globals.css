@@ -1,0 +1,308 @@
+/* src/styles/globals.css - 8K Quality Professional Design with Dark Mode */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark mode color scheme */
+:root {
+  /* Light theme */
+  --nta-blue: #003580;
+  --nta-darkblue: #001f4d;
+  --nta-orange: #f7941d;
+  --nta-lightblue: #0066cc;
+  --nta-bg: #f8fafc;
+  --nta-border: #e2e8f0;
+  
+  /* Professional gradients */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-8k: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  
+  /* 8K shadows and effects */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-8k: 0 25px 50px -12px rgb(0 0 0 / 0.25), 0 20px 40px -10px rgb(0 0 0 / 0.15);
+  --shadow-glow: 0 0 25px rgb(59 130 246 / 0.5);
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --nta-bg: #0f172a;
+  --nta-border: #1e293b;
+  --nta-card-bg: #1e293b;
+  --nta-text: #f1f5f9;
+  --nta-text-secondary: #94a3b8;
+  --nta-blue: #60a5fa;
+  --nta-darkblue: #1e40af;
+  --nta-orange: #fb923c;
+  --nta-lightblue: #93c5fd;
+  --gradient-8k: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: var(--nta-bg);
+  color: var(--nta-text);
+  margin: 0;
+  position: relative;
+  overflow-x: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mobile header fixes */
+@media (max-width: 640px) {
+  header {
+    padding-bottom: 0;
+  }
+  
+  .glass-effect {
+    backdrop-filter: blur(10px);
+  }
+  
+  button[aria-label="Toggle menu"] {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* 8K Background Effects */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(251, 146, 60, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(147, 197, 253, 0.05) 0%, transparent 50%);
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+[data-theme="dark"] body::before {
+  opacity: 0.8;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Glass morphism effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: var(--shadow-8k);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] .glass-effect {
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: var(--shadow-8k);
+}
+
+/* Professional button styles */
+.nta-btn {
+  background: var(--nta-orange);
+  color: #fff;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px 0 rgba(251, 146, 60, 0.4);
+  letter-spacing: 0.02em;
+}
+
+.nta-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.nta-btn:hover::before {
+  left: 100%;
+}
+
+.nta-btn:hover {
+  background: var(--nta-darkblue);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px 0 rgba(251, 146, 60, 0.5);
+}
+
+.nta-btn:active {
+  transform: translateY(0);
+}
+
+/* 8K Card styles */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--nta-card-bg, #ffffff);
+  box-shadow: var(--shadow-md);
+}
+
+.card-hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(251, 146, 60, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card-hover:hover::before {
+  opacity: 1;
+}
+
+.card-hover:hover {
+  box-shadow: var(--shadow-8k);
+  transform: translateY(-4px) scale(1.02);
+}
+
+[data-theme="dark"] .card-hover {
+  background: var(--nta-card-bg);
+}
+
+/* Professional animations */
+.fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(30px);
+    filter: blur(8px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 8K Glow effect */
+.glow-effect {
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+}
+
+.pulse-animation {
+  animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.floating {
+  animation: floating 4s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Professional scrollbar */
+::-webkit-scrollbar { 
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track { 
+  background: var(--nta-bg);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb { 
+  background: linear-gradient(135deg, var(--nta-blue), var(--nta-orange));
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--nta-darkblue), var(--nta-orange));
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--nta-bg);
+}
+
+/* Dark mode transition */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Selection color */
+::selection {
+  background: var(--nta-orange);
+  color: white;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--nta-orange);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+

@@ -1,0 +1,15 @@
+/* Mobile Header Fixes */
+@media (max-width: 640px) {
+  header header {
+    padding: 0;
+  }
+  
+  header > div {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .glass-effect {
+    backdrop-filter: blur(10px);
+  }
+}
