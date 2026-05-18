@@ -1,0 +1,4 @@
+python-telegram-bot==20.7
+python-dotenv>=1.0.0
+httpx>=0.24.0
+asyncio-mqtt>=0.13.0
