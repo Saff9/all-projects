@@ -1,0 +1,20 @@
+# Assets Directory
+
+This directory contains static assets for the OneLink application.
+
+## Structure
+
+- `images/` - Image files (logos, icons, backgrounds)
+- `fonts/` - Custom font files
+- `icons/` - SVG icons
+
+## Usage
+
+Import assets in your components:
+
+```jsx
+import logo from '@/assets/images/logo.svg'
+
+function Component() {
+  return <img src={logo} alt="Logo" />
+}
