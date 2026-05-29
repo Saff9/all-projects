@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <!-- X-Frame-Options is now set via Vercel headers in vercel.json; removed meta tag -->
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+    
+    <!-- Content Security Policy - Note: Configure on server for production -->
+    <!-- 
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval';
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      connect-src 'self' https://*.firebaseio.com https://*.googleapis.com;
+      frame-ancestors 'none';
+    " /> 
+    -->
+    
+    <!-- Primary Meta Tags -->
+    <title>OneLink - Your Personalized Link-in-Bio Page</title>
+    <meta name="title" content="OneLink - Your Personalized Link-in-Bio Page" />
+    <meta name="description" content="Create a beautiful, customizable link-in-bio page. Share all your important links in one place with OneLink." />
+    <meta name="author" content="OneLink" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#6366f1" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://onelink.app/" />
+    <meta property="og:title" content="OneLink - Your Personalized Link-in-Bio Page" />
+    <meta property="og:description" content="Create a beautiful, customizable link-in-bio page. Share all your important links in one place with OneLink." />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:site_name" content="OneLink" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://onelink.app/" />
+    <meta property="twitter:title" content="OneLink - Your Personalized Link-in-Bio Page" />
+    <meta property="twitter:description" content="Create a beautiful, customizable link-in-bio page. Share all your important links in one place with OneLink." />
+    <meta property="twitter:image" content="/og-image.png" />
+    
+    <!-- Performance - Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    
+    <!-- Fonts with display swap for performance -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    </noscript>
+    
+    <!-- PWA Support -->
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="OneLink" />
+    
+    <!-- Resource Hints -->
+    <link rel="modulepreload" href="/src/main.jsx" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Fallback for no-JS -->
+    <noscript>
+      <div style="padding: 20px; text-align: center; font-family: sans-serif;">
+        <h1>OneLink requires JavaScript</h1>
+        <p>Please enable JavaScript to use OneLink.</p>
+      </div>
+    </noscript>
+  </body>
+</html>
