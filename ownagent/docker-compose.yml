@@ -1,0 +1,83 @@
+﻿# =============================================================================
+# Apex Smart AI - Docker Compose Configuration
+# =============================================================================
+
+services:
+  # Backend API Service
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: genzsmart-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+      - ./.env:/app/.env:ro
+    environment:
+      - GENZSMART_HOST=0.0.0.0
+      - GENZSMART_PORT=8000
+      - GENZSMART_DEBUG=false
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - genzsmart-network
+
+  # Frontend Service (Development)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: genzsmart-frontend
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - genzsmart-network
+
+  # Optional: PostgreSQL for production
+  # Uncomment to use PostgreSQL instead of SQLite
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: genzsmart-postgres
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   environment:
+  #     POSTGRES_USER: genzsmart
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+  #     POSTGRES_DB: genzsmart
+  #   ports:
+  #     - "5432:5432"
+  #   restart: unless-stopped
+  #   networks:
+  #     - genzsmart-network
+
+  # Optional: Ollama for local AI
+  ollama:
+    image: ollama/ollama:latest
+    container_name: genzsmart-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - genzsmart-network
+
+networks:
+  genzsmart-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  ollama_data:
