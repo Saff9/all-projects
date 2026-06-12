@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme Colors -->
+    <color name="colorPrimary">#1a1a2e</color>
+    <color name="colorPrimaryDark">#0f0f1a</color>
+    <color name="colorAccent">#4f46e5</color>
+    
+    <!-- Status Bar -->
+    <color name="statusBarColor">#1a1a2e</color>
+    <color name="navigationBarColor">#0f0f1a</color>
+    
+    <!-- Background Colors -->
+    <color name="backgroundDark">#1a1a2e</color>
+    <color name="surfaceDark">#252542</color>
+    
+    <!-- Text Colors -->
+    <color name="textPrimary">#ffffff</color>
+    <color name="textSecondary">#a0a0b0</color>
+    
+    <!-- Accent Colors -->
+    <color name="accentPurple">#4f46e5</color>
+    <color name="accentBlue">#3b82f6</color>
+    <color name="accentCyan">#06b6d4</color>
+</resources>
