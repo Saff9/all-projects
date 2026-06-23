@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="LocalAI - Premium local AI assistant with advanced features">
+    <meta name="theme-color" content="#0f172a">
+    <title>LocalAI - Premium AI Assistant</title>
+    <link rel="stylesheet" href="/static/chat-premium.css">
+    <link rel="icon" type="image/svg+xml" href="/static/logo.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- 📱 SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="sidebar-logo">AI</div>
+                    <span class="sidebar-title">LocalAI</span>
+                </div>
+                <button class="new-chat-btn" onclick="newChat()" title="New conversation">+</button>
+            </div>
+
+            <div class="conversation-list" id="conversation-list">
+                <!-- Conversations loaded here -->
+            </div>
+
+            <div class="sidebar-footer">
+                <button onclick="exportChat()" title="Export" aria-label="Export chat">📤</button>
+                <button onclick="clearCurrentChat()" title="Clear" aria-label="Clear chat">🗑️</button>
+                <button onclick="openSettings()" title="Settings" aria-label="Settings">⚙️</button>
+            </div>
+        </div>
+
+        <!-- 💬 MAIN CHAT AREA -->
+        <div class="main-content">
+            <div class="chat-panel">
+                <div class="container">
+                    <!-- Header -->
+                    <div class="header">
+                        <div class="chat-info">
+                            <h1 id="chat-title">New Chat</h1>
+                            <span class="model-badge" id="current-model-badge">qwen:3b</span>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="controls">
+                        <div class="model-selector">
+                            <label for="model-select">🤖 Model:</label>
+                            <select id="model-select" onchange="updateModel()">
+                                {% for model in models %}
+                                <option value="{{ model }}" {% if model == default_model %}selected{% endif %}>{{ model }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Messages -->
+                    <div id="chat-container" class="chat-container">
+                        <div class="message assistant">
+                            <div class="message-content">
+                                <strong>Welcome to LocalAI</strong>
+                                I'm your intelligent AI assistant. I can help with coding, analysis, writing, and much more. How can I assist you today?
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input -->
+                    <div class="input-area">
+                        <div class="input-wrapper">
+                            <textarea 
+                                id="message-input" 
+                                class="input-field"
+                                placeholder="Ask me anything... (Shift + Enter for new line)"
+                                onkeypress="handleKeyPress(event)"></textarea>
+                            <button class="send-btn" onclick="sendMessage()" title="Send message">→</button>
+                        </div>
+                        <div class="controls-row" id="extra-controls">
+                            <button class="control-btn" onclick="startVoiceInput()" title="Voice input">🎤</button>
+                            <button class="control-btn" onclick="uploadFile()" title="Upload file">📎</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📁 UPLOADS PANEL -->
+            <div class="uploads-panel">
+                <div class="uploads-header">📁 Files & Tools</div>
+                
+                <div class="uploads-list" id="uploads-list">
+                    <div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 13px;">
+                        No files uploaded
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ⚙️ SETTINGS MODAL -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Settings</h3>
+                <span class="close" onclick="closeSettings()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <label>Default Model</label>
+                    <select id="default-model-select">
+                        {% for model in models %}
+                        <option value="{{ model }}" {% if model == default_model %}selected{% endif %}>{{ model }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Temperature (Creativity): <span id="temp-value">0.7</span></label>
+                    <input type="range" id="temperature-slider" min="0" max="2" step="0.1" value="0.7" oninput="updateTempValue(this.value)">
+                </div>
+                <div class="setting-item">
+                    <label>Theme</label>
+                    <select id="theme-select">
+                        <option value="dark" selected>Dark (Eye-friendly)</option>
+                        <option value="light">Light</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="saveSettings()">Save Changes</button>
+                <button onclick="closeSettings()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- File input (hidden) -->
+    <input type="file" id="file-input" multiple style="display:none" accept=".pdf,.zip,.txt,.md,.py,.js,.html,.css,.docx,.png,.jpg,.jpeg,.json,.xml,.csv">
+
+    <script src="/static/chat-improved.js"></script>
+</body>
+</html>
