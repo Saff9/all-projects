@@ -1,0 +1,12 @@
+# GitHub Sponsors / funding configuration for rift-vcs.
+#
+# This file is intentionally minimal. Rift is a free, open-source VCS with
+# no current funding model. To enable a "Sponsor this project" button on the
+# repository page, replace the example below with a real entry (see
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository
+# for the full list of supported platforms).
+#
+# Example (commented out):
+#
+# github: [rift-vcs]
+# custom: ["https:// rift.dev/sponsor"]
