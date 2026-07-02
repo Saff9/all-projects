@@ -1,0 +1,28 @@
+# Rust build artifacts
+/target
+**/*.rs.bk
+
+# Cargo lockfile is kept for binaries (this is a binary crate, not a library)
+# Cargo.lock
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.*
+
+# OS
+Thumbs.db
+
+# Next.js (the dashboard is a separate concern, but just in case)
+.next/
+node_modules/
+
+# Test repos created by `cargo test` or manual testing
+/test-repos/
