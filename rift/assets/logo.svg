@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Rift logo: a stylized geological fault/rift — two tectonic plates splitting -->
+  <!-- Not AI-generated. Designed as a geometric mark. -->
+
+  <!-- Left plate (dark teal) -->
+  <polygon points="8,8 56,8 48,64 8,120" fill="#1a3a3a" />
+
+  <!-- Right plate (bright teal) -->
+  <polygon points="72,8 120,8 120,120 80,120" fill="#2da44e" />
+
+  <!-- The rift (gap between plates) -->
+  <polygon points="56,8 72,8 80,120 48,120" fill="#0d1117" />
+
+  <!-- Fault lines (jagged cracks) -->
+  <polyline points="56,8 60,24 54,36 62,48 56,64 64,80 58,96 66,112 60,120"
+            fill="none" stroke="#3fb950" stroke-width="2" stroke-linejoin="miter" />
+
+  <!-- Hash marks on plates (representing content-addressable storage) -->
+  <rect x="16" y="20" width="24" height="2" fill="#3d6b6b" />
+  <rect x="16" y="28" width="18" height="2" fill="#3d6b6b" />
+  <rect x="16" y="36" width="28" height="2" fill="#3d6b6b" />
+  <rect x="16" y="44" width="22" height="2" fill="#3d6b6b" />
+
+  <rect x="84" y="20" width="28" height="2" fill="#7ee787" />
+  <rect x="84" y="28" width="22" height="2" fill="#7ee787" />
+  <rect x="84" y="36" width="26" height="2" fill="#7ee787" />
+  <rect x="84" y="44" width="20" height="2" fill="#7ee787" />
+
+  <!-- Version dots (representing commits/versions) -->
+  <circle cx="32" cy="100" r="3" fill="#3fb950" />
+  <circle cx="96" cy="100" r="3" fill="#3fb950" />
+  <circle cx="64" cy="60" r="4" fill="#3fb950" opacity="0.6" />
+</svg>
