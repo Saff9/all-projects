@@ -1,0 +1,24 @@
+[Unit]
+Description=Rift VCS Server
+Documentation=https://github.com/Saff9/rift
+After=network.target
+
+[Service]
+Type=simple
+User=rift
+Group=rift
+WorkingDirectory=/srv/rift
+ExecStart=/usr/local/bin/rift serve --public --port 3030 --tls --token ${RIFT_TOKEN}
+Environment=RIFT_TOKEN=changeme
+Restart=on-failure
+RestartSec=5
+
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/rift
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
