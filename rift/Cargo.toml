@@ -1,0 +1,73 @@
+[package]
+name = "rift-vcs"
+version = "1.4.0"
+edition = "2021"
+rust-version = "1.70"
+license = "MIT"
+description = "A fast VCS with undo, auto-snapshot, chunked dedup, git interop, rift-protocol collaboration, encrypted auth, secure serve, built-in bench. Beats git in every benchmark."
+repository = "https://github.com/Saff9/rift"
+homepage = "https://github.com/Saff9/rift"
+documentation = "https://github.com/Saff9/rift#readme"
+readme = "README.md"
+categories = ["command-line-utilities", "development-tools"]
+keywords = ["vcs", "git", "version-control", "scm", "blake3"]
+exclude = [
+    "/target",
+    "/.github",
+    "/scripts",
+    "/assets/*.svg",
+    "/assets/social-card.png",
+    "/assets/logo-mark.png",
+]
+
+[[bin]]
+name = "rift"
+path = "src/bin/main.rs"
+
+[lib]
+name = "rift"
+path = "src/lib.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+blake3 = "1"
+walkdir = "2"
+chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
+anyhow = "1"
+rayon = "1"
+flate2 = "1"
+# v0.8 — professional CLI + serve + watch
+clap = { version = "4", features = ["derive"] }
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+notify = "6"
+notify-debouncer-mini = "0.4"
+# v1.0 — security hardening
+aes-gcm = "0.10"                                    # AES-256-GCM authenticated encryption
+rand = "0.8"                                        # CSPRNG for key + nonce generation
+base64 = "0.22"                                     # encode ciphertext as base64 in JSON
+zeroize = { version = "1", features = ["derive"] }  # wipe secrets from memory on drop
+thiserror = "1"                                     # typed library errors
+libc = "0.2"                                        # Unix syscalls (fork, kill, dup2) for daemon mode
+# v1.2 — TLS for rift-protocol over the internet
+rustls = "0.23"
+rcgen = "0.13"                                      # self-signed cert generation
+
+[dev-dependencies]
+tempfile = "3"
+tower = { version = "0.5", features = ["util"] }
+http = "1"
+http-body-util = "0.1"
+
+# Dev tools (not Rust libraries, installed separately via `cargo install`):
+#   cargo-wix    -> builds the Windows MSI installer (see wix/main.wxs and
+#                   .github/workflows/release.yml). Install with:
+#                   `cargo install cargo-wix --locked`
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
