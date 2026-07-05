@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<!--
+  Rift VCS - WiX installer template.
+
+  Built by `cargo wix` (see docs/PUBLISHING.md and
+  .github/workflows/release.yml). The cargo-wix preprocessor
+  substitutes $(env.CARGO_PKG_*) variables at build time, so the
+  installer stays in sync with Cargo.toml automatically.
+
+  What this installer does:
+    1. Installs rift.exe to [ProgramFiles64Folder]\Rift\bin\rift.exe
+    2. Adds that bin\ directory to the system PATH so `rift` works
+       from any new terminal (existing terminals need a restart).
+    3. Creates a Start Menu shortcut (Programs\Rift\Rift.lnk) that
+       opens cmd /k "rift --help" so users immediately see the help
+       text instead of a flash-and-close window.
+    4. Embeds assets\rift.ico as both the installer icon and the
+       Add/Remove Programs product icon.
+    5. Registers a full uninstaller: Settings -> Apps -> Rift ->
+       Uninstall, or `msiexec /x {ProductCode}` from the command line.
+    6. Sets up a major-upgrade rule so installing a newer version
+       removes the older one cleanly.
+
+  Inputs (relative to the project root, where `cargo wix` runs):
+    target\release\rift.exe    -> the binary built by `cargo build --release`
+    assets\rift.ico            -> the multi-size icon (16..256)
+    wix\license.rtf            -> RTF version of the MIT LICENSE
+-->
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+  <?define UpgradeCode = '8c4e7d3a-2c1f-4b6e-9d8a-7f3c2e1b0a5d' ?>
+
+  <Product
+      Id='*'
+      Name='Rift VCS'
+      Manufacturer='Rift contributors'
+      Language='1033'
+      Codepage='1252'
+      Version='$(env.CARGO_PKG_VERSION)'
+      UpgradeCode='$(var.UpgradeCode)'>
+
+    <Package Id='*'
+             Keywords='Installer'
+             Description='Rift VCS $(env.CARGO_PKG_VERSION) installer'
+             Manufacturer='Rift contributors'
+             InstallerVersion='200'
+             Languages='1033'
+             Compressed='yes'
+             InstallScope='perMachine'
+             SummaryCodepage='1252'
+             Comments='A fast VCS with undo, auto-snapshot, chunked dedup, git interop, and rift-protocol collaboration.' />
+
+    <!-- Major upgrade: uninstall the old version before installing the new one. -->
+    <MajorUpgrade
+        Schedule='afterInstallInitialize'
+        DowngradeErrorMessage='A newer version of Rift VCS is already installed. Setup will now exit.' />
+
+    <Media Id='1' Cabinet='rift.cab' EmbedCab='yes' />
+
+    <Property Id='DiskPrompt' Value='Rift VCS $(env.CARGO_PKG_VERSION) Installation [1]' />
+
+    <!-- URLs shown in Add/Remove Programs. -->
+    <Property Id='ARPHELPLINK' Value='https://github.com/Saff9/rift/issues' />
+    <Property Id='ARPURLINFOABOUT' Value='https://github.com/Saff9/rift' />
+    <Property Id='ARPURLUPDATEINFO' Value='https://github.com/Saff9/rift/releases' />
+
+    <!-- Icon shown in Add/Remove Programs and on the .msi in Explorer. -->
+    <Icon Id='RiftIco' SourceFile='assets\rift.ico' />
+    <Property Id='ARPPRODUCTICON' Value='RiftIco' />
+
+    <!-- UI: stock install dir flow + license agreement dialog. -->
+    <UIRef Id='WixUI_InstallDir' />
+    <WixVariable Id='WixUILicenseRtf' Value='wix\license.rtf' />
+    <Property Id='WIXUI_INSTALLDIR' Value='INSTALLDIR' />
+
+    <!-- Directory layout: Program Files -> Rift -> bin\rift.exe -->
+    <Directory Id='TARGETDIR' Name='SourceDir'>
+      <Directory Id='ProgramFiles64Folder' Name='PFiles'>
+        <Directory Id='INSTALLDIR' Name='Rift'>
+          <Directory Id='BINDIR' Name='bin'>
+            <Component Id='MainExecutable' Guid='b7d3c2a1-9f4e-4d8c-8e1a-2c3b4d5e6f70'>
+              <File
+                  Id='RiftExe'
+                  Name='rift.exe'
+                  DiskId='1'
+                  Source='target\release\rift.exe'
+                  KeyPath='yes' />
+              <!-- Start Menu shortcut. Target is cmd.exe so the user
+                   actually sees rift's output instead of a window that
+                   flashes and closes. -->
+              <Shortcut
+                  Id='StartMenuShortcut'
+                  Name='Rift'
+                  Description='Open a terminal with Rift VCS on PATH'
+                  Target='[%SystemRoot]\System32\cmd.exe'
+                  Arguments='/k "rift --help"'
+                  WorkingDirectory='BINDIR'
+                  Directory='ProgramMenuFolder'
+                  Advertise='no'>
+                <Icon Id='RiftShortcutIco' SourceFile='assets\rift.ico' />
+              </Shortcut>
+            </Component>
+
+            <!-- Add INSTALLDIR\bin to PATH so `rift` works in any terminal. -->
+            <Component Id='PathEnvironment' Guid='c2e1d0b3-8f7e-4a9c-9d2b-5e6f7081a2b3'>
+              <Environment
+                  Id='PATH'
+                  Name='PATH'
+                  Value='[BINDIR]'
+                  Permanent='no'
+                  Part='last'
+                  Action='set'
+                  System='yes' />
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+
+      <!-- Start Menu program group entry (used by the RemoveFolder
+           on uninstall so the shortcut goes away cleanly). -->
+      <Directory Id='ProgramMenuFolder' Name='Programs'>
+        <Directory Id='RiftProgramMenuDir' Name='Rift'>
+          <Component Id='ProgramMenuDir' Guid='d4f2e1c4-9b8a-4d3c-9e5f-7182a3b4c5d6'>
+            <RemoveFolder Id='ProgramMenuDir' On='uninstall' />
+            <RegistryValue
+                Root='HKMU'
+                Key='Software\Rift VCS\Install'
+                Type='string'
+                Value='[BINDIR]'
+                KeyPath='yes' />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id='Complete' Title='Rift VCS' Level='1' ConfigurableDirectory='INSTALLDIR'>
+      <ComponentRef Id='MainExecutable' />
+      <ComponentRef Id='PathEnvironment' />
+      <ComponentRef Id='ProgramMenuDir' />
+    </Feature>
+
+    <!-- Diagnostic: run `rift --version` after the binary is in
+         place. The result is only visible in the msiexec log; it
+         lets us confirm the binary actually runs on the target
+         machine when debugging install failures. -->
+    <CustomAction
+        Id='VerifyInstall'
+        FileKey='RiftExe'
+        ExeCommand='--version'
+        Execute='deferred'
+        Return='ignore'
+        Impersonate='no' />
+
+    <InstallExecuteSequence>
+      <Custom Action='VerifyInstall' After='InstallFiles'>(NOT REMOVE) AND (NOT UPGRADINGPRODUCTCODE)</Custom>
+    </InstallExecuteSequence>
+  </Product>
+</Wix>

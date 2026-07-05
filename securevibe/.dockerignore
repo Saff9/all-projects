@@ -1,0 +1,86 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Node.js
+node_modules
+npm-debug.log
+yarn-error.log
+.pnpm-debug.log
+
+# Testing
+coverage
+.nyc_output
+__tests__
+*.test.js
+*.spec.js
+
+# Build outputs
+dist
+build
+.next
+out
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# Documentation
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+LICENSE
+*.md
+docs/
+guides/
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/*.log
+*.log
+
+# Temporary files
+tmp
+temp
+*.tmp
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+
+# Infrastructure (not needed in image)
+infrastructure/
+k8s/
+terraform/
+helm/
+
+# Web app (built separately)
+web/
+
+# SDK packages
+securevibe-sdk/
+
+# Misc
+.qodo
+*.md
