@@ -1,0 +1,30 @@
+# =============================================================================
+# SecureVibe - Development Dockerfile
+# Includes dev dependencies and hot-reload support
+# =============================================================================
+
+FROM node:20-alpine
+
+# Install development tools
+RUN apk add --no-cache git
+
+# Create app directory
+WORKDIR /app
+
+# Copy package files
+COPY securevibe/package*.json ./
+
+# Install all dependencies (including devDependencies)
+RUN npm install
+
+# Copy source code
+COPY securevibe/ ./
+
+# Create logs directory
+RUN mkdir -p logs
+
+# Expose application port and debug port
+EXPOSE 3000 9229
+
+# Run with nodemon for hot-reload
+CMD ["npm", "run", "dev"]
