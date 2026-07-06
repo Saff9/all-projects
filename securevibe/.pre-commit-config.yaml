@@ -1,0 +1,250 @@
+# =============================================================================
+# Pre-commit Hooks Configuration
+# =============================================================================
+
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+default_stages: [pre-commit]
+default_language_version:
+  node: system
+  python: python3.9
+
+repos:
+  # -----------------------------------------------------------------------------
+  # General Hooks
+  # -----------------------------------------------------------------------------
+  
+  # Check for large files
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-added-large-files
+        name: Check for large files
+        entry: check-added-large-files
+        args: ['--maxkb=1000', '--enforce']
+        language: system
+  
+  # Check for merge conflicts
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+        entry: check-merge-conflict
+        language: system
+  
+  # Check for symlinks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-symlinks
+        name: Check for symlinks
+        entry: check-symlinks
+        language: system
+  
+  # Check for broken symlinks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-case-conflict
+        name: Check for case conflicts
+        entry: check-case-conflict
+        language: system
+  
+  # Trim trailing whitespace
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        name: Trim Trailing Whitespace
+        entry: trailing-whitespace-fixer
+        language: system
+        types: [text]
+  
+  # Fix end of files
+  - repo: https://github.com/pre-commit/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: end-of-file-fixer
+        name: Fix End of Files
+        entry: end-of-file-fixer
+        language: system
+        types: [text]
+  
+  # Mixed line endings
+  - repo: https://github.com/pre-commit/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: mixed-line-ending
+        name: Mixed Line Ending
+        entry: mixed-line-ending-fixer
+        language: system
+        types: [text]
+  
+  # -----------------------------------------------------------------------------
+  # JavaScript/TypeScript Hooks
+  # -----------------------------------------------------------------------------
+  
+  # ESLint
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.56.0
+    hooks:
+      - id: eslint
+        name: ESLint
+        entry: eslint
+        language: node
+        types: [javascript, jsx]
+        files: \.(js|jsx)$
+        args: [--fix, --max-warnings=0]
+        additional_dependencies:
+          - eslint@8.56.0
+  
+  # -----------------------------------------------------------------------------
+  # Security Hooks
+  # -----------------------------------------------------------------------------
+  
+  # Detect secrets with TruffleHog
+  - repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.6.8
+    hooks:
+      - id: trufflehog
+        name: TruffleHog - Detect secrets
+        entry: trufflehog
+        language: system
+        args: [--regex, --entropy=False, --exclude_paths=^node_modules/,^dist/,^build/,^coverage/,^.next/]
+        pass_filenames: \.(js|ts|jsx|tsx|json|yaml|yml|env|md|txt|sh|py|rb|go|java|c|cpp|h|php|html|css|xml|sql)$
+        exclude: ^package-lock.json$
+  
+  # Detect secrets with GitLeaks
+  - repo: https://github.com/zricethezav/gitleaks
+    rev: v8.18.2
+    hooks:
+      - id: gitleaks
+        name: GitLeaks - Detect secrets
+        entry: gitleaks
+        language: system
+        args: [--detect, --verbose, --redact]
+        pass_filenames: \.(js|ts|jsx|tsx|json|yaml|yml|env|md|txt|sh|py|rb|go|java|c|cpp|h|php|html|css|xml|sql)$
+        exclude: ^package-lock.json$
+  
+  # -----------------------------------------------------------------------------
+  # YAML/JSON Validation
+  # -----------------------------------------------------------------------------
+  
+  # Validate YAML files
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        name: Validate YAML files
+        entry: yamllint
+        language: system
+        files: \.(yaml|yml)$
+        args: [-d relaxed]
+  
+  # Validate JSON files
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-json
+        name: Validate JSON files
+        entry: check-json
+        language: system
+        files: \.json$
+        args: [--pretty]
+  
+  # -----------------------------------------------------------------------------
+  # Docker Hooks
+  # -----------------------------------------------------------------------------
+  
+  # Validate Dockerfiles
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint-docker
+        name: Lint Dockerfiles
+        entry: hadolint
+        language: system
+        files: ^Dockerfile$
+        args: [--ignore DL3008, --ignore DL3013]
+  
+  # -----------------------------------------------------------------------------
+  # Terraform Hooks
+  # -----------------------------------------------------------------------------
+  
+  # Validate Terraform files
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.88.0
+    hooks:
+      - id: terraform-fmt
+        name: Terraform fmt
+        entry: terraform
+        language: system
+        args: [fmt, -recursive]
+        files: \.tf$
+        pass_filenames: ^$
+  
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.88.0
+    hooks:
+      - id: terraform-validate
+        name: Terraform validate
+        entry: terraform
+        language: system
+        args: [validate]
+        files: \.tf$
+        pass_filenames: ^$
+  
+  # -----------------------------------------------------------------------------
+  # Kubernetes/Helm Hooks
+  # -----------------------------------------------------------------------------
+  
+  # Validate Kubernetes manifests
+  - repo: https://github.com/instrumenta/kubeval
+    rev: v0.16.1
+    hooks:
+      - id: kubeval
+        name: Validate Kubernetes manifests
+        entry: kubeval
+        language: system
+        files: \.yaml$
+        args: [--strict, --ignore-missing-schemas]
+        exclude: ^infrastructure/helm/
+  
+  # Validate Helm charts
+  - repo: https://github.com/gruntwork-io/helm-hook
+    rev: v0.13.1
+    hooks:
+      - id: helm-lint
+        name: Lint Helm charts
+        entry: helm
+        language: system
+        args: [lint, --strict, --quiet]
+        files: ^infrastructure/helm/.*Chart\.yaml$
+  
+  # -----------------------------------------------------------------------------
+  # Custom Hooks
+  # -----------------------------------------------------------------------------
+  
+  # Run tests before commit
+  - repo: local
+    hooks:
+      - id: run-tests
+        name: Run tests
+        entry: npm run test
+        language: system
+        pass_filenames: \.(js|ts|jsx|tsx)$
+        files: ^(securevibe/|web/).*
+        exclude: ^node_modules/
+  
+  # Check for TODO comments
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-todo
+        name: Check for TODO comments
+        entry: check-for-todos
+        language: system
+        args: [--skip=TODO:,FIXME:,XXX:,HACK:]
+        exclude: ^node_modules/
