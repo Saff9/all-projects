@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My App - Powered by SecureVibe</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .status.authenticated {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.unauthenticated {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .branding {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>My App - Secure Authentication Demo</h1>
+
+    <div id="auth-status" class="status unauthenticated">
+        Status: Not authenticated
+    </div>
+
+    <div id="user-info" style="display: none;">
+        <h3>User Information</h3>
+        <div class="user-info">
+            <p><strong>Email:</strong> <span id="user-email"></span></p>
+            <p><strong>Token:</strong> <span id="user-token">...</span></p>
+        </div>
+    </div>
+
+    <div id="auth-buttons">
+        <button onclick="login()">Sign In with SecureVibe</button>
+        <button onclick="logout()" style="display: none;">Logout</button>
+    </div>
+
+    <div id="protected-content" style="display: none;">
+        <h2>Welcome to the Protected Area!</h2>
+        <p>This content is only visible to authenticated users.</p>
+
+        <h3>Make an Authenticated API Call</h3>
+        <button onclick="makeAuthenticatedCall()">Test API Call</button>
+        <div id="api-result"></div>
+    </div>
+
+    <div class="branding">
+        🔐 Protected by <strong>SecureVibe</strong> - Enterprise Authentication
+    </div>
+
+    <!-- Load SecureVibe SDK -->
+    <script src="https://cdn.securevibe.com/sdk/securevibe-auth.js"></script>
+
+    <script>
+        // Initialize SecureVibe Auth
+        const auth = initSecureVibeAuth({
+            apiUrl: 'https://your-securevibe-instance.com',
+            clientId: 'your_client_id_here',
+            redirectUri: window.location.origin,
+            branding: {
+                companyName: 'My Company',
+                appName: 'My App',
+                logoUrl: 'https://example.com/logo.png',
+                primaryColor: '#007bff',
+                secondaryColor: '#6c757d'
+            }
+        });
+
+        // Auth event listeners
+        auth.on('authenticated', (session) => {
+            console.log('User authenticated:', session);
+            updateUI(true, session);
+        });
+
+        auth.on('logout', () => {
+            console.log('User logged out');
+            updateUI(false);
+        });
+
+        // Check initial authentication status
+        if (auth.isAuthenticated()) {
+            updateUI(true, auth.getSession());
+        }
+
+        // Handle authentication callback (for OAuth redirects)
+        if (window.location.search.includes('token=')) {
+            auth.handleCallback().then((success) => {
+                if (!success) {
+                    showError('Authentication failed');
+                }
+            });
+        }
+
+        // Functions
+        async function login() {
+            // Show SecureVibe login modal
+            auth.showLogin();
+        }
+
+        async function logout() {
+            await auth.logout();
+        }
+
+        async function makeAuthenticatedCall() {
+            try {
+                // Example: Make authenticated API call to your backend
+                const response = await auth.authenticatedRequest('/api/my-protected-endpoint', {
+                    method: 'GET'
+                });
+
+                const data = await response.json();
+                document.getElementById('api-result').innerHTML =
+                    `<pre style="background: #f8f9fa; padding: 10px; border-radius: 5px;">${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('api-result').innerHTML =
+                    `<p style="color: red;">API call failed: ${error.message}</p>`;
+            }
+        }
+
+        function updateUI(isAuthenticated, session = null) {
+            const statusDiv = document.getElementById('auth-status');
+            const userInfoDiv = document.getElementById('user-info');
+            const protectedContent = document.getElementById('protected-content');
+            const loginBtn = document.querySelector('button[onclick="login()"]');
+            const logoutBtn = document.querySelector('button[onclick="logout()"]');
+
+            if (isAuthenticated && session) {
+                statusDiv.className = 'status authenticated';
+                statusDiv.textContent = 'Status: Authenticated ✅';
+
+                userInfoDiv.style.display = 'block';
+                document.getElementById('user-email').textContent = session.email || 'N/A';
+                document.getElementById('user-token').textContent =
+                    session.token.substring(0, 20) + '...';
+
+                protectedContent.style.display = 'block';
+
+                loginBtn.style.display = 'none';
+                logoutBtn.style.display = 'inline-block';
+            } else {
+                statusDiv.className = 'status unauthenticated';
+                statusDiv.textContent = 'Status: Not authenticated';
+
+                userInfoDiv.style.display = 'none';
+                protectedContent.style.display = 'none';
+
+                loginBtn.style.display = 'inline-block';
+                logoutBtn.style.display = 'none';
+            }
+        }
+
+        function showError(message) {
+            const statusDiv = document.getElementById('auth-status');
+            statusDiv.className = 'status unauthenticated';
+            statusDiv.innerHTML = `Status: Error - ${message}`;
+        }
+
+        // Utility function to decode JWT payload (for demo purposes)
+        function decodeJWT(token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                return payload;
+            } catch (e) {
+                return null;
+            }
+        }
+    </script>
+</body>
+</html>
