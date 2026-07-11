@@ -1,0 +1,30 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: securevibe
+  namespace: securevibe
+  labels:
+    app.kubernetes.io/name: securevibe
+    app.kubernetes.io/component: pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: securevibe
+      app.kubernetes.io/component: api
+---
+# Alternative PDB using maxUnavailable for different scenarios
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: securevibe-max-unavailable
+  namespace: securevibe
+  labels:
+    app.kubernetes.io/name: securevibe
+    app.kubernetes.io/component: pdb
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: securevibe
+      app.kubernetes.io/component: api
