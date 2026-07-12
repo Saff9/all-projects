@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureVibe - Enterprise Authentication Service</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="hero">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="logo">
+                    <span class="logo-icon">🔐</span>
+                    <span class="logo-text">SecureVibe</span>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#security">Security</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#docs">Docs</a>
+                <button class="btn-primary" onclick="showLoginModal()">Get Started</button>
+            </div>
+        </nav>
+
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Enterprise-Grade Authentication</h1>
+                <p class="hero-subtitle">Built for developers who demand uncompromising security. Protect your users with military-grade encryption and real-time threat detection.</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">99.9%</span>
+                        <span class="stat-label">Uptime SLA</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">256-bit</span>
+                        <span class="stat-label">AES Encryption</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Security Monitoring</span>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <button class="btn-primary btn-large" onclick="showRegisterModal()">Start Free Trial</button>
+                    <button class="btn-secondary btn-large" onclick="scrollToFeatures()">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="security-shield">
+                    <div class="shield-glow"></div>
+                    <div class="shield-content">
+                        <div class="encryption-layers">
+                            <div class="layer layer-1">AES-256-GCM</div>
+                            <div class="layer layer-2">SecureVibe Transform</div>
+                            <div class="layer layer-3">AES-256-CBC</div>
+                            <div class="layer layer-4">Proprietary Signature</div>
+                        </div>
+                        <div class="shield-text">Protected by<br>SecureVibe</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose SecureVibe?</h2>
+                <p>Built by security experts for developers who refuse to compromise</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Unbreakable Encryption</h3>
+                    <p>Proprietary multi-layer encryption algorithm that automatically detects and traps hackers. Includes honeytrap mechanisms and real-time key rotation.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Lightning Fast</h3>
+                    <p>Optimized for performance with intelligent caching, connection pooling, and automatic scaling. Zero cold starts on enterprise deployments.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>User Engagement</h3>
+                    <p>Gamified security dashboard with engagement scoring, personalized recommendations, and real-time security insights that users actually enjoy using.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Threat Intelligence</h3>
+                    <p>Advanced AI-powered threat detection with behavioral analysis, anomaly detection, and automatic incident response. Stay ahead of attackers.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Business Analytics</h3>
+                    <p>Comprehensive dashboards for user growth, security events, revenue tracking, and performance metrics. Make data-driven decisions.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Developer First</h3>
+                    <p>SDKs for React, Vue, Angular. RESTful API with comprehensive documentation. Enterprise support with SLA guarantees.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section id="security" class="security">
+        <div class="container">
+            <div class="security-content">
+                <div class="security-text">
+                    <h2>Military-Grade Security</h2>
+                    <p>Our proprietary encryption has been battle-tested against advanced persistent threats. Here's how we protect your data:</p>
+
+                    <div class="security-features">
+                        <div class="security-feature">
+                            <h4>4-Layer Encryption</h4>
+                            <p>AES-256-GCM + AES-256-CBC + proprietary transformations + SecureVibe signature</p>
+                        </div>
+
+                        <div class="security-feature">
+                            <h4>Hacker Traps</h4>
+                            <p>Automatic detection of attack patterns with honeytrap responses that waste attacker resources</p>
+                        </div>
+
+                        <div class="security-feature">
+                            <h4>Key Rotation</h4>
+                            <p>Automatic key rotation every hour with entropy from multiple sources</p>
+                        </div>
+
+                        <div class="security-feature">
+                            <h4>Zero Trust</h4>
+                            <p>Every request is verified, validated, and monitored in real-time</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-visual">
+                    <div class="encryption-diagram">
+                        <div class="diagram-layer layer-1">
+                            <span>Plain Text</span>
+                            <span>→</span>
+                            <span>AES-256-GCM</span>
+                        </div>
+                        <div class="diagram-layer layer-2">
+                            <span>Encrypted</span>
+                            <span>→</span>
+                            <span>SecureVibe Transform</span>
+                        </div>
+                        <div class="diagram-layer layer-3">
+                            <span>Transformed</span>
+                            <span>→</span>
+                            <span>AES-256-CBC</span>
+                        </div>
+                        <div class="diagram-layer layer-4">
+                            <span>Double Encrypted</span>
+                            <span>→</span>
+                            <span>SecureVibe Signature</span>
+                        </div>
+                        <div class="diagram-result">
+                            <span>Unbreakable Ciphertext</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple, Transparent Pricing</h2>
+                <p>No hidden fees, no surprise charges. Pay only for what you use.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card free">
+                    <div class="pricing-header">
+                        <h3>Free</h3>
+                        <div class="price">
+                            <span class="amount">$0</span>
+                            <span class="period">forever</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✅ 3 users included</li>
+                        <li>✅ Basic authentication</li>
+                        <li>✅ Email verification</li>
+                        <li>✅ Google OAuth</li>
+                        <li>✅ Community support</li>
+                        <li>❌ Advanced analytics</li>
+                        <li>❌ Priority support</li>
+                    </ul>
+                    <button class="btn-primary" onclick="showRegisterModal()">Get Started Free</button>
+                </div>
+
+                <div class="pricing-card pro featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Professional</h3>
+                        <div class="price">
+                            <span class="amount">$5</span>
+                            <span class="period">per app/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✅ Unlimited users</li>
+                        <li>✅ All Free features</li>
+                        <li>✅ Advanced security</li>
+                        <li>✅ User analytics</li>
+                        <li>✅ Priority support</li>
+                        <li>✅ Custom branding</li>
+                        <li>✅ API rate limiting</li>
+                    </ul>
+                    <button class="btn-primary" onclick="showRegisterModal()">Start Pro Trial</button>
+                </div>
+
+                <div class="pricing-card enterprise">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="price">
+                            <span class="amount">Custom</span>
+                            <span class="period">pricing</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✅ All Pro features</li>
+                        <li>✅ SSO/SAML support</li>
+                        <li>✅ LDAP integration</li>
+                        <li>✅ Dedicated support</li>
+                        <li>✅ Custom integrations</li>
+                        <li>✅ SLA guarantees</li>
+                        <li>✅ On-premise deployment</li>
+                    </ul>
+                    <button class="btn-secondary" onclick="contactSales()">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Secure Your Application?</h2>
+                <p>Join thousands of developers who trust SecureVibe with their user authentication.</p>
+                <div class="cta-buttons">
+                    <button class="btn-primary btn-large" onclick="showRegisterModal()">Start Your Free Trial</button>
+                    <button class="btn-secondary btn-large" onclick="scrollToDocs()">View Documentation</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-icon">🔐</span>
+                        <span class="logo-text">SecureVibe</span>
+                    </div>
+                    <p>Enterprise-grade authentication for the modern web.</p>
+                    <p class="footer-tagline">Protected by SecureVibe 🛡️</p>
+                </div>
+
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Product</h4>
+                        <a href="#features">Features</a>
+                        <a href="#security">Security</a>
+                        <a href="#pricing">Pricing</a>
+                        <a href="#docs">Documentation</a>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="#">About</a>
+                        <a href="#">Blog</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Contact</a>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="#">Help Center</a>
+                        <a href="#">API Status</a>
+                        <a href="#">Community</a>
+                        <a href="#">Enterprise</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 SecureVibe. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Start Your Free Trial</h2>
+            <p>Get started with SecureVibe - first 3 users are completely free!</p>
+            <form id="registerForm">
+                <input type="text" id="regName" placeholder="Full Name" required>
+                <input type="email" id="regEmail" placeholder="Email Address" required>
+                <input type="password" id="regPassword" placeholder="Password (min 6 characters)" required>
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Welcome Back</h2>
+            <p>Sign in to your SecureVibe account</p>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email Address" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
