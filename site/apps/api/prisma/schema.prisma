@@ -1,0 +1,691 @@
+// Prisma Schema for NEET/JEE Preparation Platform
+// Based on docs/database-schema.md
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// User & Authentication
+// ============================================
+
+model User {
+  id String @id @default(uuid())
+
+  // Auth
+  email String @unique
+  passwordHash String
+  emailVerifiedAt DateTime?
+  lastLoginAt DateTime?
+
+  // Profile
+  fullName String
+  phone String?
+  avatarUrl String?
+
+  // Preferences
+  targetExam String? // NEET, JEE_MAIN, JEE_ADVANCED, BOTH
+  targetYear Int?
+  schoolName String?
+  city String?
+  state String?
+  preferredLanguage String @default("en")
+  themePreference String @default("system") // light, dark, system
+  notificationPreferences Json @default("{}")
+
+  // Role & Subscription
+  role String @default("student") // guest, student, premium, admin
+  subscriptionStatus String @default("free") // free, premium, expired
+  subscriptionExpiresAt DateTime?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  // Relations
+  progress UserProgress[]
+  testAttempts TestAttempt[]
+  mistakes Mistake[]
+  notes Note[]
+  bookmarks Bookmark[]
+  streaks StudyStreak?
+  dailyActivity DailyActivityLog[]
+  aiConversations AiConversation[]
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id String @id @default(uuid())
+  userId String
+  token String @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+// ============================================
+// Content Structure
+// ============================================
+
+model Subject {
+  id String @id @default(uuid())
+  name String
+  slug String @unique
+  iconUrl String?
+  colorCode String?
+  description String?
+  displayOrder Int @default(0)
+
+  // Exam mapping
+  forNeet Boolean @default(true)
+  forJeeMain Boolean @default(true)
+  forJeeAdvanced Boolean @default(true)
+
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  chapters Chapter[]
+  questions Question[]
+  tests Test[]
+
+  @@map("subjects")
+}
+
+model Chapter {
+  id String @id @default(uuid())
+  subjectId String
+  name String
+  slug String
+  description String?
+
+  // Classification
+  classLevel Int[] @default([11, 12])
+  unitName String?
+  unitNumber Int?
+  chapterNumber Int?
+
+  // Weightage
+  neetWeightage Decimal? @db.Decimal(5, 2)
+  jeeMainWeightage Decimal? @db.Decimal(5, 2)
+  jeeAdvancedWeightage Decimal? @db.Decimal(5, 2)
+
+  // Metadata
+  totalTopics Int @default(0)
+  totalQuestions Int @default(0)
+  estimatedHours Decimal? @db.Decimal(5, 2)
+  difficultyLevel String? // easy, medium, hard
+
+  isActive Boolean @default(true)
+  displayOrder Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topics Topic[]
+  questions Question[]
+  userProgress UserProgress[]
+  resources ChapterResource[]
+
+  @@unique([subjectId, slug])
+  @@map("chapters")
+}
+
+model Topic {
+  id String @id @default(uuid())
+  chapterId String
+  name String
+  slug String
+  description String?
+  topicNumber Int?
+
+  // Content
+  keyConcepts String[]
+  importantFormulas String[]
+
+  // Metadata
+  estimatedMinutes Int?
+  difficultyLevel String?
+
+  isActive Boolean @default(true)
+  displayOrder Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  chapter Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  questions Question[]
+
+  @@unique([chapterId, slug])
+  @@map("topics")
+}
+
+// ============================================
+// Question Bank
+// ============================================
+
+model Question {
+  id String @id @default(uuid())
+  topicId String?
+  chapterId String
+  subjectId String
+
+  // Content
+  questionText String
+  questionType String @default("mcq") // mcq, multiple_correct, numerical, assertion_reason, matrix_match
+  questionImageUrl String?
+
+  // Classification
+  difficultyLevel String // easy, medium, hard
+  bloomTaxonomy String? // knowledge, understanding, application, analysis, synthesis, evaluation
+
+  // Source
+  sourceType String? // pyq, ncert, exemplar, custom
+  sourceExam String?
+  sourceYear Int?
+  sourceSession String?
+
+  // Exam mapping
+  forNeet Boolean @default(true)
+  forJeeMain Boolean @default(true)
+  forJeeAdvanced Boolean @default(false)
+
+  // Solution
+  solutionText String?
+  solutionImageUrl String?
+  hint String?
+
+  // Statistics
+  timesAttempted Int @default(0)
+  timesCorrect Int @default(0)
+  averageTimeSeconds Int?
+
+  // AI
+  aiExplanation String?
+  aiGenerated Boolean @default(false)
+
+  // Status
+  isActive Boolean @default(true)
+  isVerified Boolean @default(false)
+  verifiedBy String?
+  verifiedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  topic Topic? @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  chapter Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  options QuestionOption[]
+  testQuestions TestQuestion[]
+  mistakes Mistake[]
+  bookmarks Bookmark[]
+  notes Note[]
+  answerResponses AnswerResponse[]
+
+  @@index([chapterId])
+  @@index([subjectId])
+  @@index([difficultyLevel])
+  @@map("questions")
+}
+
+model QuestionOption {
+  id String @id @default(uuid())
+  questionId String
+  optionLabel String
+  optionText String?
+  optionImageUrl String?
+  isCorrect Boolean @default(false)
+  explanation String?
+  displayOrder Int @default(0)
+
+  createdAt DateTime @default(now())
+
+  // Relations
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, optionLabel])
+  @@map("question_options")
+}
+
+// ============================================
+// User Progress
+// ============================================
+
+model UserProgress {
+  id String @id @default(uuid())
+  userId String
+  chapterId String
+
+  // Progress
+  status String @default("not_started") // not_started, in_progress, completed, revision
+  completionPercentage Decimal @default(0) @db.Decimal(5, 2)
+
+  // Stats
+  totalQuestions Int @default(0)
+  questionsAttempted Int @default(0)
+  questionsCorrect Int @default(0)
+  questionsIncorrect Int @default(0)
+  questionsSkipped Int @default(0)
+
+  // Time
+  totalTimeSpentSeconds BigInt @default(0)
+  averageTimePerQuestion Int?
+
+  // Performance
+  accuracyPercentage Decimal? @db.Decimal(5, 2)
+  lastScorePercentage Decimal? @db.Decimal(5, 2)
+  bestScorePercentage Decimal? @db.Decimal(5, 2)
+
+  // Weak chapter detection
+  isWeakChapter Boolean @default(false)
+  weaknessScore Decimal? @db.Decimal(5, 2)
+
+  // Revision
+  revisionCount Int @default(0)
+  lastRevisedAt DateTime?
+  nextRevisionDue DateTime?
+
+  // Timestamps
+  firstAccessedAt DateTime?
+  lastAccessedAt DateTime?
+  completedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapter Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, chapterId])
+  @@map("user_progress")
+}
+
+model StudyStreak {
+  id String @id @default(uuid())
+  userId String
+
+  currentStreak Int @default(0)
+  longestStreak Int @default(0)
+  lastActivityDate DateTime?
+  streakStartDate DateTime?
+
+  // Weekly
+  weeklyGoalMinutes Int @default(300)
+  weeklyMinutesLogged Int @default(0)
+  weekStartDate DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+  @@map("study_streaks")
+}
+
+model DailyActivityLog {
+  id String @id @default(uuid())
+  userId String
+  activityDate DateTime
+
+  // Time
+  totalTimeSeconds BigInt @default(0)
+  sessionsCount Int @default(0)
+
+  // Activity
+  questionsSolved Int @default(0)
+  questionsCorrect Int @default(0)
+  testsTaken Int @default(0)
+  chaptersStudied Int @default(0)
+  mistakesReviewed Int @default(0)
+
+  // Pomodoro
+  pomodoroSessions Int @default(0)
+  pomodoroMinutes Int @default(0)
+
+  createdAt DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, activityDate])
+  @@map("daily_activity_log")
+}
+
+// ============================================
+// Tests
+// ============================================
+
+model Test {
+  id String @id @default(uuid())
+  title String
+  slug String @unique
+  description String?
+  instructions String?
+
+  // Configuration
+  testType String // chapter_test, unit_test, subject_test, full_test, custom_test, pyq_test
+  examType String // NEET, JEE_MAIN, JEE_ADVANCED
+  subjectId String?
+
+  // Settings
+  totalQuestions Int
+  totalMarks Int
+  durationMinutes Int
+  markingScheme Json @default("{\"correct\": 4, \"incorrect\": -1, \"unattempted\": 0}")
+
+  // Availability
+  isPublic Boolean @default(true)
+  isPremium Boolean @default(false)
+  isActive Boolean @default(true)
+
+  // Statistics
+  attemptsCount Int @default(0)
+  averageScore Decimal? @db.Decimal(5, 2)
+  highestScore Decimal? @db.Decimal(5, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  subject Subject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  testQuestions TestQuestion[]
+  testAttempts TestAttempt[]
+
+  @@map("tests")
+}
+
+model TestQuestion {
+  id String @id @default(uuid())
+  testId String
+  questionId String
+  questionNumber Int
+  marks Int @default(4)
+
+  createdAt DateTime @default(now())
+
+  // Relations
+  test Test @relation(fields: [testId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([testId, questionNumber])
+  @@map("test_questions")
+}
+
+model TestAttempt {
+  id String @id @default(uuid())
+  testId String
+  userId String
+  attemptNumber Int
+
+  // Timing
+  startedAt DateTime @default(now())
+  submittedAt DateTime?
+  timeTakenSeconds Int?
+
+  // Status
+  status String @default("in_progress") // in_progress, submitted, abandoned, timeout
+
+  // Results
+  totalQuestions Int?
+  attemptedQuestions Int @default(0)
+  correctAnswers Int @default(0)
+  incorrectAnswers Int @default(0)
+  skippedQuestions Int @default(0)
+
+  marksObtained Decimal? @db.Decimal(6, 2)
+  totalMarks Decimal? @db.Decimal(6, 2)
+  percentage Decimal? @db.Decimal(5, 2)
+
+  // Rank
+  rank Int?
+  totalParticipants Int?
+  percentile Decimal? @db.Decimal(5, 2)
+
+  // Analysis
+  subjectWiseScores Json @default("{}")
+  chapterWiseScores Json @default("{}")
+  timeDistribution Json @default("{}")
+
+  createdAt DateTime @default(now())
+
+  // Relations
+  test Test @relation(fields: [testId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answerResponses AnswerResponse[]
+
+  @@unique([testId, userId, attemptNumber])
+  @@map("test_attempts")
+}
+
+model AnswerResponse {
+  id String @id @default(uuid())
+  attemptId String
+  questionId String
+
+  // Response
+  selectedOptions String[]
+  numericalAnswer Decimal? @db.Decimal(15, 4)
+
+  // Status
+  isCorrect Boolean?
+  isAttempted Boolean @default(false)
+
+  // Time
+  timeSpentSeconds Int?
+  marksObtained Decimal? @db.Decimal(4, 2)
+
+  // Review
+  markedForReview Boolean @default(false)
+
+  answeredAt DateTime?
+  createdAt DateTime @default(now())
+
+  // Relations
+  testAttempt TestAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, questionId])
+  @@map("answer_responses")
+}
+
+// ============================================
+// Mistake Notebook
+// ============================================
+
+model Mistake {
+  id String @id @default(uuid())
+  userId String
+  questionId String
+
+  // Source
+  sourceType String? // test, pyq_practice, manual_entry
+  sourceId String?
+
+  // Answers
+  userAnswer String[]
+  userAnswerText String?
+  correctAnswer String[]
+
+  // Notes
+  userNotes String?
+  mistakeReason String?
+  conceptGap String?
+
+  // Classification
+  mistakeType String? // conceptual, calculation, silly, time_pressure, misinterpretation, other
+  severity String? // minor, moderate, major
+
+  // Revision
+  revisionCount Int @default(0)
+  lastRevisedAt DateTime?
+  nextRevisionDate DateTime?
+  isMastered Boolean @default(false)
+
+  // Spaced Repetition
+  easeFactor Decimal @default(2.50) @db.Decimal(4, 2)
+  intervalDays Int @default(1)
+  repetition Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId])
+  @@map("mistakes")
+}
+
+// ============================================
+// Resources
+// ============================================
+
+model Resource {
+  id String @id @default(uuid())
+  title String
+  slug String @unique
+  description String?
+
+  // Type
+  resourceType String // pdf, video, link, formula_sheet
+  category String // ncert, exemplar, reference, formula, notes
+
+  // Content
+  fileUrl String?
+  externalUrl String?
+  thumbnailUrl String?
+  content String?
+
+  // Metadata
+  subjectId String?
+  fileSize Int?
+  durationMinutes Int?
+  author String?
+  source String?
+
+  // Stats
+  downloadCount Int @default(0)
+  viewCount Int @default(0)
+
+  // Access
+  isPublic Boolean @default(true)
+  isPremium Boolean @default(false)
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  chapterResources ChapterResource[]
+
+  @@map("resources")
+}
+
+model ChapterResource {
+  id String @id @default(uuid())
+  chapterId String
+  resourceId String
+  displayOrder Int @default(0)
+
+  createdAt DateTime @default(now())
+
+  chapter Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  resource Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([chapterId, resourceId])
+  @@map("chapter_resources")
+}
+
+// ============================================
+// Bookmarks & Notes
+// ============================================
+
+model Bookmark {
+  id String @id @default(uuid())
+  userId String
+  questionId String
+  note String?
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId])
+  @@map("bookmarks")
+}
+
+model Note {
+  id String @id @default(uuid())
+  userId String
+  questionId String?
+  chapterId String?
+
+  title String?
+  content String
+
+  // Tags
+  tags String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question Question? @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("notes")
+}
+
+// ============================================
+// AI Conversations
+// ============================================
+
+model AiConversation {
+  id String @id @default(uuid())
+  userId String
+  title String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages AiMessage[]
+
+  @@map("ai_conversations")
+}
+
+model AiMessage {
+  id String @id @default(uuid())
+  conversationId String
+  role String // user, assistant
+  content String
+
+  // Context
+  questionId String?
+  context Json?
+
+  createdAt DateTime @default(now())
+
+  conversation AiConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@map("ai_messages")
+}
