@@ -1,0 +1,27 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <rect width="48" height="48" rx="10" fill="url(#logoGradient)"/>
+  
+  <!-- Book/Graduation cap icon -->
+  <path d="M24 12L12 18V30C12 32.2 13.8 34 16 34H32C34.2 34 36 32.2 36 30V18L24 12Z" fill="white" fill-opacity="0.95"/>
+  <path d="M24 12V28M24 12L12 18M24 12L36 18" stroke="white" stroke-width="1.5" stroke-opacity="0.5"/>
+  
+  <!-- J letter -->
+  <text x="24" y="29" text-anchor="middle" fill="url(#textGradient)" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="16">J</text>
+  
+  <!-- E letter -->
+  <text x="24" y="42" text-anchor="middle" fill="white" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="10">E</text>
+  
+  <!-- Gradient definitions -->
+  <defs>
+    <linearGradient id="logoGradient" x1="0" y1="0" x2="48" y2="48">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="50%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#0EA5E9"/>
+    </linearGradient>
+    <linearGradient id="textGradient" x1="12" y1="18" x2="36" y2="34">
+      <stop offset="0%" stop-color="#0EA5E9"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+  </defs>
+</svg>
