@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: jeeneet-web
+    env: node
+    region: oregon
+    buildCommand: cd apps/web && npm install && npm run build
+    startCommand: cd apps/web && npx next start
+    staticPublishPath: .next
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+  - type: web
+    name: jeeneet-api
+    env: node
+    region: oregon
+    buildCommand: cd apps/api && npm install && npm run build
+    startCommand: cd apps/api && npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
