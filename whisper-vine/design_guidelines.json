@@ -1,0 +1,120 @@
+{
+  "project_name": "WhisperVine",
+  "theme": "DARK",
+  "archetype": "7 (Electric & Neon) infused with Noir Graphic Novella",
+  "aesthetic_rationale": "The app demands a 'secret garden of whispers' feel. We are leaning heavily into a Noir Graphic Novella aesthetic by using deep Void Purple as the structural base (evoking shadow and mystery) and Electric Neon Green as the kinetic trigger for interaction. This avoids the generic SaaS look and establishes a moody, high-tension social environment perfect for anonymity and gamified confessions.",
+  "colors": {
+    "background": {
+      "main": "#09030E",
+      "surface": "#160822",
+      "surface_elevated": "#26103A",
+      "description": "Deepest dark purple near-black to anchor the Noir aesthetic."
+    },
+    "primary": {
+      "DEFAULT": "#39FF14",
+      "hover": "#6BFF4D",
+      "foreground": "#000000",
+      "description": "Radioactive Neon Green. Use sparingly for primary actions, active states, and critical game data points to pop off the dark purple."
+    },
+    "secondary": {
+      "DEFAULT": "#8A2BE2",
+      "hover": "#9B4EE7",
+      "foreground": "#FFFFFF",
+      "description": "Electric Purple. Used for secondary buttons, subtle glow effects, and borders."
+    },
+    "text": {
+      "primary": "#F4F0F7",
+      "secondary": "#A99BB8",
+      "muted": "#6C597E",
+      "description": "High contrast off-white for legibility on dark surfaces. Muted tones lean purple, not gray."
+    },
+    "border": {
+      "DEFAULT": "#2E1645",
+      "focus": "#39FF14"
+    },
+    "feedback": {
+      "success": "#39FF14",
+      "error": "#FF0055",
+      "warning": "#FFD700"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "headings": "'Anton', sans-serif",
+      "body": "'Space Mono', monospace"
+    },
+    "hierarchy": {
+      "h1": "text-5xl sm:text-6xl+ uppercase tracking-tight",
+      "h2": "text-4xl sm:text-5xl uppercase tracking-tight",
+      "h3": "text-2xl sm:text-3xl uppercase tracking-tighter",
+      "body": "text-base leading-relaxed tracking-tight",
+      "labels": "text-xs uppercase tracking-[0.2em] font-bold"
+    },
+    "rules": [
+      "Headings (Anton) must always be uppercase to simulate graphic novel covers and tight-packed comic dialogue.",
+      "Body text (Space Mono) reinforces the 'anonymous/typewriter' confessional vibe.",
+      "Never center headings by default; align left for structural tension unless strictly centered for a focal game UI."
+    ]
+  },
+  "spacing_and_layout": {
+    "philosophy": "High tension and contrast. Dense where data exists, expansive in negative space.",
+    "scale": "Generous outer padding (p-8 to p-16), tighter internal nesting.",
+    "grids": {
+      "marketing": "Asymmetric bento/tetris grid (grid-cols-1 md:grid-cols-12 gap-8).",
+      "vine_feed": "Masonry layout for anonymous confessions. Variable heights for cards based on text length to mimic a clustered wall of secrets.",
+      "dashboard": "Strict grid hierarchy. Dashboard widgets must use h-full to prevent jagged bottoms."
+    }
+  },
+  "surface_strategies": {
+    "cards_and_panels": {
+      "style": "Graphic Novella Brutalism. 2px solid border (border-purple-800), sharp corners (rounded-none or minimal rounded-sm), and an offset drop-shadow to mimic comic panel depth.",
+      "shadow": "drop-shadow-[4px_4px_0px_#2E1645] (hover: drop-shadow-[4px_4px_0px_#39FF14])",
+      "background": "Solid dark purple surfaces. NO glassmorphism to keep the 'ink on paper' comic feel."
+    },
+    "navigation": {
+      "style": "Solid background with a hard bottom border. Sticky positioning (z-50). Not transparent."
+    }
+  },
+  "components_instructions": {
+    "buttons": "Square or minimal border-radius (rounded-sm). Neon green background for primary, black text. Hover state: slight translate (-translate-y-1) and sharp box-shadow (shadow-[4px_4px_0px_#8A2BE2]).",
+    "inputs": "Shadcn modified: bg-[#160822] border-[#2E1645] text-[#F4F0F7] placeholder-[#6C597E]. Focus state MUST be a solid 2px ring of Neon Green (#39FF14).",
+    "vine_cards": "Confession cards in the feed should have a random emoji prefix as an 'anonymous avatar'. When turned into a 'shareable card', present it as a bordered panel.",
+    "game_ui": "For 'Would You Rather' and 'Unpopular Opinion', use high-contrast opposing colors (Neon Green vs Electric Magenta #FF0055) for voting bars. Animated width fill for results.",
+    "customization": "Use Shadcn components for complex logic (Dialogs, Tabs, Select) but heavily strip their default Vercel-like styling to match the sharp, high-contrast Noir theme."
+  },
+  "motion_and_interactions": {
+    "rules": [
+      "Hover states must be explicit. Transition transforms and drop-shadows quickly (duration-150) to feel snappy like a page turn.",
+      "Micro-animations on voting: When a user votes, the bar should stagger-animate its width fill.",
+      "Confession submit: Use a slight typing/revealing animation or a quick glitch effect."
+    ]
+  },
+  "images": [
+    {
+      "category": "hero_visual",
+      "url": "https://images.unsplash.com/flagged/photo-1564128928548-0d648ee059a8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwyfHxuZW9uJTIwZ3JlZW4lMjBkYXJrfGVufDB8fHx8MTc3ODQyNjE3OHww&ixlib=rb-4.1.0&q=85",
+      "description": "Moody, dark background with a half-lit face glowing in neon green. Perfect for the hero section to establish anonymity and mystery."
+    },
+    {
+      "category": "background_texture",
+      "url": "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MjJ8MHwxfHNlYXJjaHwxfHxwdXJwbGUlMjBuZW9ufGVufDB8fHx8MTc3ODQyNjE3OXww&ixlib=rb-4.1.0&q=85",
+      "description": "Dark purple geometric shapes/texture. Can be used as a low-opacity background layer for marketing or dashboard pages."
+    },
+    {
+      "category": "vine_card_placeholder",
+      "url": "https://images.unsplash.com/photo-1565382038303-8c62e88d119a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MjJ8MHwxfHNlYXJjaHwyfHxwdXJwbGUlMjBuZW9ufGVufDB8fHx8MTc3ODQyNjE3OXww&ixlib=rb-4.1.0&q=85",
+      "description": "Dark purple room. Useful for fallback graphic novella generated images in the Vine feed."
+    }
+  ],
+  "accessibility_and_testing": {
+    "contrast": "Text over the void purple background requires high luminance. Ensure Neon Green text is large enough to pass contrast or is used primarily for decorative highlights and active borders.",
+    "testing_attributes": "All interactive elements MUST include a data-testid attribute in kebab-case (e.g., data-testid='confession-submit-btn')."
+  },
+  "instructions_to_main_agent": [
+    "Load 'Anton' and 'Space Mono' from Google Fonts in the HTML head.",
+    "Use Tailwind arbitrary values for custom shadows to achieve the flat comic panel effect (e.g., shadow-[4px_4px_0px_#39FF14]).",
+    "Ensure the layout is hybrid: A high-impact marketing landing page leading into a functional web app / PWA with a bottom navigation or sidebar for dashboard management.",
+    "Do NOT use pure #000000 or #808080. Always tint grays towards purple.",
+    "In the Game Engine views, make the voting interface feel tactile—large touch targets, immediate visual feedback, and clear 'blind' states before voting."
+  ]
+}
