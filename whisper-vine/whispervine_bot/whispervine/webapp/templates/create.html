@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Create a vine · WhisperVine</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  body { margin:0; font-family: 'Space Mono', ui-monospace, monospace; background:#09030E; color:#F4F0F7; }
+  h1 { font-family: Anton, Impact, sans-serif; text-transform: uppercase; }
+  .container { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
+  .panel { background:#160822; border:2px solid #2E1645; padding:18px; box-shadow: 4px 4px 0 0 #2E1645; }
+  input,textarea,select { width:100%; box-sizing:border-box; background:#160822; border:2px solid #2E1645; color:#F4F0F7; padding:10px; font-family:'Space Mono'; }
+  input:focus,textarea:focus,select:focus { outline:none; border-color:#39FF14; }
+  .label { text-transform: uppercase; letter-spacing:0.2em; font-size:0.7rem; color:#A99BB8; font-weight:700; display:block; margin-top:14px; margin-bottom:6px; }
+  .btn { background:#39FF14; color:#000; padding:12px 18px; font-family: Anton; text-transform: uppercase; letter-spacing:0.08em; border:2px solid #39FF14; box-shadow: 4px 4px 0 0 #2E1645; cursor:pointer; }
+  a { color:#39FF14; }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="label">← back</a>
+  <h1>Plant a vine</h1>
+  <form id="f" class="panel" style="margin-top:18px;">
+    <label class="label">Name</label>
+    <input name="name" required maxlength="80" placeholder="Midnight Whispers" />
+
+    <label class="label">Description</label>
+    <textarea name="description" rows="3" maxlength="600" placeholder="A vine for night owls and overthinkers."></textarea>
+
+    <label class="label">Moderation strictness</label>
+    <select name="moderation_strictness">
+      <option value="loose">Loose</option>
+      <option value="balanced" selected>Balanced</option>
+      <option value="strict">Strict</option>
+    </select>
+
+    <label class="label">Daily game hour (UTC, -1 = off)</label>
+    <input name="game_schedule_hour" type="number" min="-1" max="23" value="20" />
+
+    <label class="label" style="display:flex; align-items:center; gap:8px;">
+      <input name="requires_approval" type="checkbox" style="width:auto" /> Manual approval queue
+    </label>
+
+    <button class="btn" style="margin-top:18px;">Plant vine →</button>
+  </form>
+  <div id="result" style="margin-top:16px;"></div>
+</div>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.ready(); tg.expand();
+
+document.getElementById("f").onsubmit = async (e) => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target).entries());
+  data.requires_approval = !!data.requires_approval;
+  data.game_schedule_hour = parseInt(data.game_schedule_hour);
+  const r = await fetch("/api/vines", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Telegram-Init-Data": tg.initData || "" },
+    body: JSON.stringify(data),
+  });
+  const out = document.getElementById("result");
+  if (!r.ok) { out.innerHTML = `<div class="panel">Error: ${r.status}</div>`; return; }
+  const v = await r.json();
+  out.innerHTML = `
+    <div class="panel">
+      ✅ Created <strong>${v.name}</strong>.<br><br>
+      Next steps:<br>
+      1. Add the bot to a group/channel as admin.<br>
+      2. In that chat, run <code>/linkvine ${v.id}</code>.<br>
+      3. Share invite: <code>t.me/&lt;bot&gt;?start=vine_${v.id}</code><br><br>
+      <a href="/dashboard">→ Open dashboard</a>
+    </div>`;
+};
+</script>
+</body>
+</html>
