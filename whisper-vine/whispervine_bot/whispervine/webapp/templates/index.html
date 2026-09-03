@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>WhisperVine Mini App</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; font-family: 'Space Mono', ui-monospace, monospace; background:#09030E; color:#F4F0F7; min-height:100vh; }
+  h1,h2,h3 { font-family: Anton, Impact, sans-serif; text-transform: uppercase; letter-spacing:-0.01em; margin:0; }
+  a { color:#39FF14; text-decoration: none; }
+  .panel { background:#160822; border:2px solid #2E1645; padding:18px; box-shadow: 4px 4px 0 0 #2E1645; }
+  .neon { color:#39FF14; }
+  .magenta { color:#FF0055; }
+  .btn { display:inline-block; background:#39FF14; color:#000; padding:10px 16px; font-family: Anton; text-transform: uppercase; letter-spacing:0.08em; border:2px solid #39FF14; box-shadow: 4px 4px 0 0 #2E1645; transition: all .15s; }
+  .btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 0 #8A2BE2; }
+  .label { text-transform: uppercase; letter-spacing:0.2em; font-size:0.7rem; color:#A99BB8; font-weight:700; }
+  .container { max-width: 920px; margin: 0 auto; padding: 24px 16px; }
+  .grid { display:grid; gap: 16px; }
+  @media(min-width:640px){ .grid-2 { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Whisper<span class="neon">Vine</span></h1>
+  <p class="label" style="margin-top:6px;">Your secret garden control room</p>
+
+  <div class="panel" style="margin-top:24px;">
+    <h3>Quick actions</h3>
+    <div class="grid grid-2" style="margin-top:14px;">
+      <a class="btn" href="/dashboard">Open dashboard →</a>
+      <a class="btn" href="/create">+ Create a vine</a>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:16px;">
+    <h3>Privacy</h3>
+    <p>Confessions are stored without sender IDs. Votes are aggregate-only with per-session salted fingerprints. <span class="neon">Zero traces.</span></p>
+  </div>
+</div>
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.ready();
+  tg.expand();
+  tg.MainButton.hide();
+</script>
+</body>
+</html>
