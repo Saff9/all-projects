@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Dashboard · WhisperVine</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; font-family: 'Space Mono', ui-monospace, monospace; background:#09030E; color:#F4F0F7; }
+  h1,h2,h3 { font-family: Anton, Impact, sans-serif; text-transform: uppercase; margin:0; }
+  .panel { background:#160822; border:2px solid #2E1645; padding:18px; box-shadow: 4px 4px 0 0 #2E1645; }
+  .neon { color:#39FF14; } .magenta { color:#FF0055; }
+  .label { text-transform: uppercase; letter-spacing:0.2em; font-size:0.7rem; color:#A99BB8; font-weight:700; }
+  .container { max-width: 920px; margin: 0 auto; padding: 24px 16px; }
+  .grid { display:grid; gap: 12px; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  @media(min-width:640px){ .grid-4 { grid-template-columns: repeat(4, 1fr); } }
+  .stat { background:#160822; border:2px solid #2E1645; padding:14px; }
+  .stat .v { font-family:Anton; font-size:2.4rem; color:#39FF14; }
+  .vine { background:#160822; border:2px solid #2E1645; padding:14px; margin-bottom:10px; cursor:pointer; }
+  .vine.active { border-color:#39FF14; }
+  ul { list-style: none; padding: 0; margin: 0; }
+  a { color:#39FF14; }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="label">← back</a>
+  <h1 style="margin-top:8px;">Dashboard</h1>
+
+  <div class="panel" style="margin-top:18px;">
+    <h3>Your vines</h3>
+    <ul id="vines"></ul>
+  </div>
+
+  <div id="stats" style="margin-top:16px;"></div>
+  <div id="queue" style="margin-top:16px;"></div>
+</div>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.ready(); tg.expand();
+
+function authHeaders() {
+  return { "Content-Type": "application/json", "X-Telegram-Init-Data": tg.initData || "" };
+}
+
+let activeVine = null;
+
+async function loadVines() {
+  const r = await fetch("/api/vines", { headers: authHeaders() });
+  if (!r.ok) { document.getElementById("vines").innerHTML = "<li class='label'>Auth failed — open this from inside Telegram.</li>"; return; }
+  const vines = await r.json();
+  const ul = document.getElementById("vines");
+  ul.innerHTML = "";
+  if (vines.length === 0) { ul.innerHTML = "<li class='label'>No vines yet — <a href='/create'>create one</a></li>"; return; }
+  vines.forEach(v => {
+    const li = document.createElement("li");
+    li.className = "vine";
+    li.innerHTML = `<h3>${v.name}</h3><div class="label">${v.moderation_strictness} · game @${v.game_schedule_hour}h UTC</div>`;
+    li.onclick = () => selectVine(v);
+    ul.appendChild(li);
+  });
+  selectVine(vines[0]);
+}
+
+async function selectVine(v) {
+  activeVine = v;
+  document.querySelectorAll(".vine").forEach(el => el.classList.remove("active"));
+  // mark active by name match (simple)
+  Array.from(document.querySelectorAll(".vine h3")).forEach(h => {
+    if (h.textContent === v.name) h.parentElement.classList.add("active");
+  });
+  const sr = await fetch(`/api/vines/${v.id}/stats`, { headers: authHeaders() }).then(r => r.json());
+  document.getElementById("stats").innerHTML = `
+    <div class="grid grid-4">
+      ${[["whispers", sr.total],["today", sr.today],["pending", sr.pending],["games", sr.games]].map(([l,n]) =>
+        `<div class="stat"><div class="label">${l}</div><div class="v">${n}</div></div>`).join("")}
+    </div>`;
+  const q = await fetch(`/api/vines/${v.id}/queue`, { headers: authHeaders() }).then(r => r.json());
+  if (q.length === 0) { document.getElementById("queue").innerHTML = ""; return; }
+  document.getElementById("queue").innerHTML = `
+    <div class="panel"><h3>Approval queue (${q.length})</h3>
+      <ul style="margin-top:10px;">${q.map(c => `<li class="vine">${c.emoji} ${c.content}</li>`).join("")}</ul>
+      <div class="label" style="margin-top:8px;">Use the bot's /queue command to approve/reject.</div>
+    </div>`;
+}
+
+loadVines();
+</script>
+</body>
+</html>
