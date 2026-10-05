@@ -37,7 +37,7 @@ Create a `.env` file in the root directory:
 PUBLIC_STORAGE_TYPE=neondb
 
 # Neon DB Serverless PostgreSQL Connection String
-NEON_DATABASE_URL=postgresql://neondb_owner:npg_4pPgnhc5DiJf@ep-odd-butterfly-a1pv3sqx-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+NEON_DATABASE_URL=postgresql://<user>:<password>@<endpoint-id>-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 
 # Webhook API Authentication Password (for Bot/Automated Posting)
 WEBHOOK_PASSWORD=YOUR_SECURE_WEBHOOK_PASSWORD
@@ -172,7 +172,7 @@ npm run build
 1. Deploy the repository to your host (Vercel, Render, Netlify).
 2. Set Environment Variables in your hosting dashboard:
    - `PUBLIC_STORAGE_TYPE`: `neondb`
-   - `NEON_DATABASE_URL`: `postgresql://neondb_owner:npg_4pPgnhc5DiJf@...`
+   - `NEON_DATABASE_URL`: `postgresql://<user>:<password>@<endpoint-id>...`
    - `WEBHOOK_PASSWORD`: `YOUR_SECURE_WEBHOOK_PASSWORD`
    - `AMAZON_AFFILIATE_TAG`: `budgettechpro-21`
 3. Trigger build & deploy!
