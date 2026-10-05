@@ -100,3 +100,10 @@ Each project inside this repository is self-contained. Navigate to any project f
 
 ## 📄 License
 Individual sub-projects retain their respective open-source licenses as documented in each directory.
+
+---
+
+## 📊 Repository Size
+- **Working Tree**: ~1.18 GB
+- **Git Object Storage**: ~862 MB (packed)
+- **Total Monorepo Size**: ~2.04 GB

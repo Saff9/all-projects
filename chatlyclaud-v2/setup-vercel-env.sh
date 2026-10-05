@@ -13,7 +13,7 @@ echo "Setting up Vercel environment variables..."
 
 # Firebase Configuration
 vercel env add FIREBASE_API_KEY
-# Value: AIzaSyD8F8O5dENFxGnYEQF0vHfb174r3TtdY4k
+# Value: AIzaSy_YOUR_FIREBASE_API_KEY
 
 vercel env add FIREBASE_AUTH_DOMAIN
 # Value: bubbldrop2025.firebaseapp.com

@@ -36,7 +36,7 @@ This guide provides comprehensive instructions for deploying SecureVibe, our ent
 # In Atlas Dashboard:
 # 1. Database Access → Add New Database User
 # 2. Authentication Method: Password
-# 3. Username: securevibe_user
+# 3. Username: db_user
 # 4. Password: [Generate strong password]
 # 5. Built-in Role: Read and write to any database
 ```
@@ -52,7 +52,7 @@ This guide provides comprehensive instructions for deploying SecureVibe, our ent
 ```bash
 # Clusters → Connect → Connect your application
 # Copy the connection string, it should look like:
-# mongodb+srv://securevibe_user:<password>@securevibe-prod.xxxxx.mongodb.net/?retryWrites=true&w=majority
+# mongodb+srv://<username>:<password>@<cluster-url>/?retryWrites=true&w=majority
 ```
 
 ### 2. Gmail SMTP Configuration
@@ -123,7 +123,7 @@ nano .env
 **.env file contents:**
 ```env
 # Database Configuration
-MONGO_URI=mongodb+srv://securevibe_user:your_password_here@securevibe-prod.xxxxx.mongodb.net/securevibe?retryWrites=true&w=majority
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/securevibe?retryWrites=true&w=majority
 
 # JWT Configuration
 JWT_SECRET=your_super_secure_jwt_secret_here_minimum_64_characters

@@ -4,7 +4,7 @@ import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTim
 
 // ========== Firebase config - keep or replace with your own ==========
 const firebaseConfig = {
-  apiKey: "AIzaSyBZTAhJne3gOVwBrZ_NHQFo0ubWR8HzNL8",
+  apiKey: "AIzaSy_YOUR_API_KEY_HERE",
   authDomain: "sample-firebase-ai-app-d0a89.firebaseapp.com",
   projectId: "sample-firebase-ai-app-d0a89",
   storageBucket: "sample-firebase-ai-app-d0a89.firebasestorage.app",
@@ -146,7 +146,7 @@ async function openSinglePostById(id, posts){
     if(!post) return;
     // build a simple overlay
     const overlay = document.createElement('div'); overlay.style.position='fixed'; overlay.style.inset=0; overlay.style.background='rgba(0,0,0,0.6)'; overlay.style.zIndex=9999; overlay.style.overflow='auto';
-    const inner = document.createElement('div'); inner.style.maxWidth='720px'; inner.style.margin='40px auto'; inner.style.padding='20px'; inner.style.background='var(--panel)'; inner.style.borderRadius='12px'; inner.innerHTML = `<h2 style="font-family:Poppins">${post.title||''}</h2><div style="color:var(--muted);margin-bottom:12px">By ${post.author||'Apex'} • ${new Date((post.timestamp && post.timestamp.seconds) ? post.timestamp.seconds*1000 : post.timestamp).toLocaleString()}</div>${post.content||''}`;
+    const inner = document.createElement('div'); inner.style.maxWidth='720px'; inner.style.margin='40px auto'; inner.style.padding='20px'; inner.style.background='var(--panel)'; inner.style.borderRadius='12px'; inner.innerHTML = `<h2 style="font-family:Poppins">${post.title||''}</h2><div style="color:var(--muted);margin-bottom:12px">By ${post.author||'Apex'} � ${new Date((post.timestamp && post.timestamp.seconds) ? post.timestamp.seconds*1000 : post.timestamp).toLocaleString()}</div>${post.content||''}`;
     const close = document.createElement('button'); close.textContent='Close'; close.className='btn-ghost'; close.style.marginTop='14px'; close.addEventListener('click', ()=>overlay.remove()); inner.appendChild(close);
     overlay.appendChild(inner); document.body.appendChild(overlay);
   }catch(e){console.error(e)}
@@ -224,4 +224,4 @@ qS('#searchInputBlog')?.addEventListener('input', (e)=>{
 window.publishPost = publishPost;
 
 // Safety: log friendly message
-console.log('Apex Smart UI loaded — page:', page);
+console.log('Apex Smart UI loaded � page:', page);

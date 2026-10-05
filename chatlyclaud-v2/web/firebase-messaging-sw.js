@@ -6,7 +6,7 @@ importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js'
 importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js');
 
 firebase.initializeApp({
-  apiKey: 'AIzaSyD8F8O5dENFxGnYEQF0vHfb174r3TtdY4k',
+  apiKey: 'AIzaSy_YOUR_FIREBASE_API_KEY',
   authDomain: 'bubbldrop2025.firebaseapp.com',
   projectId: 'bubbldrop2025',
   storageBucket: 'bubbldrop2025.firebasestorage.app',

@@ -129,11 +129,11 @@ sudo -u postgres createdb securevibe
 
 # Create user and grant permissions
 sudo -u postgres psql
-CREATE USER securevibe_user WITH PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE securevibe TO securevibe_user;
+CREATE USER <db_user> WITH PASSWORD '<password>';
+GRANT ALL PRIVILEGES ON DATABASE securevibe TO <db_user>;
 
 # Connection string
-export DATABASE_URL="postgresql://securevibe_user:your_password@localhost:5432/securevibe"
+export DATABASE_URL="postgresql://<db_user>:<password>@localhost:5432/securevibe"
 ```
 
 ## 🔧 Environment Configuration
